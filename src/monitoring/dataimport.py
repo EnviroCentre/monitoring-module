@@ -4,19 +4,18 @@ import hec.io
 def locationsAcross(config, dssFilePath):
     records = []
     
-    _saveIrregularRecords(records)
+    _saveIrregularRecords(records, dssFilePath)
 
 def locationsDown(config, dssFilePath):
     records = []
     
-    _saveIrregularRecords(records)
+    _saveIrregularRecords(records, dssFilePath)
 
 def _saveIrregularRecords(records, dssFilePath):
     try:
         dssFile = hec.heclib.dss.HecDss.open(dssFilePath)
         for record in records:
-            tsc = _timeSeriesContainer(record)
-            dssFile.put(tsc)
+            dssFile.put(_timeSeriesContainer(record))
     finally:
         dssFile.close()
 
