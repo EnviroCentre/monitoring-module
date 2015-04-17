@@ -25,7 +25,7 @@ def exportImages(config, dssFilePath):
         dataPaths = [
             "/%s/%s/%s//%s/%s/" % (config['site'].upper(), 
                                    location.upper(), 
-                                   param['name'], 
+                                   param['name'].upper(), 
                                    config['interval'].upper(), 
                                    config['version'].upper())
             for location in config['locations']
