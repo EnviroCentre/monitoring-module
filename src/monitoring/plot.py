@@ -1,3 +1,6 @@
+from hec.heclib.dss import HecDss
+from hec.heclib.util import HecTime
+from hec.script import Plot
 import os
 from os import path
 
@@ -19,9 +22,14 @@ def exportImages(config, dssFilePath):
 
     for param in config['params']:
         thePlot = Plot.newPlot()
-        dataPaths = ["/%s/%s/%s//%s/%s/" % (config['site'].upper(), location.upper(), 
-                     param['name'], config['interval'].upper(), config['version'].upper())
-                     for location in config['locations']]
+        dataPaths = [
+            "/%s/%s/%s//%s/%s/" % (config['site'].upper(), 
+                                   location.upper(), 
+                                   param['name'], 
+                                   config['interval'].upper(), 
+                                   config['version'].upper())
+            for location in config['locations']
+        ]
         units = []
         for dataPath in dataPaths:
             timeseries = dssFile.get(dataPath, 1)
