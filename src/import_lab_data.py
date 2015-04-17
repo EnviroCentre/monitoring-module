@@ -3,7 +3,17 @@
 # displaytouser=true
 # displayinselector=true
 
-from hec.dssgui import ListSelection
-from hec.heclib.dss import *
-from hec.heclib.util import HecTime
-from hec.script import *
+from monitoring import importdata
+import toolbox
+
+CONFIG_FILE = 'lab_import.yml'
+
+class ImportTool(toolbox.Tool):
+    requiredParams = ['folder', 'files', 'site', 'version', 'mapping', 'params']
+    
+    def run(self):
+        importdata.locationsDown(self.config, self.dssFilePath)
+
+
+tool = ImportTool(CONFIG_FILE)
+tool.run()
