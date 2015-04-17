@@ -1,2 +1,2 @@
-def createAndExport(config, dssFile):
+def exportImages(config, dssFilePath):
     pass
