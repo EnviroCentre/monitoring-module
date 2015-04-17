@@ -2,7 +2,7 @@ $appdataFolder = "$env:APPDATA\HEC\HEC-DSSVue"
 
 Copy-Item .\src\*.py -destination "$appdataFolder\scripts"
 
-$packages = "monitoring", "yaml"
+$packages = "monitoring", "yaml", "toolbox"
 
 ForEach ($package in $packages) {
     New-Item -type directory -force "$appdataFolder\lib\$package"
