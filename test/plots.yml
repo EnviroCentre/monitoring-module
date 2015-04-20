@@ -14,27 +14,20 @@ period:
   end:   31MAR2015 00:00
 
 params:
- -
-   name: DO
-   scale: log
- -
-   name: DO%
-   scale: log
- -
-   name: EC
-   scale: log
- -
-   name: PH
-   scale: lin
- -
-   name: TEMP
-   scale: lin
- -
-   name: TURB
-   scale: log
- -
-   name: ORP
-   scale: lin
+  DO:
+    scale: log
+  DO%:
+    scale: log
+  EC:
+    scale: log
+  PH:
+    scale: lin
+  TEMP:
+    scale: lin
+  TURB:
+    scale: log
+  ORP:
+    scale: lin
 
 width: 1200
 height: 800

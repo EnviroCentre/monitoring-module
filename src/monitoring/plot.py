@@ -20,12 +20,12 @@ def exportImages(config, dssFilePath):
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
 
-    for param in config['params']:
+    for param, paramConfig in config['params'].iteritems():
         thePlot = Plot.newPlot()
         dataPaths = [
             "/%s/%s/%s//%s/%s/" % (config['site'].upper(), 
                                    location.upper(), 
-                                   param['name'].upper(), 
+                                   param.upper(), 
                                    config['interval'].upper(), 
                                    config['version'].upper())
             for location in config['locations']
@@ -41,7 +41,7 @@ def exportImages(config, dssFilePath):
                     units.append(timeseries.units)
 
         thePlot.showPlot()
-        thePlot.setPlotTitleText(param['name'])
+        thePlot.setPlotTitleText(param)
         thePlot.setPlotTitleVisible(1)
         thePlot.setSize(int(config['width']), int(config['height']))
 
@@ -64,11 +64,12 @@ def exportImages(config, dssFilePath):
 
             viewport.setMinorGridXVisible(1)
             viewport.setMinorGridYVisible(1)
+            
+            if paramConfig:
+                if paramConfig['scale'].lower() == 'log':
+                    viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
 
-            if param['scale'].lower() == 'log':
-                viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
-
-        thePlot.saveToPng(os.path.join(outputFolder, config['version'] + "_" + param['name']))
+        thePlot.saveToPng(os.path.join(outputFolder, config['version'] + "_" + param))
         thePlot.close()
 
     dssFile.done()
