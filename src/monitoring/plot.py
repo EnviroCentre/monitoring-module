@@ -6,15 +6,7 @@ from os import path
 
 def exportImages(config, dssFilePath):
     
-    if path.isabs(config['output_folder']):
-        outputFolder = config['output_folder']
-        # assume folder exists if absolute path
-    else:
-        outputFolder = path.join(path.dirname(dssFilePath), config['output_folder'])
-        if not path.isdir(outputFolder):
-            # create relative folder if required
-            os.mkdir(outputFolder)
-    
+    outputFolder = _relativeFolder(config['output_folder'], rootFilePath=dssFilePath)
     dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])
@@ -73,3 +65,14 @@ def exportImages(config, dssFilePath):
         thePlot.close()
 
     dssFile.done()
+
+def _relativeFolder(folder, rootFilePath, createFolder='ifrelative'):
+    if path.isabs(folder):
+        absPath = folder
+        if not path.isdir(absPath) and createFolder.lower() in ['allways', 'ifabsolute']:
+            os.mkdir(absPath)
+    else:
+        absPath = path.join(path.dirname(rootFilePath), folder)
+        if not path.isdir(absPath) and createFolder.lower() in ['allways', 'ifrelative']:
+            os.mkdir(absPath)
+    return absPath
