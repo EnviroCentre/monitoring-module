@@ -10,7 +10,7 @@ CONFIG_FILE = 'plots.yml'
 
 class PlotTool(toolbox.Tool):
     requiredParams = ['site', 'locations', 'interval', 'version', 'period', 
-        'params', 'width', 'height', 'colours', 'output_folder']
+        'params', 'width', 'height', 'line', 'output_folder']
     
     def run(self):
         plot.exportImages(self.config, self.dssFilePath)

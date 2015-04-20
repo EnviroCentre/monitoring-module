@@ -45,8 +45,9 @@ def exportImages(config, dssFilePath):
                 label.setText(timeseries.location)
 
                 curve = thePlot.getCurve(dataPath)
-                colourIndex = dataIndex % len(config['colours'])
-                curve.setLineColor("%s, %s, %s" % tuple(config['colours'][colourIndex]))
+                colourIndex = dataIndex % len(config['line']['colours'])
+                curve.setLineColor("%s, %s, %s" % tuple(config['line']['colours'][colourIndex]))
+                curve.setLineWidth(config['line']['width'])
 
         for vp_index in range(len(units)):  # We have one viewport per distinct unit
             viewport = thePlot.getViewport(vp_index)
