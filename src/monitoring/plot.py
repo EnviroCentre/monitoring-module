@@ -2,11 +2,11 @@ from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.script import Plot
 import os
-from os import path
+from toolbox.util import relativeFolder
 
 def exportImages(config, dssFilePath):
     
-    outputFolder = _relativeFolder(config['output_folder'], rootFilePath=dssFilePath)
+    outputFolder = relativeFolder(config['output_folder'], dssFilePath)
     dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])
@@ -66,13 +66,3 @@ def exportImages(config, dssFilePath):
 
     dssFile.done()
 
-def _relativeFolder(folder, rootFilePath, createFolder='ifrelative'):
-    if path.isabs(folder):
-        absPath = folder
-        if not path.isdir(absPath) and createFolder.lower() in ['allways', 'ifabsolute']:
-            os.mkdir(absPath)
-    else:
-        absPath = path.join(path.dirname(rootFilePath), folder)
-        if not path.isdir(absPath) and createFolder.lower() in ['allways', 'ifrelative']:
-            os.mkdir(absPath)
-    return absPath
