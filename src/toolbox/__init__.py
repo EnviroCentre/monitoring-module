@@ -52,7 +52,6 @@ class Tool(object):
     def _displayConfigErrors(self, errors):
         message = "The configuration file %s is not valid.\nPlease check the content and try again." % self.configFilePath
         message += "\n"
-        print "•"
         for error in errors:
             message += "\n - %s" % error
         MessageBox.showError(message, "HEC-DSSVue")
