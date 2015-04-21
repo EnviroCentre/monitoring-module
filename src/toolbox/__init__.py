@@ -18,8 +18,12 @@ class Tool(object):
     def __init__(self, configFileName, dssFilePath=None):
         """
         A tool is defined by providing a `yaml` configuration file :arg:`congifFileName` and a HEC-DSS database
-        :arg:`dssFilePath` to operate on.
+        :arg:`dssFilePath` to operate on. If :arg:`dssFilePath` is not set, the active DSS-file in the HEC-DSSVue window
+        will be used.
+        
+        The attribute :attr:`.config` will be set containing the parsed yaml config file.
         """
+        
         if dssFilePath:
             self.dssFilePath = dssFilePath
         else:
@@ -38,6 +42,10 @@ class Tool(object):
             self._configIsValid()
         
     def _toolIsValid(self):
+        """
+        Check if the tool is configured correctly with a valid config file and HEC-DSS database.
+        """
+        
         # Check if HEC-DSS db exists
         if not path.isfile(self.dssFilePath):
             error = ValidationError("Please open a HEC-DSS database first.")
@@ -53,6 +61,13 @@ class Tool(object):
         return 1
     
     def _configIsValid(self):
+        """
+        Validate config file content.
+        
+        Currently checks for existence of required top-level config parameters/keys only as specified in 
+        :attr:`.requiredParams`.
+        """
+        
         errors = [ValidationError("The parameter '%s' does not exist." % param) 
             for param in self.requiredParams if not param in self.config]
 
@@ -63,6 +78,10 @@ class Tool(object):
             return 1
     
     def _displayConfigErrors(self, errors):
+        """
+        Display configuration errors in the HEC-DSSVue window.
+        """
+        
         message = "The configuration file %s is not valid.\nPlease check the content and try again." % self.configFilePath
         message += "\n"
         for error in errors:
@@ -70,13 +89,33 @@ class Tool(object):
         MessageBox.showError(message, "HEC-DSSVue")
 
     def run(self):
+        """
+        Main tool execution method.
+        
+        This method should be called after instantiating the tool to run it. The method executes :meth:`.main` followed
+        by :meth:`postRun`.
+        """
+        
         self.main()
         self.postRun()
         
     def main(self):
+        """
+        Run core tool tasks.
+        
+        Must be implemented in sub-class.
+        """
+        
         raise NotImplementedError()
     
     def postRun(self):
+        """
+        Run additional tasks at the end of the core run.
+        
+        By default this method refreshes the HEC-DSSVue catalogue (if :attr:`.refreshCatalogue` is true) and displays
+        any string in :attr:`.message`.
+        """
+        
         if self.refreshCatalogue:
             ListSelection.getMainWindow().updateCatalog()
     
