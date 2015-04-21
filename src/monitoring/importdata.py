@@ -32,19 +32,19 @@ def locationsAcross(config, dssFilePath):
 
             # Then actual data
             while 1:
-                if len(cells[config['columns']['location']]) > 0:
+                if len(cells[config['columns']['location']-1]) > 0:
                     for param, paramConfig in config['params'].iteritems():
                         try:
-                            value = float(cells[paramConfig['column']])
+                            value = float(cells[paramConfig['column']-1])
 
-                            date_parts = cells[config['columns']['date']].split("/")
+                            date_parts = cells[config['columns']['date']-1].split("/")
                             date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
                             sample_date = HecTime()
                             sample_date.set(date_str, "12:00:00")
                             record = {
                                 'sampledate': sample_date,
                                 'site': config['site'],
-                                'location': cells[config['columns']['location']],
+                                'location': cells[config['columns']['location']-1],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
