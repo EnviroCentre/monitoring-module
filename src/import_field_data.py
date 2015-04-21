@@ -8,11 +8,14 @@ import toolbox
 
 CONFIG_FILE = 'field_import.yml'
 
+
 class ImportTool(toolbox.Tool):
     requiredParams = ['folder', 'files', 'site', 'version', 'params']
+    refreshCatalogue = 1
     
-    def run(self):
-        importdata.locationsAcross(self.config, self.dssFilePath)
+    def main(self):
+        imported = importdata.locationsAcross(self.config, self.dssFilePath)
+        self.message = "%s Records imported." % imported
 
 
 tool = ImportTool(CONFIG_FILE)

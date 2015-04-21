@@ -65,7 +65,7 @@ def locationsAcross(config, dssFilePath):
         finally:
             f.close()
 
-    saved = _saveIrregularRecords(records, dssFilePath)
+    return _saveIrregularRecords(records, dssFilePath)
     
 
 def locationsDown(config, dssFilePath):

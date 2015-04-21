@@ -6,14 +6,29 @@ from toolbox.util import ValidationError
 import yaml
 
 class Tool(object):
+    """
+    A tool for undertaking tasks in HEC-DSSVue.
+    """
+    
+    #: List of parameters/keys required in the config file.
     requiredParams = []
+    #: Whether to refresh the HEC-DSSVue catalogue after completing the task.
+    refreshCatalogue = 0
     
     def __init__(self, configFileName, dssFilePath=None):
+        """
+        A tool is defined by providing a `yaml` configuration file :arg:`congifFileName` and a HEC-DSS database
+        :arg:`dssFilePath` to operate on.
+        """
         if dssFilePath:
             self.dssFilePath = dssFilePath
         else:
             self.dssFilePath = ListSelection.getMainWindow().getDSSFilename()
-            
+        
+        #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
+        #: :meth:`main`.
+        self.message = ""
+        
         self.configFilePath = path.join(path.dirname(self.dssFilePath), configFileName)
         
         if self._toolIsValid():
@@ -55,5 +70,15 @@ class Tool(object):
         MessageBox.showError(message, "HEC-DSSVue")
 
     def run(self):
+        self.main()
+        self.postRun()
+        
+    def main(self):
         raise NotImplementedError()
     
+    def postRun(self):
+        if self.refreshCatalogue:
+            ListSelection.getMainWindow().updateCatalog()
+    
+        if self.message:
+            MessageBox.showInformation(self.message, "HEC-DSSVue")
