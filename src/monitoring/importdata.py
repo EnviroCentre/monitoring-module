@@ -14,7 +14,11 @@ def locationsAcross(config, dssFilePath):
 
         header_cells = []
         try:
-            f = open(importFile)
+            try:
+                f = open(importFile)
+            except IOError:
+                raise
+            
             # Find the header row first
             while 1:
                 cells = f.readline().split(',')
@@ -39,7 +43,7 @@ def locationsAcross(config, dssFilePath):
                             date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
                             sample_date = HecTime()
                             sample_date.set(date_str, "12:00:00")
-                            row = {
+                            record = {
                                 'sampledate': sample_date,
                                 'site': config['site'],
                                 'location': cells[location_column],
@@ -48,11 +52,11 @@ def locationsAcross(config, dssFilePath):
                                 'samplevalue': value, 
                                 'units': paramConfig['unit']
                             }
-                            records.append(row)
+                            records.append(record)
                         
                         except ValueError:
+                            # Simply ignore empty cells or non-numeric values
                             pass
-
 
                 cells = f.readline().split(',')
                 if len(cells[0]) == 0:
@@ -61,7 +65,8 @@ def locationsAcross(config, dssFilePath):
         finally:
             f.close()
 
-    _saveIrregularRecords(records, dssFilePath)
+    saved = _saveIrregularRecords(records, dssFilePath)
+    
 
 def locationsDown(config, dssFilePath):
     records = []
@@ -69,12 +74,15 @@ def locationsDown(config, dssFilePath):
     _saveIrregularRecords(records, dssFilePath)
 
 def _saveIrregularRecords(records, dssFilePath):
+    saved = 0
     try:
         dssFile = hec.heclib.dss.HecDss.open(dssFilePath)
         for record in records:
             dssFile.put(_timeSeriesContainer(record))
+            saved += 1
     finally:
         dssFile.close()
+    return saved
 
 def _timeSeriesContainer(record):
     """
