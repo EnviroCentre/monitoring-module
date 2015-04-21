@@ -4,8 +4,6 @@ import hec.io
 import os.path
 
 def locationsAcross(config, dssFilePath):
-    params = config['params']
-    location_column = 20
 
     records = []
 
@@ -34,19 +32,19 @@ def locationsAcross(config, dssFilePath):
 
             # Then actual data
             while 1:
-                if len(cells[location_column]) > 0:
-                    for param, paramConfig in params.iteritems():
+                if len(cells[config['columns']['location']]) > 0:
+                    for param, paramConfig in config['params'].iteritems():
                         try:
                             value = float(cells[paramConfig['column']])
 
-                            date_parts = cells[0].split("/")
+                            date_parts = cells[config['columns']['date']].split("/")
                             date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
                             sample_date = HecTime()
                             sample_date.set(date_str, "12:00:00")
                             record = {
                                 'sampledate': sample_date,
                                 'site': config['site'],
-                                'location': cells[location_column],
+                                'location': cells[config['columns']['location']],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 

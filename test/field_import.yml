@@ -5,6 +5,10 @@ files:
 site: Glenchamber
 version: RAW
 
+columns:
+  date: 0
+  location: 20
+
 params:
   TEMP:
     column: 2
