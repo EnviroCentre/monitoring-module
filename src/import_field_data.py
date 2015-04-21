@@ -9,7 +9,7 @@ import toolbox
 CONFIG_FILE = 'field_import.yml'
 
 class ImportTool(toolbox.Tool):
-    requiredParams = ['folder', 'files', 'site', 'version']
+    requiredParams = ['folder', 'files', 'site', 'version', 'params']
     
     def run(self):
         importdata.locationsAcross(self.config, self.dssFilePath)

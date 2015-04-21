@@ -1,9 +1,66 @@
-import hec.heclib 
+import hec.heclib
+from hec.heclib.util import HecTime
 import hec.io
+import os.path
 
 def locationsAcross(config, dssFilePath):
+    params = config['params']
+    location_column = 20
+
     records = []
-    
+
+    for fileName in config['files']:
+        importFile = os.path.join(config['folder'], fileName)
+
+        header_cells = []
+        try:
+            f = open(importFile)
+            # Find the header row first
+            while 1:
+                cells = f.readline().split(',')
+                if cells[0].lower() == 'date':
+                    header_cells = cells
+                    break
+
+            # Potentially blank rows below the header line
+            while 1:
+                cells = f.readline().split(',')
+                if len(cells[0]) > 0:
+                    break
+
+            # Then actual data
+            while 1:
+                if len(cells[location_column]) > 0:
+                    for param, paramConfig in params.iteritems():
+                        try:
+                            value = float(cells[paramConfig['column']])
+
+                            date_parts = cells[0].split("/")
+                            date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
+                            sample_date = HecTime()
+                            sample_date.set(date_str, "12:00:00")
+                            row = {
+                                'sampledate': sample_date,
+                                'site': config['site'],
+                                'location': cells[location_column],
+                                'parameter': param,
+                                'version': config['version'],
+                                'samplevalue': value, 
+                                'units': paramConfig['unit']
+                            }
+                            records.append(row)
+                        
+                        except ValueError:
+                            pass
+
+
+                cells = f.readline().split(',')
+                if len(cells[0]) == 0:
+                    break
+
+        finally:
+            f.close()
+
     _saveIrregularRecords(records, dssFilePath)
 
 def locationsDown(config, dssFilePath):
@@ -39,7 +96,7 @@ def _timeSeriesContainer(record):
     tsc.fullName = "/%s/%s/%s//IR-YEAR/%s/" % (tsc.watershed, tsc.location, tsc.parameter, tsc.version)
     tsc.interval = -1  # irregular
     tsc.values = [record['samplevalue']]
-    tsc.times = [record['sampledate']]
+    tsc.times = [record['sampledate'].value()]
     tsc.startTime = tsc.times[0]
     tsc.endTime = tsc.times[-1]
     tsc.numberValues = 1

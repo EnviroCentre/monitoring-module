@@ -1,8 +1,24 @@
-folder: k:\164886j\Data + Info\Field\Data - field samples\
+folder: C:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\Import
 files:
- - All 2015-01-28.csv
- - All 2015-02-10.csv
- - All 2015-03-25.csv
+ - HI handheld.csv
 
 site: Glenchamber
-version: FIELD
+version: RAW
+
+params:
+  TEMP:
+    column: 2
+    unit: degC
+  PH:
+    column: 3
+    unit: "-"
+  DO%:
+    column: 6
+    unit: %
+  DO:
+    column: 7
+    unit: mg/l
+  EC:
+    column: 8
+    unit: µS/cm
+  
