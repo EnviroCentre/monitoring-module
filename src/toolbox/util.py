@@ -48,8 +48,12 @@ class ValidationError(Exception):
             self.message = message
             self.error_list = [self]
             
+    def __getitem__(self, index):
+        return self.error_list[index]
+            
     def __str__(self):
-        message = ""
-        for error in self.error_list:
-            message += "ValidationError(%s)\n" % error.message
-        return message
+        return repr(list(self))
+
+    def __repr__(self):
+        return "ValidationError(%r)" % self.message
+    
