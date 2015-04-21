@@ -14,7 +14,6 @@ class ImportTool(toolbox.Tool):
     refreshCatalogue = 1
     
     def main(self):
-        print self.config['columns']
         imported = importdata.locationsAcross(self.config, self.dssFilePath)
         self.message = "%s Records imported." % imported
 
