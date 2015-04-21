@@ -17,9 +17,9 @@ class Tool(object):
     
     def __init__(self, configFileName, dssFilePath=None):
         """
-        A tool is defined by providing a `yaml` configuration file :arg:`congifFileName` and a HEC-DSS database
-        :arg:`dssFilePath` to operate on. If :arg:`dssFilePath` is not set, the active DSS-file in the HEC-DSSVue window
-        will be used.
+        A tool is defined by providing a `yaml` configuration file ``configFileName`` and a HEC-DSS database
+        ``dssFilePath`` to operate on. If ``dssFilePath`` is not set, the active DSS-file in the HEC-DSSVue
+        window will be used.
         
         The attribute :attr:`.config` will be set containing the parsed yaml config file.
         """

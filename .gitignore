@@ -1,3 +1,5 @@
 nbproject/private/
 *$py.class
 dist/
+build/
+*.pyc
