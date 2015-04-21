@@ -1,16 +1,5 @@
-from mock import Mock as MagicMock
 import os
 import sys
-
-# Mock packages that cannot be installed on readthedocs.org.
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-        return Mock()
-
-MOCK_MODULES = ['hec', 'hec.dssgui', 'hec.heclib', 'hec.heclib.util', 'hec.io', 'hec.script']
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -31,6 +20,7 @@ extensions = [
     'sphinx.ext.doctest',
 ]
 
+autodoc_mock_imports = ['hec', 'hec.dssgui', 'hec.heclib', 'hec.heclib.util', 'hec.io', 'hec.script']
 autodoc_member_order = 'bysource'
 autoclass_content = 'both'
 
@@ -103,7 +93,12 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+import sphinx_rtd_theme
+
+html_theme = "sphinx_rtd_theme"
+
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+#html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
