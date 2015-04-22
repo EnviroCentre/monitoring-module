@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 HEC-DSS Monitoring Module
 =========================
 
@@ -15,6 +13,7 @@ Developer guide
    :maxdepth: 2
    :numbered:
 
+   dev_intro
    reference
 
 
