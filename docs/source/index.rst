@@ -6,6 +6,8 @@ A set of HEC-DSSVue scripts for managing environmental monitoring data.
 User manual
 -----------
 
+TODO
+
 Developer guide
 ---------------
 
@@ -15,12 +17,3 @@ Developer guide
 
    dev_intro
    reference
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
