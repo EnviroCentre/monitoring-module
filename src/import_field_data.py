@@ -14,7 +14,8 @@ class ImportTool(toolbox.Tool):
     refreshCatalogue = 1
     
     def main(self):
-        imported = importdata.locationsAcross(self.config, self.dssFilePath)
+        records = importdata.locationsAcross(self.config)
+        imported = importdata.saveIrregularRecords(records, self.dssFilePath)
         self.message = "%s Records imported." % imported
 
 

@@ -12,7 +12,9 @@ class ImportTool(toolbox.Tool):
     requiredParams = ['folder', 'files', 'site', 'version', 'mapping', 'params']
     
     def run(self):
-        importdata.locationsDown(self.config, self.dssFilePath)
+        records = importdata.locationsDown(self.config)
+        imported = importdata.saveIrregularRecords(records, self.dssFilePath)
+        self.message = "%s Records imported." % imported
 
 
 tool = ImportTool(CONFIG_FILE)

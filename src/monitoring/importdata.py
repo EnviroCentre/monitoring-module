@@ -3,7 +3,8 @@ from hec.heclib.util import HecTime
 import hec.io
 import os.path
 
-def locationsAcross(config, dssFilePath):
+
+def locationsAcross(config):
 
     records = []
 
@@ -62,16 +63,17 @@ def locationsAcross(config, dssFilePath):
 
         finally:
             f.close()
-
-    return _saveIrregularRecords(records, dssFilePath)
+        
+    return records
     
 
-def locationsDown(config, dssFilePath):
+def locationsDown(config):
     records = []
     
-    _saveIrregularRecords(records, dssFilePath)
+    return records
 
-def _saveIrregularRecords(records, dssFilePath):
+
+def saveIrregularRecords(records, dssFilePath):
     saved = 0
     try:
         dssFile = hec.heclib.dss.HecDss.open(dssFilePath)
@@ -81,6 +83,7 @@ def _saveIrregularRecords(records, dssFilePath):
     finally:
         dssFile.close()
     return saved
+
 
 def _timeSeriesContainer(record):
     """
