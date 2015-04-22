@@ -5,6 +5,7 @@
 
 from monitoring import importdata
 import toolbox
+import toolbox.util
 
 CONFIG_FILE = 'field_import.yml'
 
@@ -15,7 +16,7 @@ class ImportTool(toolbox.Tool):
     
     def main(self):
         records = importdata.locationsAcross(self.config)
-        imported = importdata.saveIrregularRecords(records, self.dssFilePath)
+        imported = toolbox.util.saveIrregularRecords(records, self.dssFilePath)
         self.message = "%s Records imported." % imported
 
 
