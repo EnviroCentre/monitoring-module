@@ -19,8 +19,8 @@ The following workflow is assumed:
 
  3. The tool is run using the :meth:`toolbox.Tool.run` method.
 
-Example
--------
+Example toolbox
+---------------
 
 Example of a HEC-DSS script using the :class:`toolbox.Tool`:
 
