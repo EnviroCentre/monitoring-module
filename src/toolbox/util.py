@@ -1,11 +1,14 @@
+# -*- coding: utf-8 -*-
+
 import os
 from os import path
 
+
 def relativeFolder(folder, dssFilePath, createFolder='ifrelative'):
     """
-    Return an absolute path to :arg:`folder` relative to :arg:`dssFilePath`.
+    Return an absolute path to ``folder`` relative to ``dssFilePath``.
     
-    If the path :arg:`folder` is already absolute, it will simply return the path. :arg:`createFolder` is one of
+    If the path ``folder`` is already absolute, it will simply return the path. ``createFolder`` is one of
     'ifrelative', 'ifabsolute' or 'allways'.
     """
     if path.isabs(folder):
@@ -23,15 +26,16 @@ class ValidationError(Exception):
     """
     An error while validating data.
     
-    Based django.core.exceptions.ValidationError
-    Copyright (c) Django Software Foundation and individual contributors. All rights reserved.
+    Based on :class:`django.core.exceptions.ValidationError`. Copyright © Django Software Foundation and individual 
+    contributors. All rights reserved.
     """
     
     def __init__(self, message):
         """
-        The :arg:`message` argument can be a single error, a list of errors. What we define as an "error" can be either 
+        The ``message`` argument can be a single error, a list of errors. What we define as an "error" can be either 
         a simple string or an instance of ValidationError with its message attribute set, and what we define as
-        list can be an actual `list` or an instance of ValidationError with its `error_list` attribute set.
+        list can be an actual `list` or an instance of :class:`ValidationError` with its :attr:`.error_list`` attribute
+        set.
         """
 
         if isinstance(message, ValidationError):

@@ -7,7 +7,6 @@ needs_sphinx = '1.3'
 
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
 ]
 
 autodoc_mock_imports = ['hec', 'hec.dssgui', 'hec.heclib', 'hec.heclib.util', 'hec.io', 'hec.script']
@@ -25,10 +24,12 @@ pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
 
-import sphinx_rtd_theme
-html_theme = "sphinx_rtd_theme"
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-#html_theme = 'classic'
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if not on_rtd:  # only import and set the theme if we're building docs locally
+    import sphinx_rtd_theme
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
 html_static_path = ['_static']
 html_last_updated_fmt = '%d/%m/%Y'
 html_show_sourcelink = False
