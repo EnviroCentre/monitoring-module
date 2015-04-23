@@ -1,4 +1,5 @@
-HEC-DSS Monitoring Module
-=========================
+Monitoring Module for HEC-DSSVue
+================================
 
-A set of HEC-DSSVue scripts for managing environmental monitoring data.
+A set of scripts for managing environmental monitoring data within the 
+HEC-DSSVue software.

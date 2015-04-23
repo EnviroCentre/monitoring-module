@@ -9,14 +9,20 @@ extensions = [
     'sphinx.ext.autodoc',
 ]
 
-autodoc_mock_imports = ['hec', 'hec.dssgui', 'hec.heclib', 'hec.heclib.util', 'hec.io', 'hec.script']
+autodoc_mock_imports = [
+    'hec', 
+    'hec.dssgui', 
+    'hec.heclib', 'hec.heclib.util', 
+    'hec.io', 
+    'hec.script'
+]
 autodoc_member_order = 'bysource'
 autoclass_content = 'both'
 
 source_suffix = '.rst'
 master_doc = 'index'
 
-project = 'HEC-DSS Monitoring Module'
+project = 'Monitoring Module for HEC-DSSVue'
 copyright = '2015, EnviroCentre'
 version = '0.1'
 release = '0.1.0'

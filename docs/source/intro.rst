@@ -1,15 +1,15 @@
 Introduction
 ============
 
-The HEC-DSS Monitoring Module is a set of HEC-DSSVue scripts for managing 
+The `Monitoring Module` is a set of HEC-DSSVue scripts for managing 
 environmental monitoring data. The following scripts are included:
 
  1. Importing water quality data measured using a hand-held device.
  2. Importing laboratory water quality analytical results.
  3. Creating timeseries plots of water quality data.
 
-HEC-DSS stores data using A- to F-parts. The HEC-DSS Monitoring Module uses
-these as follows:
+HEC-DSS stores data using A- to F-parts. The `Monitoring Module` uses these as 
+follows:
 
  - A-part: Site name
  - B-part: Monitoring point within the site
@@ -24,5 +24,5 @@ required) be saved as `obs`.
 
 .. note::
 
-   In HEC-DSS, all parts are stored in uppercase letters, e.g. "pH" is saved as
-   "PH" etc. This cannot be changed.
+   In HEC-DSS, all parts are stored in uppercase letters, e.g. `pH` is saved as
+   `PH` etc. This cannot be changed.
