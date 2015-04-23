@@ -1,0 +1,60 @@
+folder: C:\Path\To\Folder
+files:
+ - File 1.csv
+ - File 2.csv
+
+site: Site name
+version: RAW
+
+mapping:
+  pH: PH
+  Suspended Solids At 105C: SS
+  Colour: COLOUR
+  Biochemical Oxygen Demand Low Level: BOD
+  Biochemical Oxygen Demand: BOD
+  Chemical Oxygen Demand: COD
+  Chloride: CHLORIDE
+  Nitrate: NITRATE
+  Sulphate: SULPHATE
+  Calcium: CALCIUM
+  Sodium: SODIUM
+  Aluminium (Dissolved): ALUMINIUM
+  Manganese (Dissolved): MANGANESE
+  Zinc (Dissolved): ZINC
+  Iron (Dissolved): IRON
+  Dissolved Organic Carbon: DOC
+  Total Petroleum Hydrocarbons: TPH
+
+params:
+  PH:
+    unit: "-"
+  SS:
+    unit: mg/l
+  COLOUR:
+    unit: Pt/Co
+  BOD:
+    unit: mg/l
+  COD:
+    unit: mg/l
+  DOC:
+    unit: mg/l
+  CHLORIDE:
+    unit: mg/l
+  NITRATE:
+    unit: mg/l
+  SULPHATE:
+    unit: mg/l
+  CALCIUM:
+    unit: mg/l
+  SODIUM:
+    unit: mg/l
+  ALUMINIUM:
+    unit: μg/l
+  MANGANESE:
+    unit: μg/l
+  ZINC:
+    unit: μg/l
+  IRON:
+    unit: μg/l
+  TPH:
+    unit: μg/l

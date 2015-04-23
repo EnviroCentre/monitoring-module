@@ -1,0 +1,29 @@
+folder: C:\Path\To\Folder
+files:
+ - File 1.csv
+ - File 2.csv
+
+site: Site name
+version: RAW
+
+columns:
+  date: 1
+  location: 21
+
+params:
+  TEMP:
+    column: 3
+    unit: degC
+  PH:
+    column: 4
+    unit: "-"
+  DO%:
+    column: 7
+    unit: %
+  DO:
+    column: 8
+    unit: mg/l
+  EC:
+    column: 9
+    unit: µS/cm
+  

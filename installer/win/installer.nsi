@@ -1,6 +1,6 @@
 !include MUI2.nsh
 
-!define APP_NAME "HEC-DSS Monitoring Module"
+!define APP_NAME "Monitoring Module for HEC-DSSVue"
 !define VERSION "0.1.0" ; should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
 
 !define ORG_NAME "EnviroCentre"
@@ -8,7 +8,7 @@
 
 ; Interface settings
 !define MUI_WELCOMEPAGE_TITLE "${APP_NAME} ${VERSION} setup"
-!define MUI_WELCOMEPAGE_TEXT "A set of HEC-DSSVue scripts for managing environmental monitoring data.$\r$\n$\r$\nPlease close HEC-DSSVue before continuing."
+!define MUI_WELCOMEPAGE_TEXT "A set of scripts for managing environmental monitoring data within the HEC-DSSVue software.$\r$\n$\r$\nPlease close HEC-DSSVue before continuing."
 !define MUI_COMPONENTSPAGE_NODESC
 
 !define MUI_FINISHPAGE_LINK "${ORG_NAME} website"
@@ -43,4 +43,9 @@ Section "Configure HEC-DSSVue"
 
     SetOutPath $PROFILE
     File ".jython"
+SectionEnd
+
+Section "Example tool configuration files"
+    SetOutPath "$DOCUMENTS\Monitoring Module"
+    File "..\..\src\*.yml"
 SectionEnd
