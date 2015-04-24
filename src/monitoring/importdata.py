@@ -1,4 +1,5 @@
 from hec.heclib.util import HecTime
+import toolbox.util
 import os.path
 
 
@@ -32,8 +33,8 @@ def locationsAcross(config):
             while 1:
                 if len(cells[config['columns']['location']-1]) > 0:
                     for param, paramConfig in config['params'].iteritems():
-                        try:
-                            value = float(cells[paramConfig['column']-1])
+                        value = toolbox.util.parseMeasurement(cells[paramConfig['column']-1])
+                        if value:
                             date_parts = cells[config['columns']['date']-1].split("/")
                             date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
                             try:
@@ -53,10 +54,6 @@ def locationsAcross(config):
                             }
                             records.append(record)
                         
-                        except ValueError:
-                            # Simply ignore empty cells or non-numeric values
-                            pass
-
                 cells = f.readline().split(',')
                 if len(cells[0]) == 0:
                     break

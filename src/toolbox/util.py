@@ -103,3 +103,19 @@ def _timeSeriesContainer(record):
     tsc.type = "INST-VAL"
     
     return tsc
+
+
+def parseMeasurement(valueStr):
+    """
+    Parse a measurement value string.
+    
+    If ``valueStr`` starts with ``<`` (i.e. below limit of detection), the 
+    returned value is 50% of the value after the ``<``.
+    """
+    try:
+        return float(valueStr)
+    except ValueError:
+        if valueStr.strip().startswith('<'):
+            return float(valueStr.strip(' <')) * 0.5
+        else:
+            return None

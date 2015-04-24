@@ -21,3 +21,5 @@ API Reference
 
 .. autoclass:: toolbox.util.ValidationError
    :members:
+
+.. autofunction:: toolbox.util.parseMeasurement
