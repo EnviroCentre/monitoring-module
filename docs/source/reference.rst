@@ -23,3 +23,5 @@ API Reference
    :members:
 
 .. autofunction:: toolbox.util.parseMeasurement
+
+.. autofunction:: toolbox.util.parseDateAndTime
