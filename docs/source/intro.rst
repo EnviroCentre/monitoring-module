@@ -4,8 +4,9 @@ Introduction
 The `Monitoring Module` is a set of HEC-DSSVue scripts for managing 
 environmental monitoring data. The following scripts are included:
 
- 1. Importing water quality data measured using a hand-held device.
- 2. Importing laboratory water quality analytical results.
+ 1. Importing water quality data measured using a hand-held meter (see 
+    :doc:`import_field_data`).
+ 2. Importing laboratory water quality analytical results ("lab data").
  3. Creating timeseries plots of water quality data.
 
 HEC-DSS stores data using A- to F-parts. The `Monitoring Module` uses these as 

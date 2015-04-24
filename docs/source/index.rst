@@ -12,6 +12,7 @@ User manual
    :numbered:
 
    intro
+   import_field_data
 
 Developer guide
 ---------------
