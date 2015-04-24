@@ -108,7 +108,7 @@ def _timeSeriesContainer(record):
 
 def parseMeasurement(valueStr):
     """
-    Parse a measurement value string.
+    Return numeric value of measurement string.
     
     If ``valueStr`` starts with ``<`` (i.e. below limit of detection), the 
     returned value is 50% of the value after the ``<``.
@@ -121,11 +121,14 @@ def parseMeasurement(valueStr):
         else:
             return None
 
-def parseDateAndTime(dateStr, timeStr, dateFormat='%Y/%m/%d'):
+def parseDateAndTime(dateStr, timeStr, dateFmt='yyyy/mm/dd'):
+    """
+    Return HecTime from date and time strings.
+    """
     dateTime = HecTime()
     
     dateStr = dateStr.strip()
-    if dateFormat == '%Y/%m/%d':  # yyyy/mm/dd
+    if dateFmt == 'yyyy/mm/dd':
         ymd = [dateStr[0:4], dateStr[5:7], dateStr[8:10]]
     else:
         raise NotImplementedError("Date format %r not supported" % dateFormat)
