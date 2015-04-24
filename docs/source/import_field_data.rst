@@ -72,10 +72,22 @@ file with the following content:
         unit: µS/cm
 
 
+.. tip::
+
+   The configuration file is structured according to the `YAML format 
+   <http://yaml.org>`_. Indentation is important to define the configuration 
+   correctly. The example is best copied exactly as provided!
+
+
 The configuration file describes the files to be imported as well as information
 about which `csv`-file columns to be imported. Measured parameter columns can be 
 modified as required by editing the ``params`` section of the configuration 
 file.
+
+Parameter values in the import file starting with `<` are interpreted as being 
+below the meter's limit of detection (LOD). Such measurements are imported as 
+50% of the LOD to allow numeric evaluations and plotting in line with current 
+best practice.
 
 
 .. warning::
@@ -85,12 +97,6 @@ file.
    Any time column cannot be configured in the current version and all times are
    set to 12:00:00 hrs.
 
-
-.. tip::
-
-   The configuration file is structured according to the `YAML format 
-   <http://yaml.org>`_. Indentation is important to define the configuration 
-   correctly. The example is best copied exactly as provided!
 
 Running the import
 ~~~~~~~~~~~~~~~~~~
