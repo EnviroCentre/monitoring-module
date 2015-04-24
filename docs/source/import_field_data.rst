@@ -52,6 +52,7 @@ file with the following content:
 
     columns:
       date: 1
+      time: 2
       location: 21
 
     params:
@@ -94,8 +95,7 @@ best practice.
    
    The date column is assumed to be formatted as ``yyyy/mm/dd``! 
 
-   Any time column cannot be configured in the current version and all times are
-   set to 12:00:00 hrs.
+   If the time column is omitted all times are set to 12:00:00 hrs.
 
 
 Running the import

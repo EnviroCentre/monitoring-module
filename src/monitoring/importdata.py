@@ -36,8 +36,12 @@ def locationsAcross(config):
                             value = float(cells[paramConfig['column']-1])
                             date_parts = cells[config['columns']['date']-1].split("/")
                             date_str = "%s/%s/%s" % (date_parts[1], date_parts[2], date_parts[0])
+                            try:
+                                time_str = cells[int(config['columns']['time'])-1].strip()
+                            except (KeyError, ValueError):
+                                time_str = "12:00:00"
                             sample_date = HecTime()
-                            sample_date.set(date_str, "12:00:00")
+                            sample_date.set(date_str, time_str)
                             record = {
                                 'sampledate': sample_date,
                                 'site': config['site'],
