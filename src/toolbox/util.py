@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 9-*-
 import hec.heclib
+from hec.heclib.util import HecTime
 import hec.io
 import os
 from os import path
@@ -119,3 +120,17 @@ def parseMeasurement(valueStr):
             return float(valueStr.strip(' <')) * 0.5
         else:
             return None
+
+def parseDateAndTime(dateStr, timeStr, dateFormat='%Y/%m/%d'):
+    dateTime = HecTime()
+    
+    dateStr = dateStr.strip()
+    if dateFormat == '%Y/%m/%d':  # yyyy/mm/dd
+        ymd = [dateStr[0:4], dateStr[5:7], dateStr[8:10]]
+    else:
+        raise NotImplementedError("Date format %r not supported" % dateFormat)
+    dateTime.setDate('%s/%s/%s' % (ymd[1], ymd[2], ymd[0]))
+    
+    timeStr = timeStr.strip()
+    dateTime.setTime(timeStr)
+    return dateTime
