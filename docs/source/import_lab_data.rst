@@ -1,5 +1,7 @@
-Importing "field" data
-======================
+Importing lab data
+==================
+
+TODO
 
 The `Monitoring Module` can be used to import water quality data collected in the
 field with a handheld meter. The measured parameters are exported from the meter

@@ -6,8 +6,10 @@ environmental monitoring data. The following scripts are included:
 
  1. Importing water quality data measured using a hand-held meter (see 
     :doc:`import_field_data`).
- 2. Importing laboratory water quality analytical results ("lab data").
- 3. Creating timeseries plots of water quality data.
+ 2. Importing laboratory water quality analytical results (see 
+    :doc:`import_lab_data`).
+ 3. Creating timeseries plots of water quality data (see 
+    :doc:`timeseries_plots`).
 
 HEC-DSS stores data using A- to F-parts. The `Monitoring Module` uses these as 
 follows:
