@@ -1,5 +1,4 @@
 import codecs
-from hec.dssgui import ListSelection
 from hec.script import MessageBox
 from os import path
 from toolbox.util import ValidationError
@@ -26,8 +25,11 @@ class Tool(object):
         
         if dssFilePath:
             self.dssFilePath = dssFilePath
+            self.mainWindow = None
         else:
-            self.dssFilePath = ListSelection.getMainWindow().getDSSFilename()
+            from hec.dssgui import ListSelection
+            self.mainWindow = ListSelection.getMainWindow()
+            self.dssFilePath = self.mainWindow.getDSSFilename()
         
         #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
         #: :meth:`main`.
@@ -116,8 +118,8 @@ class Tool(object):
         any string in :attr:`.message`.
         """
         
-        if self.refreshCatalogue:
-            ListSelection.getMainWindow().updateCatalog()
+        if self.refreshCatalogue and self.mainWindow:
+            self.mainWindow.updateCatalog()
     
         if self.message:
             MessageBox.showInformation(self.message, "HEC-DSSVue")
