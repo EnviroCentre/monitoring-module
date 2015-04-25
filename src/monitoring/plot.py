@@ -62,7 +62,9 @@ def exportImages(config, dssFilePath):
                 if paramConfig['scale'].lower() == 'log':
                     viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
 
-        thePlot.saveToPng(os.path.join(outputFolder, config['version'] + "_" + param))
+        thePlot.saveToJpeg(os.path.join(outputFolder, 
+                           config['version'] + "_" + param),
+                           95)
         thePlot.close()
 
     dssFile.done()
