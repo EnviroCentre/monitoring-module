@@ -6,7 +6,6 @@
 from monitoring import importdata
 import toolbox
 
-CONFIG_FILE = 'lab_import.yml'
 
 class ImportTool(toolbox.Tool):
     requiredParams = ['folder', 'files', 'site', 'version', 'mapping', 'params']
@@ -17,5 +16,5 @@ class ImportTool(toolbox.Tool):
         self.message = "%s Records imported." % imported
 
 
-tool = ImportTool(CONFIG_FILE)
+tool = ImportTool()
 tool.run()

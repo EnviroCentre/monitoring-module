@@ -1,7 +1,7 @@
 import codecs
 from hec.script import MessageBox
 from os import path
-from toolbox.util import ValidationError
+from toolbox.util import ValidationError, CancelledError
 import yaml
 
 class Tool(object):
@@ -14,13 +14,16 @@ class Tool(object):
     #: Whether to refresh the HEC-DSSVue catalogue after completing the task.
     refreshCatalogue = 0
     
-    def __init__(self, configFileName, dssFilePath=None):
+    def __init__(self, configFileName=None, dssFilePath=None):
         """
-        A tool is defined by providing a `yaml` configuration file ``configFileName`` and a HEC-DSS database
-        ``dssFilePath`` to operate on. If ``dssFilePath`` is not set, the active DSS-file in the HEC-DSSVue
-        window will be used.
+        A tool is defined by providing a `yaml` configuration file 
+        ``configFileName`` and a HEC-DSS database ``dssFilePath`` to operate on.
+        If ``dssFilePath`` is not set, the active DSS-file in the HEC-DSSVue
+        window will be used. If ``configFileName`` is not set, a file selection
+        dialogue is displayed prompting for a configuration file.
         
-        The attribute :attr:`.config` will be set containing the parsed yaml config file.
+        The attribute :attr:`.config` will be set containing the parsed yaml 
+        config file.
         """
         
         if dssFilePath:
@@ -30,12 +33,29 @@ class Tool(object):
             from hec.dssgui import ListSelection
             self.mainWindow = ListSelection.getMainWindow()
             self.dssFilePath = self.mainWindow.getDSSFilename()
+            if not configFileName:
+                from javax.swing import JFileChooser
+                from javax.swing.filechooser import FileNameExtensionFilter
+                fileDialogue = JFileChooser(self.dssFilePath)
+                filter = FileNameExtensionFilter("Configuration file", 
+                                                 ["yaml", "yml"])
+                fileDialogue.addChoosableFileFilter(filter)
+                ret = fileDialogue.showOpenDialog(self.mainWindow)
+                if ret == JFileChooser.APPROVE_OPTION:
+                    self.configFilePath = (fileDialogue.getSelectedFile().
+                                           getAbsolutePath())
+                else:
+                    raise CancelledError("Config file selection was cancelled.") 
+        
+        if configFileName:
+            self.configFilePath = path.join(path.dirname(self.dssFilePath), 
+                                            configFileName)
+        else:
+            raise ValueEror("`configFileName` argument must be provided if `dssFilePath` is specified.")
         
         #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
         #: :meth:`main`.
         self.message = ""
-        
-        self.configFilePath = path.join(path.dirname(self.dssFilePath), configFileName)
         
         if self._toolIsValid():
             configFile = codecs.open(self.configFilePath, encoding='utf-8')

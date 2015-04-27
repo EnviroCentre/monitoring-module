@@ -62,6 +62,13 @@ class ValidationError(Exception):
 
     def __repr__(self):
         return "ValidationError(%r)" % self.message
+    
+
+class CancelledError(Exception):
+    """
+    Operation cancellation/interruption by the user.
+    """
+    pass
 
     
 def saveIrregularRecords(records, dssFilePath):

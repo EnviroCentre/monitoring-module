@@ -105,7 +105,10 @@ When the configuration has been set up, the data can be imported as follows:
 
  1. Open the :file:`Monitoring data.dss` file in HEC-DSSVue.
  2. Select menu item :menuselection:`Scripts --> Import field data` or 
-    alternatively click on :menuselection:`Import field data` on the toolbar. 
+    alternatively click on :menuselection:`Import field data` on the toolbar.
+ 3. Choose the configuration file :file:`field_import.yml` in the file selection 
+    window. 
+
 
 When successfully completed, a message is displayed how many records have been 
 imported and the catalogue is refreshed.

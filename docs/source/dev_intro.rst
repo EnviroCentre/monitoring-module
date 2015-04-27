@@ -34,8 +34,6 @@ Example of a HEC-DSS script using the :class:`toolbox.Tool`:
     import toolbox
     from some_module import do_something
 
-    CONFIG_FILE = 'input.yml'  # Relative to DSS-file
-
     class ExampleTool(toolbox.Tool):
         requiredParams = ['folder', 'files', 'site', ...]
         refreshCatalogue = 1  # Update catalogue when completed
@@ -44,7 +42,7 @@ Example of a HEC-DSS script using the :class:`toolbox.Tool`:
             do_something(self.config, self.dssFilePath)
             self.message = "Test tool successfully completed."
 
-    tool = ExampleTool(CONFIG_FILE)
+    tool = ExampleTool()
     tool.run()
 
 
@@ -52,7 +50,8 @@ The above code should be saved in a file like this
 :file:`%APPDATA%/Roaming/HEC/HEC-DSSVue/scripts/example_tool.py` for it to show
 up in the HEC-DSSVue :menuselection:`Script` menu and toolbar.
 
-The corresponding configuration file :file:`input.yml` could look like this.
+The corresponding configuration file, for example :file:`input.yml`, could look
+like this.
 
 .. code-block:: yaml
 
@@ -63,6 +62,14 @@ The corresponding configuration file :file:`input.yml` could look like this.
 
     site: Site name
     ...
+
+
+The user is prompted to select the configuration file when running the tool. 
+Alternatively, the tool can be created like this::
+
+    tool = ExampleTool(configFileName, fullPathToDssFile)
+
+This would be suitable for unattended execution of the tool.
 
 
 "Fixing" the HEC-DSSVue configuration

@@ -6,7 +6,6 @@
 from monitoring import plot
 import toolbox
 
-CONFIG_FILE = 'plots.yml'
 
 class PlotTool(toolbox.Tool):
     requiredParams = ['site', 'locations', 'interval', 'version', 'period', 
@@ -16,5 +15,5 @@ class PlotTool(toolbox.Tool):
         plot.exportImages(self.config, self.dssFilePath)
 
 
-tool = PlotTool(CONFIG_FILE)
+tool = PlotTool()
 tool.run()

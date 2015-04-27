@@ -111,7 +111,9 @@ When the configuration has been set up, the plots can be generated as follows:
 
  1. Open the :file:`Monitoring data.dss` file in HEC-DSSVue.
  2. Select menu item :menuselection:`Scripts --> Monitoring plots` or 
-    alternatively click on :menuselection:`Monitoring plots` on the toolbar. 
+    alternatively click on :menuselection:`Monitoring plots` on the toolbar.
+ 3. Choose the configuration file :file:`plots.yml` in the file selection 
+    window. 
 
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `PNG`-files.
