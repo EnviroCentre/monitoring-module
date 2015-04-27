@@ -1,6 +1,9 @@
 Monitoring Module for HEC-DSSVue
 ================================
 
+Version |release|
+
+
 A set of scripts for managing environmental monitoring data within the 
 `HEC-DSSVue software <http://www.hec.usace.army.mil/software/hec-dssvue/>`_.
 
