@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import os
+from subprocess import check_output
 import sys
+
+git_args = ['git', 'describe', '--tags', '--always']
+git_tag = check_output(git_args, universal_newlines=True)
 
 sys.path.insert(0, os.path.abspath('../../src'))
 
@@ -23,9 +29,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 project = 'Monitoring Module for HEC-DSSVue'
-copyright = '2015, EnviroCentre'
-version = '0.1'
-release = '0.1.0'
+copyright = '2015, EnviroCentre. All rights reserved.'
+version = '.'.join(git_tag.strip('v').split(".")[0:2])
+release = git_tag.strip('v')
 pygments_style = 'sphinx'
 
 # -- Options for HTML output ----------------------------------------------
@@ -39,5 +45,6 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
 html_static_path = ['_static']
 html_last_updated_fmt = '%d/%m/%Y'
 html_show_sourcelink = False
+html_copy_source = False
 html_show_sphinx = False
 htmlhelp_basename = 'doc'
