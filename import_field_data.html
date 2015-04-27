@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. Importing “field” data &mdash; Monitoring Module for HEC-DSSVue 0.1.1
+ documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.1
+ documentation" href="index.html"/>
+        <link rel="next" title="3. Importing lab data" href="import_lab_data.html"/>
+        <link rel="prev" title="1. Introduction" href="intro.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> Monitoring Module for HEC-DSSVue</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">2. Importing &#8220;field&#8221; data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-import-example">2.1. Data import example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-import-example">3.1. Data import example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">4.1. Plotting example</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dev_intro.html">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev_intro.html#workflow">1.1. Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_intro.html#example-toolbox">1.2. Example toolbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_intro.html#fixing-the-hec-dssvue-configuration">1.3. &#8220;Fixing&#8221; the HEC-DSSVue configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox.util">2.2. <code class="docutils literal"><span class="pre">toolbox.util</span></code> &#8212; Common utility functions</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Monitoring Module for HEC-DSSVue</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>2. Importing &#8220;field&#8221; data</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="importing-field-data">
+<h1>2. Importing &#8220;field&#8221; data<a class="headerlink" href="#importing-field-data" title="Permalink to this headline">¶</a></h1>
+<p>The <cite>Monitoring Module</cite> can be used to import water quality data collected in the
+field with a handheld meter. The measured parameters are exported from the meter
+to a <cite>csv</cite>-file with the measurement <strong>locations</strong> forming the columns
+(<strong>across</strong>) and the <strong>parameters</strong> in rows (<strong>down</strong>).</p>
+<p>Multiple <cite>csv</cite>-files can be imported at once.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The Monitoring Module&#8217;s field data importing tool has been tested to work
+with the following meters:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Hanna Instruments® multi-parameter meter type HI 9828</li>
+</ul>
+</div></blockquote>
+<p class="last">Other meters and <cite>csv</cite> input file formats may be supported by tweaking the
+tool&#8217;s configuration parameters.</p>
+</div>
+<div class="section" id="data-import-example">
+<h2>2.1. Data import example<a class="headerlink" href="#data-import-example" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-everything-in-place">
+<h3>2.1.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h3>
+<p>In this example, the file to be imported <code class="file docutils literal"><span class="pre">2015-01</span> <span class="pre">Site</span> <span class="pre">measurements.csv</span></code>
+is saved in a project file structure as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre>C:\
+    Project\
+        Import data\
+            2015-01 Site measurements.csv
+        Monitoring data.dss
+        field_import.yml
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-configuration-file">
+<h3>2.1.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h3>
+<p>The configuration file <code class="file docutils literal"><span class="pre">field_import.yml</span></code> can be created as a simple text
+file with the following content:</p>
+<div class="highlight-yaml"><div class="highlight"><pre>folder: C:\Project\Import data
+files:
+ - 2015-01 Site measurements.csv
+
+site: Example site
+version: RAW
+
+columns:
+  date: 1
+  time: 2
+  location: 21
+
+params:
+  TEMP:
+    column: 3
+    unit: degC
+  PH:
+    column: 4
+    unit: &quot;-&quot;
+  DO%:
+    column: 7
+    unit: %
+  DO:
+    column: 8
+    unit: mg/l
+  EC:
+    column: 9
+    unit: µS/cm
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The configuration file is structured according to the <a class="reference external" href="http://yaml.org">YAML format</a>. Indentation is important to define the configuration
+correctly. The example is best copied exactly as provided!</p>
+</div>
+<p>The configuration file describes the files to be imported as well as information
+about which <cite>csv</cite>-file columns to be imported. Measured parameter columns can be
+modified as required by editing the <code class="docutils literal"><span class="pre">params</span></code> section of the configuration
+file.</p>
+<p>Parameter values in the import file starting with <cite>&lt;</cite> are interpreted as being
+below the meter&#8217;s limit of detection (LOD). Such measurements are imported as
+50% of the LOD to allow numeric evaluations and plotting in line with current
+best practice.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>The date column is assumed to be formatted as <code class="docutils literal"><span class="pre">yyyy/mm/dd</span></code>!</p>
+<p class="last">If the time column is omitted all times are set to 12:00:00 hrs.</p>
+</div>
+</div>
+<div class="section" id="running-the-import">
+<h3>2.1.3. Running the import<a class="headerlink" href="#running-the-import" title="Permalink to this headline">¶</a></h3>
+<p>When the configuration has been set up, the data can be imported as follows:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Open the <code class="file docutils literal"><span class="pre">Monitoring</span> <span class="pre">data.dss</span></code> file in HEC-DSSVue.</li>
+<li>Select menu item <span class="menuselection">Scripts ‣ Import field data</span> or
+alternatively click on <span class="menuselection">Import field data</span> on the toolbar.</li>
+<li>Choose the configuration file <code class="file docutils literal"><span class="pre">field_import.yml</span></code> in the file selection
+window.</li>
+</ol>
+</div></blockquote>
+<p>When successfully completed, a message is displayed how many records have been
+imported and the catalogue is refreshed.</p>
+</div>
+<div class="section" id="data-post-processing">
+<h3>2.1.4. Data post-processing<a class="headerlink" href="#data-post-processing" title="Permalink to this headline">¶</a></h3>
+<p>In this example, data were imported using <cite>RAW</cite> for the data version (F-part).
+This allows review of data and corrections and manipulations using the
+HEC-DSSVue built-in functionality. Quality assured data can then be saved using
+a different version, for example <cite>OBS</cite>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="import_lab_data.html" class="btn btn-neutral float-right" title="3. Importing lab data">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="1. Introduction"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, EnviroCentre. All rights reserved..
+      Last updated on 27/04/2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.1
+',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  false
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
