@@ -1,7 +1,7 @@
 !include MUI2.nsh
 
 !define APP_NAME "Monitoring Module for HEC-DSSVue"
-!define VERSION "0.1.0" ; should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
+;!define VERSION "0.1.0" ; should be set by `makensis` argument e.g. `/DVERSION=0.0.0`
 
 !define ORG_NAME "EnviroCentre"
 !define ORG_URL "http://www.envirocentre.co.uk"
