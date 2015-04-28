@@ -6,7 +6,7 @@ import os
 import toolbox.util as tbu
 
 
-def exportImages(config, dssFilePath):
+def onePerParam(config, dssFilePath):
     
     outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
     dssFile = HecDss.open(dssFilePath)

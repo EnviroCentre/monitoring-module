@@ -12,7 +12,7 @@ class PlotTool(tb.Tool):
         'params', 'width', 'height', 'line', 'output_folder']
     
     def run(self):
-        plot.exportImages(self.config, self.dssFilePath)
+        plot.onePerParam(self.config, self.dssFilePath)
 
 
 tool = PlotTool()
