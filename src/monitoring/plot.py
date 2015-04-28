@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.script import Plot
 import os
-from toolbox.util import relativeFolder
+import toolbox.util as tbu
+
 
 def exportImages(config, dssFilePath):
     
-    outputFolder = relativeFolder(config['output_folder'], dssFilePath)
+    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
     dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])

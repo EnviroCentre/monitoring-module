@@ -4,10 +4,10 @@
 # displayinselector=true
 
 from monitoring import plot
-import toolbox
+import toolbox as tb
 
 
-class PlotTool(toolbox.Tool):
+class PlotTool(tb.Tool):
     requiredParams = ['site', 'locations', 'interval', 'version', 'period', 
         'params', 'width', 'height', 'line', 'output_folder']
     

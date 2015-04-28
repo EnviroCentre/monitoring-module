@@ -1,4 +1,4 @@
-# -*- coding: utf-8 9-*-
+# -*- coding: utf-8 -*-
 import hec.heclib
 from hec.heclib.util import HecTime
 import hec.io

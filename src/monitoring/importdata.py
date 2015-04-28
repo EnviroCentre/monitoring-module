@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 import os.path
-import toolbox.util
+import toolbox.util as tbu
 
 
 def locationsAcross(config):
@@ -32,7 +33,7 @@ def locationsAcross(config):
             while 1:
                 if len(cells[config['columns']['location']-1]) > 0:
                     for param, paramConfig in config['params'].iteritems():
-                        value = toolbox.util.parseMeasurement(cells[paramConfig['column']-1])
+                        value = tbu.parseMeasurement(cells[paramConfig['column']-1])
                         if value:
                             date_str = cells[config['columns']['date']-1]
                             try:
@@ -41,8 +42,8 @@ def locationsAcross(config):
                                 time_str = "12:00:00"
                             
                             record = {
-                                'sampledate': toolbox.util.parseDateAndTime(date_str, 
-                                                                            time_str),
+                                'sampledate': tbu.parseDateAndTime(date_str, 
+                                                                   time_str),
                                 'site': config['site'],
                                 'location': cells[config['columns']['location']-1],
                                 'parameter': param,
@@ -88,9 +89,8 @@ def locationsDown(config):
             while 1:
                 cells = f.readline().split(',')
                 if cells[1].lower() == 'date sampled:':
-                    sampleDate = toolbox.util.parseDateAndTime(cells[5], 
-                                                               "12:00:00",
-                                                               "dd-mmm-yy")
+                    sampleDate = tbu.parseDateAndTime(cells[5], "12:00:00",
+                                                      "dd-mmm-yy")
                     break
 
             # Then actual data
@@ -102,7 +102,7 @@ def locationsDown(config):
                 try:
                     param = config['mapping'][cells[0].strip()]
                     for location, column in locationColumns.iteritems():
-                        value = toolbox.util.parseMeasurement(cells[column])
+                        value = tbu.parseMeasurement(cells[column])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
