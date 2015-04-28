@@ -5,14 +5,16 @@
 
 from monitoring import importdata
 import toolbox
+import toolbox.util
 
 
 class ImportTool(toolbox.Tool):
     requiredParams = ['folder', 'files', 'site', 'version', 'mapping', 'params']
+    refreshCatalogue = 1
     
-    def run(self):
+    def main(self):
         records = importdata.locationsDown(self.config)
-        imported = importdata.saveIrregularRecords(records, self.dssFilePath)
+        imported = toolbox.util.saveIrregularRecords(records, self.dssFilePath)
         self.message = "%s Records imported." % imported
 
 

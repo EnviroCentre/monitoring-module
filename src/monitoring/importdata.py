@@ -64,5 +64,64 @@ def locationsAcross(config):
 
 def locationsDown(config):
     records = []
+
+    dataRows = []
+
+    for fileName in config['files']:
+        importFile = os.path.join(config['folder'], fileName)
+
+        try:
+            try:
+                f = open(importFile)
+            except IOError:
+                raise
+            # Find the row with locations
+            while 1:
+                cells = f.readline().split(',')
+                if cells[1].lower() == 'client sample id.:':
+                    # Dict of {'locationId': columnNo}
+                    locationColumns = {}
+                    for i in range(5, len(cells)):
+                        if len(cells[i].strip()) > 0:
+                            locationColumns[cells[i].upper()] = i 
+                    break
+
+            # Date row (use first value for just now)
+            while 1:
+                cells = f.readline().split(',')
+                if cells[1].lower() == 'date sampled:':
+                    dateStrParts = cells[5].strip().split('-')
+                    sampleDate = HecTime("%s%s20%s 12:00:00" % (dateStrParts[0], dateStrParts[1], dateStrParts[2]))
+                    break
+
+            # Then actual data
+            while 1:
+                cells = f.readline().split(',')
+                if len(cells[0]) == 0:
+                    break
+
+                try:
+                    param = config['mapping'][cells[0].strip()]
+                    for location in locationColumns.keys():
+                        valueStr = cells[locationColumns[location]].strip()
+                        value = toolbox.util.parseMeasurement(valueStr)
+                        if value:
+                            #row = (sampleDate, location, param, value, config['params'][param]['unit'])
+                            record = {
+                                'sampledate': sampleDate,
+                                'site': config['site'],
+                                'location': location,
+                                'parameter': param,
+                                'version': config['version'],
+                                'samplevalue': value, 
+                                'units': config['params'][param]['unit']
+                            }
+                            records.append(record)
+
+                except KeyError:
+                    pass
+
+        finally:
+            f.close()
     
     return records
