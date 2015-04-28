@@ -1,6 +1,5 @@
-from hec.heclib.util import HecTime
-import toolbox.util
 import os.path
+import toolbox.util
 
 
 def locationsAcross(config):
@@ -42,7 +41,8 @@ def locationsAcross(config):
                                 time_str = "12:00:00"
                             
                             record = {
-                                'sampledate': toolbox.util.parseDateAndTime(date_str, time_str),
+                                'sampledate': toolbox.util.parseDateAndTime(date_str, 
+                                                                            time_str),
                                 'site': config['site'],
                                 'location': cells[config['columns']['location']-1],
                                 'parameter': param,
@@ -64,8 +64,6 @@ def locationsAcross(config):
 
 def locationsDown(config):
     records = []
-
-    dataRows = []
 
     for fileName in config['files']:
         importFile = os.path.join(config['folder'], fileName)
@@ -90,8 +88,9 @@ def locationsDown(config):
             while 1:
                 cells = f.readline().split(',')
                 if cells[1].lower() == 'date sampled:':
-                    dateStrParts = cells[5].strip().split('-')
-                    sampleDate = HecTime("%s%s20%s 12:00:00" % (dateStrParts[0], dateStrParts[1], dateStrParts[2]))
+                    sampleDate = toolbox.util.parseDateAndTime(cells[5], 
+                                                               "12:00:00",
+                                                               "dd-mmm-yy")
                     break
 
             # Then actual data
