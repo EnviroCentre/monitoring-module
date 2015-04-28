@@ -50,8 +50,8 @@ class Tool(object):
         if configFileName:
             self.configFilePath = path.join(path.dirname(self.dssFilePath), 
                                             configFileName)
-        else:
-            raise ValueEror("`configFileName` argument must be provided if `dssFilePath` is specified.")
+        elif dssFilePath:
+            raise ValueError("`configFileName` argument must be provided if `dssFilePath` is specified.")
         
         #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
         #: :meth:`main`.
