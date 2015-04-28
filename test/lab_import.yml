@@ -2,7 +2,7 @@ folder: c:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\
 files:
  - Chemtest lab.csv
 
-site: Glenchamber
+site: Site name
 version: RAW
 
 mapping:
