@@ -1,11 +1,9 @@
-folder: k:\164886j\Data + Info\Lab\
+folder: c:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\Import
 files:
- - 2015-03.csv
- - 2015-02.csv
- - 2015-01.csv
+ - Chemtest lab.csv
 
 site: Glenchamber
-version: LAB
+version: RAW
 
 mapping:
   pH: PH
