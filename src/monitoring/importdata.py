@@ -102,11 +102,9 @@ def locationsDown(config):
 
                 try:
                     param = config['mapping'][cells[0].strip()]
-                    for location in locationColumns.keys():
-                        valueStr = cells[locationColumns[location]].strip()
-                        value = toolbox.util.parseMeasurement(valueStr)
+                    for location, column in locationColumns.iteritems():
+                        value = toolbox.util.parseMeasurement(cells[column])
                         if value:
-                            #row = (sampleDate, location, param, value, config['params'][param]['unit'])
                             record = {
                                 'sampledate': sampleDate,
                                 'site': config['site'],
@@ -119,6 +117,7 @@ def locationsDown(config):
                             records.append(record)
 
                 except KeyError:
+                    # Skip if param not in import file
                     pass
 
         finally:
