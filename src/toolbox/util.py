@@ -131,10 +131,17 @@ def parseMeasurement(valueStr):
 def parseDateAndTime(dateStr, timeStr, dateFmt='yyyy/mm/dd'):
     """
     Return HecTime from date and time strings.
+    
+    Supported date formats are:
+    
+     - `yyyy/mm/dd` (default)
+     - `dd-mmm-yy`
+    
+    Time format is always `hh:mm:ss`.
     """
-    dateTime = HecTime()
     MONTHS = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
         'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
+    dateTime = HecTime()
     
     dateStr = dateStr.strip()
     if dateFmt == 'yyyy/mm/dd':
