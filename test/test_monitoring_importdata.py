@@ -15,7 +15,7 @@ class DataImportTestCase(unittest.TestCase):
         config = yaml.load(configFile.read()).next()
         configFile.close()
         
-        records = importdata.locationsDown(config)
+        records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 106)
         
         sites = [record['site'] for record in records] 
@@ -66,12 +66,12 @@ class DataImportTestCase(unittest.TestCase):
             [8.5, 5.6, 18, 7.8, 8.8, 8.1, 19, 2.5, 3.1, 10, 1600],
             [8.5, 8.2, 12, 4.3, 2.5, 6.7, 5, 6.3, 1.8, 20, 140]
         ]
-        for i in range(len(locations)):  # no enumerate in Jython 2.2!
+        for i, location in enumerate(locations):
             values = [record['samplevalue'] for record in records 
-                if record['location'] == locations[i]]
+                if record['location'] == location]
             self.assertEqual(values, expected[i], 
                              "Error in records %s for location %s" 
-                             % (values[i], locations[i]))
+                             % (values[i], location))
         
 
 if __name__ == '__main__':

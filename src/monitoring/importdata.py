@@ -3,7 +3,7 @@ import os.path
 import toolbox.util as tbu
 
 
-def locationsAcross(config):
+def locationsDown(config):
     records = []
 
     for fileName in config['files']:
@@ -63,7 +63,7 @@ def locationsAcross(config):
     return records
     
 
-def locationsDown(config):
+def locationsAcross(config):
     records = []
 
     for fileName in config['files']:
