@@ -37,14 +37,6 @@ Section "Install module scripts"
     File /r "..\..\src\*.py"
 SectionEnd
 
-Section "Configure HEC-DSSVue"
-    SetOutPath $INSTDIR
-    File "HEC-DSSVue.config"
-
-    SetOutPath $PROFILE
-    File ".jython"
-SectionEnd
-
 Section "Example tool configuration files"
     SetOutPath "$DOCUMENTS\Monitoring Module"
     File "..\..\src\*.yml"

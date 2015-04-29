@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.script import Plot
 import os
-from toolbox.util import relativeFolder
+import toolbox.util as tbu
 
-def exportImages(config, dssFilePath):
+
+def onePerParam(config, dssFilePath):
     
-    outputFolder = relativeFolder(config['output_folder'], dssFilePath)
+    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
     dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])
@@ -49,11 +51,11 @@ def exportImages(config, dssFilePath):
                 curve.setLineColor("%s, %s, %s" % tuple(config['line']['colours'][colourIndex]))
                 curve.setLineWidth(config['line']['width'])
 
-        for vp_index in range(len(units)):  # We have one viewport per distinct unit
+        for vp_index, unit in enumerate(units):  # We have one viewport per distinct unit
             viewport = thePlot.getViewport(vp_index)
 
             viewport.getAxis("X1").setScaleLimits(minDate.value(), maxDate.value())
-            viewport.getAxis("Y1").setLabel(units[vp_index])
+            viewport.getAxis("Y1").setLabel(unit)
 
             viewport.setMinorGridXVisible(1)
             viewport.setMinorGridYVisible(1)

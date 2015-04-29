@@ -7,23 +7,23 @@ import toolbox.util
 
 class ToolboxUtilTestCase(unittest.TestCase):
 
-    def test_parseMeasurement(self):
+    def testParseMeasurement(self):
         result = toolbox.util.parseMeasurement("1.234")
         self.assertEqual(result, 1.234)
 
-    def test_parseMeasurementSpaces(self):
+    def testParseMeasurementSpaces(self):
         result = toolbox.util.parseMeasurement(" 1.234 ")
         self.assertEqual(result, 1.234)
 
-    def test_parseMeasurementBelowLOD(self):
+    def testParseMeasurementBelowLOD(self):
         result = toolbox.util.parseMeasurement("<2.0")
         self.assertEqual(result, 1.0)
 
-    def test_parseMeasurementBelowLODSpaces(self):
+    def testParseMeasurementBelowLODSpaces(self):
         result = toolbox.util.parseMeasurement(" < 2.0 ")
         self.assertEqual(result, 1.0)
         
-    def test_dateDefaultFormat(self):
+    def testDateDefaultFormat(self):
         dt = toolbox.util.parseDateAndTime("2015/12/31", "01:00:00")
         self.assertEqual(dt.year(), 2015)
         self.assertEqual(dt.month(), 12)
@@ -31,8 +31,16 @@ class ToolboxUtilTestCase(unittest.TestCase):
         self.assertEqual(dt.hour(), 1)
         self.assertEqual(dt.minute(), 0)
 
-    def test_dateyyyymmddFormat(self):
+    def testDateyyyymmddFormat(self):
         dt = toolbox.util.parseDateAndTime("2015/12/31", "01:00:00", "yyyy/mm/dd")
+        self.assertEqual(dt.year(), 2015)
+        self.assertEqual(dt.month(), 12)
+        self.assertEqual(dt.day(), 31)
+        self.assertEqual(dt.hour(), 1)
+        self.assertEqual(dt.minute(), 0)
+
+    def testDateddmmmyyFormat(self):
+        dt = toolbox.util.parseDateAndTime("31-Dec-15", "01:00:00", "dd-mmm-yy")
         self.assertEqual(dt.year(), 2015)
         self.assertEqual(dt.month(), 12)
         self.assertEqual(dt.day(), 31)

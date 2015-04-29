@@ -1,4 +1,4 @@
-# -*- coding: utf-8 9-*-
+# -*- coding: utf-8 -*-
 import hec.heclib
 from hec.heclib.util import HecTime
 import hec.io
@@ -131,14 +131,29 @@ def parseMeasurement(valueStr):
 def parseDateAndTime(dateStr, timeStr, dateFmt='yyyy/mm/dd'):
     """
     Return HecTime from date and time strings.
+    
+    Supported date formats are:
+    
+     - `yyyy/mm/dd` (default)
+     - `dd-mmm-yy`
+    
+    Time format is always `hh:mm:ss`.
     """
+    MONTHS = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+        'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
     dateTime = HecTime()
     
     dateStr = dateStr.strip()
     if dateFmt == 'yyyy/mm/dd':
         ymd = [dateStr[0:4], dateStr[5:7], dateStr[8:10]]
+    elif dateFmt == 'dd-mmm-yy':
+        ymd = []
+        datePts = dateStr.split('-')
+        ymd.append(2000 + int(datePts[2]))
+        ymd.append(MONTHS[datePts[1].lower()])
+        ymd.append(datePts[0])
     else:
-        raise NotImplementedError("Date format %r not supported" % dateFormat)
+        raise NotImplementedError("Date format %r not supported" % dateFmt)
     dateTime.setDate('%s/%s/%s' % (ymd[1], ymd[2], ymd[0]))
     
     timeStr = timeStr.strip()

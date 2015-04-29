@@ -1,10 +1,10 @@
 Importing "field" data
 ======================
 
-The `Monitoring Module` can be used to import water quality data collected in the
-field with a handheld meter. The measured parameters are exported from the meter
-to a `csv`-file with the measurement **locations** forming the columns 
-(**across**) and the **parameters** in rows (**down**).
+The `Monitoring Module` can be used to import water quality data collected in
+the field with a handheld meter. The measured parameters are exported from the 
+meter to a `csv`-file with the **parameters** forming the columns (**across**)
+and the **locations** in rows (**down**).
 
 Multiple `csv`-files can be imported at once.
 
