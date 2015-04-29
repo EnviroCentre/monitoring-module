@@ -51,11 +51,11 @@ def onePerParam(config, dssFilePath):
                 curve.setLineColor("%s, %s, %s" % tuple(config['line']['colours'][colourIndex]))
                 curve.setLineWidth(config['line']['width'])
 
-        for vp_index in range(len(units)):  # We have one viewport per distinct unit
+        for vp_index, unit in enumerate(units):  # We have one viewport per distinct unit
             viewport = thePlot.getViewport(vp_index)
 
             viewport.getAxis("X1").setScaleLimits(minDate.value(), maxDate.value())
-            viewport.getAxis("Y1").setLabel(units[vp_index])
+            viewport.getAxis("Y1").setLabel(unit)
 
             viewport.setMinorGridXVisible(1)
             viewport.setMinorGridYVisible(1)
