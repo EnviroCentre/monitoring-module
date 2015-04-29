@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.1.1
+  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.1.2
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
  documentation" href="index.html"/>
         <link rel="prev" title="1. Introduction" href="dev_intro.html"/> 
 
@@ -84,6 +84,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#workflow">1.1. Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#example-toolbox">1.2. Example toolbox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#fixing-the-hec-dssvue-configuration">1.3. &#8220;Fixing&#8221; the HEC-DSSVue configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_intro.html#debugging-in-hec-dssvue">1.4. Debugging in HEC-DSSVue</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">2. API Reference</a><ul>
@@ -221,6 +222,14 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
 <dt id="toolbox.util.parseDateAndTime">
 <code class="descclassname">toolbox.util.</code><code class="descname">parseDateAndTime</code><span class="sig-paren">(</span><em>dateStr</em>, <em>timeStr</em>, <em>dateFmt='yyyy/mm/dd'</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.parseDateAndTime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return HecTime from date and time strings.</p>
+<p>Supported date formats are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>yyyy/mm/dd</cite> (default)</li>
+<li><cite>dd-mmm-yy</cite></li>
+</ul>
+</div></blockquote>
+<p>Time format is always <cite>hh:mm:ss</cite>.</p>
 </dd></dl>
 
 </div>
@@ -243,7 +252,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 27/04/2015.
+      Last updated on 29/04/2015.
     </p>
   </div>
 
@@ -264,7 +273,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.1
+            VERSION:'0.1.2
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

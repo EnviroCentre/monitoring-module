@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.1.1
+  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.1.2
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
  documentation" href="index.html"/>
         <link rel="next" title="2. API Reference" href="reference.html"/>
         <link rel="prev" title="4. Creating timeseries plots" href="timeseries_plots.html"/> 
@@ -85,6 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#workflow">1.1. Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-toolbox">1.2. Example toolbox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fixing-the-hec-dssvue-configuration">1.3. &#8220;Fixing&#8221; the HEC-DSSVue configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-in-hec-dssvue">1.4. Debugging in HEC-DSSVue</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
@@ -189,48 +190,23 @@ Alternatively, the tool can be created like this:</p>
 </div>
 <div class="section" id="fixing-the-hec-dssvue-configuration">
 <h2>1.3. &#8220;Fixing&#8221; the HEC-DSSVue configuration<a class="headerlink" href="#fixing-the-hec-dssvue-configuration" title="Permalink to this headline">¶</a></h2>
-<p>All scripts are executed within the HEC-DSSVue application (Java-based) using an
-embedded Python interpreter, Jython 2.2. This version of Jython was released in
-2007 and does not have the same functionality as recent releases of Python 2.7
-and 3.x.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The most recent yaml parsers available for Python do not work with Jython
-2.2. An archived version of a <a class="reference external" href="http://pyyaml.org/wiki/PyYAMLLegacy">legacy yaml parser</a> has therefore been included in the
-HEC-DSS Monitoring Module. This parser does unfortunately not support the
-full yaml spec!</p>
-</div>
-<div class="section" id="python-search-path">
-<h3>1.3.1. Python search path<a class="headerlink" href="#python-search-path" title="Permalink to this headline">¶</a></h3>
 <p>HEC-DSSVue scripts are saved in the
 <code class="file docutils literal"><span class="pre">%APPDATA%/Roaming/HEC/HEC-DSSVue/scripts</span></code> folder. Scripts in this folder
 can be run directly from HEC-DSSVue window.</p>
-<p>The scripts folder is not available on the Python search path by default and
-this prevents any imports to Python modules in the same folder. The only way to
-fix this is by modifying the <code class="docutils literal"><span class="pre">vmparam</span> <span class="pre">-Dpython.path</span></code> variable in the file
-<code class="file docutils literal"><span class="pre">%programfiles(x86)%/HEC/HEC-DSSVue/HEC-DSSVue.config</span></code> like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>vmparam -Dpython.path=jar\sys\jythonLib.jar\lib;jar\sys\jythonUtils.jar;$APPDATA\HEC\HEC-DSSVue\scripts
-</pre></div>
-</div>
-</div>
-<div class="section" id="jython-configuration">
-<h3>1.3.2. Jython configuration<a class="headerlink" href="#jython-configuration" title="Permalink to this headline">¶</a></h3>
-<p>On Windows operating systems released since 2009, Jython 2.2 throws an error as
-it assumes the operating system being Linux. To fix this, add the file
-<code class="file docutils literal"><span class="pre">%HOME%/.jython</span></code> with the following content:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span><span class="o">.</span><span class="n">os</span><span class="o">=</span><span class="n">nt</span>
-</pre></div>
-</div>
+<p>All scripts are executed within the HEC-DSSVue application (Java-based) using an
+embedded Python interpreter, Jython 2.2 (a very old version). Install the
+<a class="reference external" href="https://github.com/EnviroCentre/jython-upgrade">Jython upgrade for HEC-DSSVue</a> to upgrade to the most recent
+stable version of Jython. This will also modify the Python search path to
+include the scripts folder.</p>
 </div>
 <div class="section" id="debugging-in-hec-dssvue">
-<h3>1.3.3. Debugging in HEC-DSSVue<a class="headerlink" href="#debugging-in-hec-dssvue" title="Permalink to this headline">¶</a></h3>
+<h2>1.4. Debugging in HEC-DSSVue<a class="headerlink" href="#debugging-in-hec-dssvue" title="Permalink to this headline">¶</a></h2>
 <p>To make debugging scripts in HEC-DSSVue easier, the Java console window can be
 shown when starting HEC-DSSVue by setting <code class="docutils literal"><span class="pre">showConsole</span> <span class="pre">true</span></code> in the
-<code class="file docutils literal"><span class="pre">HEC-DSSVue.config</span></code> file. Java and Jython errors will be displayed in this
-window.</p>
+<code class="file docutils literal"><span class="pre">%programfiles(x86)%/HEC/HEC-DSSVue/HEC-DSSVue.config</span></code> file. Java and
+Jython errors will be displayed in this window.</p>
 <p>Alternatively the console output can be inspected from the HEC-DSSVue menu
 <span class="menuselection">Advanced ‣ Console Output...</span>.</p>
-</div>
 </div>
 </div>
 
@@ -253,7 +229,7 @@ window.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 27/04/2015.
+      Last updated on 29/04/2015.
     </p>
   </div>
 
@@ -274,7 +250,7 @@ window.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.1
+            VERSION:'0.1.2
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

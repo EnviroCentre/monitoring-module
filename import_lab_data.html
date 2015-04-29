@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.1.1
+  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.1.2
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
  documentation" href="index.html"/>
         <link rel="next" title="4. Creating timeseries plots" href="timeseries_plots.html"/>
         <link rel="prev" title="2. Importing “field” data" href="import_field_data.html"/> 
@@ -85,6 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#workflow">1.1. Workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#example-toolbox">1.2. Example toolbox</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev_intro.html#fixing-the-hec-dssvue-configuration">1.3. &#8220;Fixing&#8221; the HEC-DSSVue configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_intro.html#debugging-in-hec-dssvue">1.4. Debugging in HEC-DSSVue</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
@@ -127,71 +128,101 @@
             
   <div class="section" id="importing-lab-data">
 <h1>3. Importing lab data<a class="headerlink" href="#importing-lab-data" title="Permalink to this headline">¶</a></h1>
-<p>TODO</p>
-<p>The <cite>Monitoring Module</cite> can be used to import water quality data collected in the
-field with a handheld meter. The measured parameters are exported from the meter
-to a <cite>csv</cite>-file with the measurement <strong>locations</strong> forming the columns
-(<strong>across</strong>) and the <strong>parameters</strong> in rows (<strong>down</strong>).</p>
+<p>The <cite>Monitoring Module</cite> can be used to import laboratory analytical results. The
+results are imported from a <cite>csv</cite>-file with the measurement <strong>locations</strong>
+forming the columns (<strong>across</strong>) and the <strong>parameters</strong> in rows (<strong>down</strong>).</p>
 <p>Multiple <cite>csv</cite>-files can be imported at once.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The Monitoring Module&#8217;s field data importing tool has been tested to work
-with the following meters:</p>
+<p>The Monitoring Module&#8217;s lab data importing tool has been tested to work
+with results provided by the following laboratories:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Hanna Instruments® multi-parameter meter type HI 9828</li>
+<li>Chemtest</li>
 </ul>
 </div></blockquote>
-<p class="last">Other meters and <cite>csv</cite> input file formats may be supported by tweaking the
-tool&#8217;s configuration parameters.</p>
+<p class="last">Other <cite>csv</cite> input file formats may be supported by tweaking the tool&#8217;s
+configuration parameters.</p>
 </div>
 <div class="section" id="data-import-example">
 <h2>3.1. Data import example<a class="headerlink" href="#data-import-example" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="getting-everything-in-place">
 <h3>3.1.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h3>
-<p>In this example, the file to be imported <code class="file docutils literal"><span class="pre">2015-01</span> <span class="pre">Site</span> <span class="pre">measurements.csv</span></code>
-is saved in a project file structure as follows:</p>
+<p>In this example, the file to be imported <code class="file docutils literal"><span class="pre">2015-01</span> <span class="pre">Lab</span> <span class="pre">results.csv</span></code> is
+saved in a project file structure as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>C:\
     Project\
         Import data\
-            2015-01 Site measurements.csv
+            2015-01 Lab results.csv
         Monitoring data.dss
-        field_import.yml
+        lab_import.yml
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-configuration-file">
 <h3>3.1.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h3>
-<p>The configuration file <code class="file docutils literal"><span class="pre">field_import.yml</span></code> can be created as a simple text
+<p>The configuration file <code class="file docutils literal"><span class="pre">lab_import.yml</span></code> can be created as a simple text
 file with the following content:</p>
-<div class="highlight-yaml"><div class="highlight"><pre>folder: C:\Project\Import data
-files:
- - 2015-01 Site measurements.csv
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">folder</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">C:\Path\To\Folder</span>
+<span class="l-Scalar-Plain">files</span><span class="p-Indicator">:</span>
+ <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">File 1.csv</span>
+ <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">File 2.csv</span>
 
-site: Example site
-version: RAW
+<span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Site name</span>
+<span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RAW</span>
 
-columns:
-  date: 1
-  time: 2
-  location: 21
+<span class="l-Scalar-Plain">mapping</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">pH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">PH</span>
+  <span class="l-Scalar-Plain">Suspended Solids At 105C</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">SS</span>
+  <span class="l-Scalar-Plain">Colour</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">COLOUR</span>
+  <span class="l-Scalar-Plain">Biochemical Oxygen Demand Low Level</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">BOD</span>
+  <span class="l-Scalar-Plain">Biochemical Oxygen Demand</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">BOD</span>
+  <span class="l-Scalar-Plain">Chemical Oxygen Demand</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">COD</span>
+  <span class="l-Scalar-Plain">Chloride</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CHLORIDE</span>
+  <span class="l-Scalar-Plain">Nitrate</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">NITRATE</span>
+  <span class="l-Scalar-Plain">Sulphate</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">SULPHATE</span>
+  <span class="l-Scalar-Plain">Calcium</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">CALCIUM</span>
+  <span class="l-Scalar-Plain">Sodium</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">SODIUM</span>
+  <span class="l-Scalar-Plain">Aluminium (Dissolved)</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ALUMINIUM</span>
+  <span class="l-Scalar-Plain">Manganese (Dissolved)</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">MANGANESE</span>
+  <span class="l-Scalar-Plain">Zinc (Dissolved)</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ZINC</span>
+  <span class="l-Scalar-Plain">Iron (Dissolved)</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IRON</span>
+  <span class="l-Scalar-Plain">Dissolved Organic Carbon</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">DOC</span>
+  <span class="l-Scalar-Plain">Total Petroleum Hydrocarbons</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TPH</span>
 
-params:
-  TEMP:
-    column: 3
-    unit: degC
-  PH:
-    column: 4
-    unit: &quot;-&quot;
-  DO%:
-    column: 7
-    unit: %
-  DO:
-    column: 8
-    unit: mg/l
-  EC:
-    column: 9
-    unit: µS/cm
+<span class="l-Scalar-Plain">params</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">PH</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="s">&quot;-&quot;</span>
+  <span class="l-Scalar-Plain">SS</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">COLOUR</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Pt/Co</span>
+  <span class="l-Scalar-Plain">BOD</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">COD</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">DOC</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">CHLORIDE</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">NITRATE</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">SULPHATE</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">CALCIUM</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">SODIUM</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">ALUMINIUM</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">μg/l</span>
+  <span class="l-Scalar-Plain">MANGANESE</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">μg/l</span>
+  <span class="l-Scalar-Plain">ZINC</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">μg/l</span>
+  <span class="l-Scalar-Plain">IRON</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">μg/l</span>
+  <span class="l-Scalar-Plain">TPH</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">μg/l</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -200,17 +231,17 @@ params:
 correctly. The example is best copied exactly as provided!</p>
 </div>
 <p>The configuration file describes the files to be imported as well as information
-about which <cite>csv</cite>-file columns to be imported. Measured parameter columns can be
-modified as required by editing the <code class="docutils literal"><span class="pre">params</span></code> section of the configuration
-file.</p>
+about which <cite>csv</cite>-file rows (parameters) to be imported. Analysed parameters can
+be modified as required by editing the <code class="docutils literal"><span class="pre">mapping</span></code> and <code class="docutils literal"><span class="pre">params</span></code> sections of
+the configuration file.</p>
 <p>Parameter values in the import file starting with <cite>&lt;</cite> are interpreted as being
 below the meter&#8217;s limit of detection (LOD). Such measurements are imported as
 50% of the LOD to allow numeric evaluations and plotting in line with current
 best practice.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>The date column is assumed to be formatted as <code class="docutils literal"><span class="pre">yyyy/mm/dd</span></code>!</p>
-<p class="last">If the time column is omitted all times are set to 12:00:00 hrs.</p>
+<p>The date column is assumed to be formatted as <code class="docutils literal"><span class="pre">dd-mmm-yy</span></code>!</p>
+<p class="last">Times are set to 12:00:00 hrs.</p>
 </div>
 </div>
 <div class="section" id="running-the-import">
@@ -219,8 +250,8 @@ best practice.</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Open the <code class="file docutils literal"><span class="pre">Monitoring</span> <span class="pre">data.dss</span></code> file in HEC-DSSVue.</li>
-<li>Select menu item <span class="menuselection">Scripts ‣ Import field data</span> or
-alternatively click on <span class="menuselection">Import field data</span> on the toolbar.</li>
+<li>Select menu item <span class="menuselection">Scripts ‣ Import lab data</span> or
+alternatively click on <span class="menuselection">Import lab data</span> on the toolbar.</li>
 </ol>
 </div></blockquote>
 <p>When successfully completed, a message is displayed how many records have been
@@ -255,7 +286,7 @@ a different version, for example <cite>OBS</cite>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 27/04/2015.
+      Last updated on 29/04/2015.
     </p>
   </div>
 
@@ -276,7 +307,7 @@ a different version, for example <cite>OBS</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.1
+            VERSION:'0.1.2
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
