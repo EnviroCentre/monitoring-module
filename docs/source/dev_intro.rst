@@ -88,7 +88,7 @@ include the scripts folder.
 
 
 Debugging in HEC-DSSVue
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 To make debugging scripts in HEC-DSSVue easier, the Java console window can be
 shown when starting HEC-DSSVue by setting ``showConsole true`` in the 
