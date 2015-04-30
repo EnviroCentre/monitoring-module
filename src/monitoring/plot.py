@@ -14,6 +14,12 @@ def onePerParam(config, dssFilePath):
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
 
+    # Assign a fixed colour to each location
+    colours = {}  # {'locationId': [#r, #g, #b]}
+    for locationIndex, location in enumerate(config['locations']):
+        colourIndex = locationIndex % len(config['line']['colours'])
+        colours[location] = config['line']['colours'][colourIndex]
+
     for param, paramConfig in config['params'].iteritems():
         thePlot = Plot.newPlot()
         dataPaths = [
@@ -24,39 +30,33 @@ def onePerParam(config, dssFilePath):
                                    config['version'].upper())
             for location in config['locations']
         ]
-        units = []
-        for dataPath in dataPaths:
-            timeseries = dssFile.get(dataPath, 1)
-            if timeseries.numberValues > 0:
-                thePlot.addData(timeseries)
-
-                # Collect unique units
-                if not timeseries.units in units:
-                    units.append(timeseries.units)
+        datasets = [dssFile.get(p, 1) for p in dataPaths]
+        datasets = [d for d in datasets if d.numberValues > 0]
+        if not datasets:
+            print "No data for parameter %s. Plot skipped." % param
+            continue
+        
+        map(thePlot.addData, datasets)
 
         thePlot.showPlot()
         thePlot.setPlotTitleText(param)
         thePlot.setPlotTitleVisible(1)
         thePlot.setSize(int(config['width']), int(config['height']))
 
-        # We can only access labels at this point
-        for dataIndex, dataPath in enumerate(dataPaths):
-            timeseries = dssFile.get(dataPath, 1)
-            if timeseries.numberValues > 0:
-                label = thePlot.getLegendLabel(timeseries)
-                label.setText(timeseries.location)
+        # We can only access labels and curves at this point
+        map(lambda d: thePlot.getLegendLabel(d).setText(d.location), datasets)
 
-                curve = thePlot.getCurve(dataPath)
-                colourIndex = dataIndex % len(config['line']['colours'])
-                curve.setLineColor("%s, %s, %s" % tuple(config['line']['colours'][colourIndex]))
-                curve.setLineWidth(config['line']['width'])
+        for dataset in datasets:
+            curve = thePlot.getCurve(dataset)
+            curve.setLineColor("%s, %s, %s" % tuple(colours[dataset.location]))
+            curve.setLineWidth(config['line']['width'])
 
-        for vp_index, unit in enumerate(units):  # We have one viewport per distinct unit
+        units = set(ds.units for ds in datasets)
+        for vp_index, unit in enumerate(units):  # 1 viewport per distinct unit
             viewport = thePlot.getViewport(vp_index)
-
-            viewport.getAxis("X1").setScaleLimits(minDate.value(), maxDate.value())
+            viewport.getAxis("X1").setScaleLimits(minDate.value(), 
+                                                  maxDate.value())
             viewport.getAxis("Y1").setLabel(unit)
-
             viewport.setMinorGridXVisible(1)
             viewport.setMinorGridYVisible(1)
             
