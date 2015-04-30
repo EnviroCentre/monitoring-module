@@ -20,6 +20,7 @@ def onePerParam(config, dssFilePath):
         colourIndex = locationIndex % len(config['line']['colours'])
         colours[location] = config['line']['colours'][colourIndex]
 
+    plotted = 0
     for param, paramConfig in config['params'].iteritems():
         thePlot = Plot.newPlot()
         dataPaths = [
@@ -68,6 +69,7 @@ def onePerParam(config, dssFilePath):
                            config['version'] + "_" + param),
                            95)
         thePlot.close()
+        plotted += 1
 
     dssFile.done()
-
+    return plotted  # Number of plots exported
