@@ -12,8 +12,9 @@ class PlotTool(tb.Tool):
         'params', 'width', 'height', 'line', 'output_folder']
     
     def main(self):
-        plotted = plot.onePerParam(self.config, self.dssFilePath)
-        self.message = "%s Timeseries plots exported." % plotted
+        plotted, messages = plot.onePerParam(self.config, self.dssFilePath)
+        messages.insert(0, "%s Timeseries plots exported." % plotted)
+        self.message += "\n".join(messages)
 
 
 tool = PlotTool()

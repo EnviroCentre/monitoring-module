@@ -7,6 +7,8 @@ import toolbox.util as tbu
 
 
 def onePerParam(config, dssFilePath):
+    plotted = 0  # Number of plots exported
+    messages = []
     
     outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
     dssFile = HecDss.open(dssFilePath)
@@ -20,7 +22,6 @@ def onePerParam(config, dssFilePath):
         colourIndex = locationIndex % len(config['line']['colours'])
         colours[location] = config['line']['colours'][colourIndex]
 
-    plotted = 0
     for param, paramConfig in config['params'].iteritems():
         thePlot = Plot.newPlot()
         dataPaths = [
@@ -34,7 +35,7 @@ def onePerParam(config, dssFilePath):
         datasets = [dssFile.get(p, 1) for p in dataPaths]
         datasets = [d for d in datasets if d.numberValues > 0]
         if not datasets:
-            print "No data for parameter %s. Plot skipped." % param
+            messages.append("No data for parameter '%s'." % param)
             continue
         
         map(thePlot.addData, datasets)
@@ -72,4 +73,4 @@ def onePerParam(config, dssFilePath):
         plotted += 1
 
     dssFile.done()
-    return plotted  # Number of plots exported
+    return plotted, messages
