@@ -36,18 +36,19 @@ def locationsDown(config):
             # Then actual data
             while 1:
                 if len(cells[config['columns']['location']-1]) > 0:
+                    
+                    dateStr = cells[config['columns']['date']-1]
+                    try:
+                        timeStr = cells[int(config['columns']['time'])-1]
+                    except (KeyError, ValueError):
+                        timeStr = "12:00:00"
+                    sampleDate = tbu.parseDateAndTime(dateStr, timeStr)
+                    
                     for param, paramConfig in config['params'].iteritems():
                         value = tbu.parseMeasurement(cells[paramConfig['column']-1])
                         if value:
-                            date_str = cells[config['columns']['date']-1]
-                            try:
-                                time_str = cells[int(config['columns']['time'])-1]
-                            except (KeyError, ValueError):
-                                time_str = "12:00:00"
-                            
                             record = {
-                                'sampledate': tbu.parseDateAndTime(date_str, 
-                                                                   time_str),
+                                'sampledate': sampleDate,
                                 'site': config['site'],
                                 'location': cells[config['columns']['location']-1],
                                 'parameter': param,
