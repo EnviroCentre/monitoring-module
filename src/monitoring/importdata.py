@@ -9,18 +9,22 @@ def locationsDown(config):
     for fileName in config['files']:
         importFile = os.path.join(config['folder'], fileName)
 
-        header_cells = []
-        try:
-            try:
-                f = open(importFile)
-            except IOError:
-                raise
-            
+        with open(importFile) as f:
             # Find the header row first
             while 1:
                 cells = f.readline().split(',')
                 if cells[0].lower() == 'date':
-                    header_cells = cells
+                    paramColumns = {}
+                    for idx, param in enumerate(cells):
+                        try:
+                            paramColumns[
+                                # Weird non-utf chars in header row compare 
+                                # ascii chars only
+                                config['mapping'][param.encode(encoding='ascii',
+                                                               errors='ignore')]
+                            ] = idx
+                        except KeyError:
+                            pass
                     break
 
             # Potentially blank rows below the header line
@@ -57,9 +61,6 @@ def locationsDown(config):
                 if len(cells[0]) == 0:
                     break
 
-        finally:
-            f.close()
-        
     return records
     
 
@@ -69,11 +70,7 @@ def locationsAcross(config):
     for fileName in config['files']:
         importFile = os.path.join(config['folder'], fileName)
 
-        try:
-            try:
-                f = open(importFile)
-            except IOError:
-                raise
+        with open(importFile) as f:
             # Find the row with locations
             while 1:
                 cells = f.readline().split(',')
@@ -119,7 +116,4 @@ def locationsAcross(config):
                     # Skip if param not in import file
                     pass
 
-        finally:
-            f.close()
-    
     return records
