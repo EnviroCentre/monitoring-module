@@ -2,7 +2,7 @@ folder: C:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\
 files:
  - HI handheld.csv
 
-site: Glenchamber
+site: Site name
 version: RAW
 
 columns:
@@ -19,7 +19,7 @@ params:
     unit: "-"
   DO%:
     column: 7
-    unit: %
+    unit: "%"
   DO:
     column: 8
     unit: mg/l

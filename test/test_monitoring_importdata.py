@@ -7,27 +7,62 @@ import unittest
 import yaml
 import codecs
 from monitoring import importdata
+from operator import itemgetter
+ 
 
 class DataImportTestCase(unittest.TestCase):
-    def testChemtest(self):
-        configFileName = 'lab_import.yml'
+    def testHIHandheld(self):
+        configFileName = 'field_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             config = yaml.load(configFile.read())
+
+        records = importdata.locationsDown(config)
+        # Records are not in the same order as input file
+        records.sort(key=itemgetter('location', 'parameter'))
         
-        records = importdata.locationsAcross(config)
-        self.assertEqual(len(records), 106)
-        
-        sites = [record['site'] for record in records] 
-        self.assertEqual(sites, ['Site name'] * len(sites))
-        
-        versions = [record['version'] for record in records] 
-        self.assertEqual(versions, ['RAW'] * len(versions))
+        self.assertEqual(len(records), 40)
+        self.assertTrue(all(record['site'] == 'Site name' 
+                        for record in records))
+        self.assertTrue(all(record['version'] == 'RAW' 
+                        for record in records))
 
         ymds = [(record['sampledate'].year(), 
                  record['sampledate'].month(),
                  record['sampledate'].day()) for record in records] 
-        self.assertEqual(ymds, [(2015, 2, 10)] * len(ymds))
+        self.assertTrue(all(ymd == (2015, 3, 25) for ymd in ymds))
         
+        expected = [
+            [4.91, 42.4, 100, 5.77, 7.92],
+            [5.68, 49.3, 64, 4.86, 8.25],
+            [8.26, 70, 55, 6.01, 7.33],
+            [6.86, 57.1, 95, 5.24, 6.62],
+            [9.75, 82, 41, 5.82, 6.95],
+            [6.97, 57.9, 91, 5.64, 6.26],
+            [9.9, 81.1, 49, 5.53, 5.99],
+            [8.45, 72.2, 17, 8.2, 7.48],
+        ]
+        values = [record['samplevalue'] for record in records]
+        values = [values[i:i + 5] for i in range(0, len(values), 5)]
+
+        self.assertEqual(values, expected)
+
+    def testChemtest(self):
+        configFileName = 'lab_import.yml'
+        with codecs.open(configFileName, encoding='utf-8') as configFile:
+            config = yaml.load(configFile.read())
+
+        records = importdata.locationsAcross(config)
+        self.assertEqual(len(records), 106)
+        self.assertTrue(all(record['site'] == 'Site name' 
+                        for record in records))
+        self.assertTrue(all(record['version'] == 'RAW' 
+                        for record in records))
+
+        ymds = [(record['sampledate'].year(), 
+                 record['sampledate'].month(),
+                 record['sampledate'].day()) for record in records] 
+        self.assertTrue(all(ymd == (2015, 2, 10) for ymd in ymds))
+
         params = {
             'PH': ('-', 8),
             'SS': ('mg/l', 6),
@@ -46,14 +81,14 @@ class DataImportTestCase(unittest.TestCase):
             'IRON': (u'\u03BCg/l', 8),
             'TPH': (u'\u03BCg/l', 8)
         }
-        
+
         for param, paramConfig in params.iteritems():
             units = [record['units'] for record in records 
                 if record['parameter'] == param]
             self.assertEqual(units, [paramConfig[0]] * paramConfig[1],
                              "Error in units %s for parameter %s" 
                              % (units, param))
-        
+
         locations = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'PWS1', 'PWS2']
         expected = [
             [8.5, 2.5, 42, 2.0, 18, 19, 0.25, 1.8, 7.1, 35, 31, 200, 2.8, 990],
