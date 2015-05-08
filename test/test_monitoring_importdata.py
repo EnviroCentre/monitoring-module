@@ -11,9 +11,8 @@ from monitoring import importdata
 class DataImportTestCase(unittest.TestCase):
     def testChemtest(self):
         configFileName = 'lab_import.yml'
-        configFile = codecs.open(configFileName, encoding='utf-8')
-        config = yaml.load(configFile.read()).next()
-        configFile.close()
+        with codecs.open(configFileName, encoding='utf-8') as configFile:
+            config = yaml.load(configFile.read())
         
         records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 106)

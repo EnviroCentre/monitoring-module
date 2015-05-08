@@ -53,19 +53,19 @@ class Tool(object):
         elif dssFilePath:
             raise ValueError("`configFileName` argument must be provided if `dssFilePath` is specified.")
         
-        #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
-        #: :meth:`main`.
+        #: Message to be displayed in HEC-DSSVue after running the tool. This 
+        #: attribute is typically set in the :meth:`main`.
         self.message = ""
         
         if self._toolIsValid():
-            configFile = codecs.open(self.configFilePath, encoding='utf-8')
-            self.config = yaml.load(configFile.read()).next()
-            configFile.close()
+            with codecs.open(self.configFilePath, encoding='utf-8') as configFile:
+                self.config = yaml.load(configFile.read())
             self._configIsValid()
         
     def _toolIsValid(self):
         """
-        Check if the tool is configured correctly with a valid config file and HEC-DSS database.
+        Check if the tool is configured correctly with a valid config file and 
+        HEC-DSS database.
         """
         
         # Check if HEC-DSS db exists
@@ -86,8 +86,8 @@ class Tool(object):
         """
         Validate config file content.
         
-        Currently checks for existence of required top-level config parameters/keys only as specified in 
-        :attr:`.requiredParams`.
+        Currently checks for existence of required top-level config parameters/
+        keys only as specified in :attr:`.requiredParams`.
         """
         
         errors = [ValidationError("The parameter '%s' does not exist." % param) 
@@ -114,8 +114,8 @@ class Tool(object):
         """
         Main tool execution method.
         
-        This method should be called after instantiating the tool to run it. The method executes :meth:`.main` followed
-        by :meth:`postRun`.
+        This method should be called after instantiating the tool to run it. The
+        method executes :meth:`.main` followed by :meth:`postRun`.
         """
         
         self.main()
@@ -134,8 +134,9 @@ class Tool(object):
         """
         Run additional tasks at the end of the core run.
         
-        By default this method refreshes the HEC-DSSVue catalogue (if :attr:`.refreshCatalogue` is true) and displays
-        any string in :attr:`.message`.
+        By default this method refreshes the HEC-DSSVue catalogue (if 
+        :attr:`.refreshCatalogue` is true) and displays any string in 
+        :attr:`.message`.
         """
         
         if self.refreshCatalogue and self.mainWindow:
