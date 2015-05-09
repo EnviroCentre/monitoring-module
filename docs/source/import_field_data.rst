@@ -55,21 +55,23 @@ file with the following content:
       time: 2
       location: 21
 
+    mapping:
+      C: TEMP
+      pH: PH
+      DO %: DO%
+      DO mg/l: DO
+      S/cm: EC
+
     params:
       TEMP:
-        column: 3
         unit: degC
       PH:
-        column: 4
         unit: "-"
       DO%:
-        column: 7
-        unit: %
+        unit: "%"
       DO:
-        column: 8
         unit: mg/l
       EC:
-        column: 9
         unit: µS/cm
 
 
@@ -81,9 +83,10 @@ file with the following content:
 
 
 The configuration file describes the files to be imported as well as information
-about which `csv`-file columns to be imported. Measured parameter columns can be 
-modified as required by editing the ``params`` section of the configuration 
-file.
+about which `csv`-file columns to be imported. The ``mapping`` section of the 
+configuration file indicates which column headings map onto the parameters to be
+saved into the database. Special symbols (non-ASCII characters) should be 
+omitted from the ``mapping`` section.
 
 Parameter values in the import file starting with `<` are interpreted as being 
 below the meter's limit of detection (LOD). Such measurements are imported as 
