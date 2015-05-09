@@ -14,6 +14,14 @@ def locationsDown(config):
             while 1:
                 cells = f.readline().split(',')
                 if cells[0].lower() == 'date':
+                    
+                    dateColumn = cells.index(config['columns']['date'])
+                    try:
+                        timeColumn = cells.index(config['columns']['time'])
+                    except KeyError:
+                        timeColumn = None
+                    locationColumn = cells.index(config['columns']['location'])
+                    
                     paramColumns = {}
                     for idx, param in enumerate(cells):
                         try:
@@ -35,12 +43,12 @@ def locationsDown(config):
 
             # Then actual data
             while 1:
-                if len(cells[config['columns']['location']-1]) > 0:
+                if len(cells[locationColumn]) > 0:
                     
-                    dateStr = cells[config['columns']['date']-1]
-                    try:
-                        timeStr = cells[int(config['columns']['time'])-1]
-                    except (KeyError, ValueError):
+                    dateStr = cells[dateColumn]
+                    if not timeColumn is None:
+                        timeStr = cells[timeColumn]
+                    else:
                         timeStr = "12:00:00"
                     sampleDate = tbu.parseDateAndTime(dateStr, timeStr)
                     
@@ -50,7 +58,7 @@ def locationsDown(config):
                             record = {
                                 'sampledate': sampleDate,
                                 'site': config['site'],
-                                'location': cells[config['columns']['location']-1],
+                                'location': cells[locationColumn],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
