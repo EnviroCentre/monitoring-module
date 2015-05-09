@@ -18,7 +18,7 @@ def locationsDown(config):
                     dateColumn = cells.index(config['columns']['date'])
                     locationColumn = cells.index(config['columns']['location'])
                 except ValueError:
-                    # We're not in a header row
+                    # We're not in a header row, move to next line
                     continue
                 
                 # Optional time column
@@ -29,15 +29,16 @@ def locationsDown(config):
 
                 # Parameter columns
                 paramColumns = {}
-                for idx, param in enumerate(cells):
+                for idx, content in enumerate(cells):
                     try:
-                        paramColumns[
-                            # Weird non-utf chars in header row compare 
-                            # ascii chars only
-                            config['mapping'][param.encode(encoding='ascii',
-                                                           errors='ignore')]
-                        ] = idx
+                        # Map cell onto param. Ignore non-ascii characters.
+                        param = config['mapping'][content.encode(encoding='ascii',
+                                                                 errors='ignore')]
+                        # Onlu use param if in `config['params']`
+                        if param in config['params']:
+                            paramColumns[param] = idx
                     except KeyError:
+                        # Cell doesn't map onto param
                         pass
                 break
 

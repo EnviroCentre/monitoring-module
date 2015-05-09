@@ -16,6 +16,7 @@ mapping:
   DO %: DO%
   DO mg/l: DO
   S/cm: EC
+  Salinity: SAL
 
 params:
   TEMP:
