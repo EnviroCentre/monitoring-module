@@ -44,8 +44,8 @@ def locationsDown(config):
                         timeStr = "12:00:00"
                     sampleDate = tbu.parseDateAndTime(dateStr, timeStr)
                     
-                    for param, paramConfig in config['params'].iteritems():
-                        value = tbu.parseMeasurement(cells[paramConfig['column']-1])
+                    for param, column in paramColumns.iteritems():
+                        value = tbu.parseMeasurement(cells[column])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
@@ -54,7 +54,7 @@ def locationsDown(config):
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
-                                'units': paramConfig['unit']
+                                'units': config['params'][param]['unit']
                             }
                             records.append(record)
                         

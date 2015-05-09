@@ -19,18 +19,12 @@ mapping:
 
 params:
   TEMP:
-    column: 3
     unit: degC
   PH:
-    column: 4
     unit: "-"
   DO%:
-    column: 7
     unit: "%"
   DO:
-    column: 8
     unit: mg/l
   EC:
-    column: 9
     unit: µS/cm
-  
