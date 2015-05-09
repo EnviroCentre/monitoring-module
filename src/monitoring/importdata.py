@@ -13,27 +13,33 @@ def locationsDown(config):
             # Find the header row first
             while 1:
                 cells = f.readline().split(',')
-                if cells[0].lower() == 'date':
-                    
+                try:
+                    # If header row, we must have date and location
                     dateColumn = cells.index(config['columns']['date'])
-                    try:
-                        timeColumn = cells.index(config['columns']['time'])
-                    except KeyError:
-                        timeColumn = None
                     locationColumn = cells.index(config['columns']['location'])
-                    
-                    paramColumns = {}
-                    for idx, param in enumerate(cells):
-                        try:
-                            paramColumns[
-                                # Weird non-utf chars in header row compare 
-                                # ascii chars only
-                                config['mapping'][param.encode(encoding='ascii',
-                                                               errors='ignore')]
-                            ] = idx
-                        except KeyError:
-                            pass
-                    break
+                except ValueError:
+                    # We're not in a header row
+                    continue
+                
+                # Optional time column
+                try:
+                    timeColumn = cells.index(config['columns']['time'])
+                except KeyError:
+                    timeColumn = None
+
+                # Parameter columns
+                paramColumns = {}
+                for idx, param in enumerate(cells):
+                    try:
+                        paramColumns[
+                            # Weird non-utf chars in header row compare 
+                            # ascii chars only
+                            config['mapping'][param.encode(encoding='ascii',
+                                                           errors='ignore')]
+                        ] = idx
+                    except KeyError:
+                        pass
+                break
 
             # Potentially blank rows below the header line
             while 1:
