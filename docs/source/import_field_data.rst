@@ -48,9 +48,9 @@ file with the following content:
     version: RAW
 
     columns:
-      date: 1
-      time: 2
-      location: 21
+      date: Date
+      time: Time
+      location: Remarks
 
     mapping:
       C: TEMP
