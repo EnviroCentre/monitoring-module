@@ -11,11 +11,10 @@ from operator import itemgetter
  
 
 class FieldDataImportTestCase(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
+    def setUp(self):
         configFileName = 'field_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
-            cls.config = yaml.load(configFile.read())
+            self.config = yaml.load(configFile.read())
         
     def testHIHandheld(self):
         config = self.config
