@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os.path
 import toolbox.util as tbu
+import csv
 
 
 def locationsDown(config):
@@ -10,9 +11,11 @@ def locationsDown(config):
         importFile = os.path.join(config['folder'], fileName)
 
         with open(importFile) as f:
+            csvReader = csv.reader(f)
             # Find the header row first
             while 1:
-                cells = f.readline().split(',')
+                #cells = f.readline().split(',')
+                cells = csvReader.next()
                 try:
                     # If header row, we must have date and location
                     dateColumn = cells.index(config['columns']['date'])
@@ -34,7 +37,7 @@ def locationsDown(config):
                         # Map cell onto param. Ignore non-ascii characters.
                         param = config['mapping'][content.encode(encoding='ascii',
                                                                  errors='ignore')]
-                        # Onlu use param if in `config['params']`
+                        # Only use param if in `config['params']`
                         if param in config['params']:
                             paramColumns[param] = idx
                     except KeyError:
@@ -42,14 +45,13 @@ def locationsDown(config):
                         pass
                 break
 
-            # Potentially blank rows below the header line
-            while 1:
-                cells = f.readline().split(',')
-                if len(cells[0]) > 0:
-                    break
-
             # Then actual data
             while 1:
+                try:
+                    cells = csvReader.next()
+                except StopIteration:
+                    break
+                
                 if len(cells[locationColumn]) > 0:
                     
                     dateStr = cells[dateColumn]
@@ -73,10 +75,6 @@ def locationsDown(config):
                             }
                             records.append(record)
                         
-                cells = f.readline().split(',')
-                if len(cells[0]) == 0:
-                    break
-
     return records
     
 
