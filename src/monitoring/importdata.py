@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+import csv
 import os.path
 import toolbox.util as tbu
-import csv
 
 
 def locationsDown(config):
@@ -12,62 +12,55 @@ def locationsDown(config):
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
-            # Find the header row first
-            while 1:
-                #cells = f.readline().split(',')
-                cells = csvReader.next()
+            for row in csvReader:
+                # Find the header row first
                 try:
                     # If header row, we must have date and location
-                    dateColumn = cells.index(config['columns']['date'])
-                    locationColumn = cells.index(config['columns']['location'])
+                    dateColumn = row.index(config['columns']['date'])
+                    locationColumn = row.index(config['columns']['location'])
                 except ValueError:
                     # We're not in a header row, move to next line
                     continue
                 
                 # Optional time column
                 try:
-                    timeColumn = cells.index(config['columns']['time'])
+                    timeColumn = row.index(config['columns']['time'])
                 except KeyError:
                     timeColumn = None
 
                 # Parameter columns
                 paramColumns = {}
-                for idx, content in enumerate(cells):
+                for column, cell in enumerate(row):
                     try:
                         # Map cell onto param. Ignore non-ascii characters.
-                        param = config['mapping'][content.encode(encoding='ascii',
-                                                                 errors='ignore')]
+                        param = config['mapping'][cell.encode(encoding='ascii',
+                                                              errors='ignore')]
                         # Only use param if in `config['params']`
                         if param in config['params']:
-                            paramColumns[param] = idx
+                            paramColumns[param] = column
                     except KeyError:
                         # Cell doesn't map onto param
                         pass
                 break
 
             # Then actual data
-            while 1:
-                try:
-                    cells = csvReader.next()
-                except StopIteration:
-                    break
-                
-                if len(cells[locationColumn]) > 0:
+            for row in csvReader:
+                if len(row[locationColumn]) > 0:
                     
-                    dateStr = cells[dateColumn]
+                    dateStr = row[dateColumn]
                     if not timeColumn is None:
-                        timeStr = cells[timeColumn]
+                        timeStr = row[timeColumn]
                     else:
                         timeStr = "12:00:00"
                     sampleDate = tbu.parseDateAndTime(dateStr, timeStr)
                     
                     for param, column in paramColumns.iteritems():
-                        value = tbu.parseMeasurement(cells[column])
+                        value = tbu.parseMeasurement(row[column])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
                                 'site': config['site'],
-                                'location': cells[locationColumn],
+                                'location': row[locationColumn],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
