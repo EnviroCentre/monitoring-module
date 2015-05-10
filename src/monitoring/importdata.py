@@ -78,35 +78,30 @@ def locationsAcross(config):
         importFile = os.path.join(config['folder'], fileName)
 
         with open(importFile) as f:
-            # Find the row with locations
-            while 1:
-                cells = f.readline().split(',')
-                if cells[1].lower() == 'client sample id.:':
+            csvReader = csv.reader(f)
+            for row in csvReader:
+                # Find the row with locations
+                if row[1].lower() == 'client sample id.:':
                     # Dict of {'locationId': columnNo}
                     locationColumns = {}
-                    for i in range(5, len(cells)):
-                        if len(cells[i].strip()) > 0:
-                            locationColumns[cells[i].upper()] = i 
+                    for column, cell in enumerate(row[5:]):
+                        if cell.strip():
+                            locationColumns[cell.upper()] = column + 5
                     break
 
             # Date row (use first value for just now)
-            while 1:
-                cells = f.readline().split(',')
-                if cells[1].lower() == 'date sampled:':
-                    sampleDate = tbu.parseDateAndTime(cells[5], "12:00:00",
+            for row in csvReader:
+                if row[1].lower() == 'date sampled:':
+                    sampleDate = tbu.parseDateAndTime(row[5], "12:00:00",
                                                       "dd-mmm-yy")
                     break
 
             # Then actual data
-            while 1:
-                cells = f.readline().split(',')
-                if len(cells[0]) == 0:
-                    break
-
+            for row in csvReader:
                 try:
-                    param = config['mapping'][cells[0].strip()]
+                    param = config['mapping'][row[0].strip()]
                     for location, column in locationColumns.iteritems():
-                        value = tbu.parseMeasurement(cells[column])
+                        value = tbu.parseMeasurement(row[column])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
@@ -118,7 +113,6 @@ def locationsAcross(config):
                                 'units': config['params'][param]['unit']
                             }
                             records.append(record)
-
                 except KeyError:
                     # Skip if param not in import file
                     pass
