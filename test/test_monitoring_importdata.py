@@ -10,11 +10,15 @@ from monitoring import importdata
 from operator import itemgetter
  
 
-class DataImportTestCase(unittest.TestCase):
-    def testHIHandheld(self):
+class FieldDataImportTestCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
         configFileName = 'field_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
-            config = yaml.load(configFile.read())
+            cls.config = yaml.load(configFile.read())
+        
+    def testHIHandheld(self):
+        config = self.config
 
         records = importdata.locationsDown(config)
         # Records are not in the same order as input file
@@ -45,7 +49,32 @@ class DataImportTestCase(unittest.TestCase):
         values = [values[i:i + 5] for i in range(0, len(values), 5)]
 
         self.assertEqual(values, expected)
+    
+    def testHIHandheldNoTime(self):
+        config = self.config
+        del config['columns']['time']
 
+        records = importdata.locationsDown(config)
+        records.sort(key=itemgetter('location', 'parameter'))
+        
+        hmss = [(record['sampledate'].hour(), 
+                 record['sampledate'].minute(),
+                 record['sampledate'].second()) for record in records] 
+        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+
+    def testHIHandheldNoneTime(self):
+        config = self.config
+        config['columns']['time'] = None
+
+        records = importdata.locationsDown(config)
+        records.sort(key=itemgetter('location', 'parameter'))
+        
+        hmss = [(record['sampledate'].hour(), 
+                 record['sampledate'].minute(),
+                 record['sampledate'].second()) for record in records] 
+        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+
+class LabDataImportTestCase(unittest.TestCase):
     def testChemtest(self):
         configFileName = 'lab_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:

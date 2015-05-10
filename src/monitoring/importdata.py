@@ -24,7 +24,10 @@ def locationsDown(config):
                 
                 # Optional time column
                 try:
-                    timeColumn = row.index(config['columns']['time'])
+                    if config['columns']['time']:
+                        timeColumn = row.index(config['columns']['time'])
+                    else:
+                        timeColumn = None
                 except KeyError:
                     timeColumn = None
 
