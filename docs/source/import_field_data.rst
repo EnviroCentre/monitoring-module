@@ -50,7 +50,7 @@ file with the following content:
     columns:
       date: Date
       time: Time
-      location: Remarks
+      location: Location
 
     mapping:
       C: TEMP
