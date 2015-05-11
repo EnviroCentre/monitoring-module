@@ -96,7 +96,7 @@ def locationsAcross(config):
             for row in csvReader:
                 if row[1].lower() == 'date sampled:':
                     sampleDate = tbu.parseDateAndTime(row[5], "12:00:00",
-                                                      "dd-mmm-yy")
+                                                      "%d-%b-%y")
                     break
 
             # Then actual data
