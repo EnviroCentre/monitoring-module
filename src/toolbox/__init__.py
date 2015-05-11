@@ -76,7 +76,7 @@ class Tool(object):
         
         # Check if config file exists
         if not path.isfile(self.configFilePath):
-            error = ValidationError("The configuration file %s does not exist.\n\nPlease create this file and try again." % self.configFilePath)
+            error = ValidationError("The configuration file {} does not exist.\n\nPlease create this file and try again.".format(self.configFilePath))
             MessageBox.showError(error.message, "HEC-DSSVue")
             raise error
         
@@ -90,7 +90,7 @@ class Tool(object):
         keys only as specified in :attr:`.requiredParams`.
         """
         
-        errors = [ValidationError("The parameter '%s' does not exist." % param) 
+        errors = [ValidationError("The parameter '{}' does not exist.".format(param)) 
             for param in self.requiredParams if not param in self.config]
 
         if errors:
@@ -104,10 +104,10 @@ class Tool(object):
         Display configuration errors in the HEC-DSSVue window.
         """
         
-        message = "The configuration file %s is not valid.\nPlease check the content and try again." % self.configFilePath
+        message = "The configuration file {} is not valid.\nPlease check the content and try again.".format(self.configFilePath)
         message += "\n"
         for error in errors:
-            message += "\n - %s" % error.message
+            message += "\n - {}".format(error.message)
         MessageBox.showError(message, "HEC-DSSVue")
 
     def run(self):
