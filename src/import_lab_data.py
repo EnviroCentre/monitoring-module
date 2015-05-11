@@ -15,7 +15,7 @@ class ImportTool(tb.Tool):
     def main(self):
         records = importdata.locationsAcross(self.config)
         imported = tbu.saveIrregularRecords(records, self.dssFilePath)
-        self.message = "%s Records imported." % imported
+        self.message = "{} Records imported.".format(imported)
 
 
 tool = ImportTool()
