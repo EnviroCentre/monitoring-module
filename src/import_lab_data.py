@@ -9,7 +9,23 @@ import toolbox.util as tbu
 
 
 class ImportTool(tb.Tool):
-    requiredParams = ['folder', 'files', 'site', 'version', 'mapping', 'params']
+    schema = Schema({
+        'folder': unicode,
+        'files': [
+            unicode
+        ],
+        'site': unicode,
+        'version': unicode,
+        'mapping': {
+            unicode: unicode
+        },
+        'params': {
+            unicode: {
+                'unit': unicode
+            }
+        }
+    }, required=True)
+
     refreshCatalogue = 1
     
     def main(self):

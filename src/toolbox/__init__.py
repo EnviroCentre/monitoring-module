@@ -5,6 +5,13 @@ from toolbox.util import CancelledError, ValidationError
 import yaml
 from voluptuous import MultipleInvalid
 
+def construct_yaml_str(self, node):
+    # Override the default string handling function to always return unicode 
+    return self.construct_scalar(node)
+
+yaml.Loader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
+yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
+
 
 class Tool(object):
     """
@@ -144,11 +151,3 @@ class Tool(object):
     
         if self.message:
             MessageBox.showInformation(self.message, "HEC-DSSVue")
-
-
-def ustr(data):
-    """
-    Validate if ``data`` is a string or unicode.
-    """ 
-    if not (isinstance(data, str) or isinstance(data, unicode)):
-        raise ValueError
