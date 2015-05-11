@@ -5,7 +5,7 @@
 
 from monitoring import plot
 import toolbox as tb
-from voluptuous import Schema, All, Any, Range, Datetime, DefaultTo, Required, Optional
+from voluptuous import Schema, All, Any, Range, Datetime, Required, Lower, Upper
 
 
 class PlotTool(tb.Tool):
@@ -24,12 +24,12 @@ class PlotTool(tb.Tool):
     defaultLineWidth = 1.25
     
     schema = Schema({
-        'site': unicode,
+        'site': All(Upper, unicode),
         'locations': [
-            unicode
+            All(Upper, unicode)
         ],
-        'interval': unicode,
-        'version': unicode,
+        'interval': All(Upper, unicode),
+        'version': All(Upper, unicode),
         Required('output_folder', default="Output"): unicode,
         'period': {
             'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
@@ -37,7 +37,7 @@ class PlotTool(tb.Tool):
         },
         'params': {
             unicode: {
-                'scale': Any('lin', 'log')
+                'scale': All(Lower, Any('lin', 'log'))
             }
         },
         'width':  All(int, Range(min=100, max=3000)),
