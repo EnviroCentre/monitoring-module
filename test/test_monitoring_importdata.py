@@ -28,11 +28,29 @@ class FieldDataImportTestCase(unittest.TestCase):
                         for record in records))
         self.assertTrue(all(record['version'] == 'RAW' 
                         for record in records))
-
-        ymds = [(record['sampledate'].year(), 
-                 record['sampledate'].month(),
-                 record['sampledate'].day()) for record in records] 
-        self.assertTrue(all(ymd == (2015, 3, 25) for ymd in ymds))
+        
+        seen = set()
+        seen_add = seen.add
+        # One date/time per location
+        ymdhmss = [(record['sampledate'].year(), 
+                    record['sampledate'].month(),
+                    record['sampledate'].day(),
+                    record['sampledate'].hour(), 
+                    record['sampledate'].minute(),
+                    record['sampledate'].second())
+            for record in records 
+            if not (record['location'] in seen or seen_add(record['location']))]
+        expected = [
+            (2015, 3, 25, 12, 15, 0),
+            (2015, 3, 25, 11, 36, 0),
+            (2015, 3, 25, 13, 6, 0),
+            (2015, 3, 25, 10, 49, 0),
+            (2015, 3, 25, 12, 57, 0),
+            (2015, 3, 25, 11, 49, 0),
+            (2015, 3, 25, 12, 2, 0),
+            (2015, 3, 25, 13, 42, 0)
+        ]
+        self.assertEqual(ymdhmss, expected)
         
         expected = [
             [4.91, 42.4, 100, 5.77, 7.92],
