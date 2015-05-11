@@ -6,6 +6,7 @@
 from monitoring import importdata
 import toolbox as tb
 import toolbox.util as tbu
+from voluptuous import Schema
 
 
 class ImportTool(tb.Tool):
