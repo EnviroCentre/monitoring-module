@@ -48,9 +48,13 @@ file with the following content:
     version: RAW
 
     columns:
-      date: Date
-      time: Time
-      location: Location
+      date: 
+        title: Date
+        format: "%Y/%m/%d"
+      time: 
+        title: Time
+      location: 
+        title: Location
 
     mapping:
       C: TEMP
@@ -89,13 +93,6 @@ Parameter values in the import file starting with `<` are interpreted as being
 below the meter's limit of detection (LOD). Such measurements are imported as 
 50% of the LOD to allow numeric evaluations and plotting in line with current 
 best practice.
-
-
-.. warning::
-   
-   The date column is assumed to be formatted as ``yyyy/mm/dd``! 
-
-   If the time column is omitted all times are set to 12:00:00 hrs.
 
 
 Running the import
