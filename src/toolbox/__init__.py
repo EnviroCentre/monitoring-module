@@ -100,7 +100,7 @@ class Tool(object):
         
         if self.schema:
             try:
-                self.schema(self.config) 
+                self.config = self.schema(self.config) 
             except MultipleInvalid as e:
                 self._displayConfigErrors(e.errors)
                 raise
