@@ -1,16 +1,17 @@
 import codecs
 from hec.script import MessageBox
 from os import path
-from toolbox.util import ValidationError, CancelledError
+from toolbox.util import CancelledError, ValidationError
 import yaml
+from voluptuous import MultipleInvalid
+
 
 class Tool(object):
     """
     A tool for undertaking tasks in HEC-DSSVue.
     """
-    
-    #: List of parameters/keys required in the config file.
-    requiredParams = []
+    #: Configuaration schema (uses ``voluptuous`` library)
+    schema = None
     #: Whether to refresh the HEC-DSSVue catalogue after completing the task.
     refreshCatalogue = 0
     
@@ -90,14 +91,13 @@ class Tool(object):
         keys only as specified in :attr:`.requiredParams`.
         """
         
-        errors = [ValidationError("The parameter '{}' does not exist.".format(param)) 
-            for param in self.requiredParams if not param in self.config]
-
-        if errors:
-            self._displayConfigErrors(errors)
-            raise ValidationError(errors)
-        else:
-            return 1
+        if self.schema:
+            try:
+                self.schema(self.config) 
+            except MultipleInvalid as e:
+                self._displayConfigErrors(e.errors)
+                raise
+        return 1
     
     def _displayConfigErrors(self, errors):
         """
@@ -107,7 +107,7 @@ class Tool(object):
         message = "The configuration file {} is not valid.\nPlease check the content and try again.".format(self.configFilePath)
         message += "\n"
         for error in errors:
-            message += "\n - {}".format(error.message)
+            message += "\n - {}".format(error)
         MessageBox.showError(message, "HEC-DSSVue")
 
     def run(self):
@@ -144,3 +144,11 @@ class Tool(object):
     
         if self.message:
             MessageBox.showInformation(self.message, "HEC-DSSVue")
+
+
+def ustr(data):
+    """
+    Validate if ``data`` is a string or unicode.
+    """ 
+    if not (isinstance(data, str) or isinstance(data, unicode)):
+        raise ValueError
