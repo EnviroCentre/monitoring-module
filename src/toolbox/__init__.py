@@ -37,9 +37,9 @@ class Tool(object):
                 from javax.swing import JFileChooser
                 from javax.swing.filechooser import FileNameExtensionFilter
                 fileDialogue = JFileChooser(self.dssFilePath)
-                filter = FileNameExtensionFilter("Configuration file", 
+                filter = FileNameExtensionFilter("Configuration file (*.yml; *.yaml)", 
                                                  ["yaml", "yml"])
-                fileDialogue.addChoosableFileFilter(filter)
+                fileDialogue.setFileFilter(filter)
                 ret = fileDialogue.showOpenDialog(self.mainWindow)
                 if ret == JFileChooser.APPROVE_OPTION:
                     self.configFilePath = (fileDialogue.getSelectedFile().
