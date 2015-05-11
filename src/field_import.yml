@@ -7,9 +7,13 @@ site: Site name
 version: RAW
 
 columns:
-  date: Date
-  time: Time
-  location: Remarks
+  date: 
+    title: Date
+    format: "%Y/%m/%d"
+  time: 
+    title: Time
+  location: 
+    title: Location
 
 mapping:
   C: TEMP

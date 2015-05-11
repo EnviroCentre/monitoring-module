@@ -16,8 +16,8 @@ def locationsDown(config):
                 # Find the header row first
                 try:
                     # If header row, we must have date and location
-                    dateColumn = row.index(config['columns']['date'])
-                    locationColumn = row.index(config['columns']['location'])
+                    dateColumn = row.index(config['columns']['date']['title'])
+                    locationColumn = row.index(config['columns']['location']['title'])
                 except ValueError:
                     # We're not in a header row, move to next line
                     continue
@@ -25,7 +25,7 @@ def locationsDown(config):
                 # Optional time column
                 try:
                     if config['columns']['time']:
-                        timeColumn = row.index(config['columns']['time'])
+                        timeColumn = row.index(config['columns']['time']['title'])
                     else:
                         timeColumn = None
                 except KeyError:
@@ -55,7 +55,8 @@ def locationsDown(config):
                         timeStr = row[timeColumn]
                     else:
                         timeStr = "12:00:00"
-                    sampleDate = tbu.parseDateAndTime(dateStr, timeStr)
+                    sampleDate = tbu.parseDateTime(dateStr, timeStr, 
+                                                   dateFmt=config['columns']['date']['format'])
                     
                     for param, column in paramColumns.iteritems():
                         value = tbu.parseMeasurement(row[column])
@@ -95,8 +96,8 @@ def locationsAcross(config):
             # Date row (use first value for just now)
             for row in csvReader:
                 if row[1].lower() == 'date sampled:':
-                    sampleDate = tbu.parseDateAndTime(row[5], "12:00:00",
-                                                      "%d-%b-%y")
+                    sampleDate = tbu.parseDateTime(row[5], "12:00:00", 
+                                                   "%d-%b-%y")
                     break
 
             # Then actual data

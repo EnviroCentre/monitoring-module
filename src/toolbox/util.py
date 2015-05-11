@@ -129,7 +129,7 @@ def parseMeasurement(valueStr):
         else:
             return None
 
-def parseDateAndTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
+def parseDateTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
     """
     Return HecTime from date and time strings.
     
