@@ -11,30 +11,30 @@ from voluptuous import Schema, Optional
 
 class ImportTool(tb.Tool):
     schema = Schema({
-        'folder': str,
+        'folder': unicode,
         'files': [
-            str
+            unicode
         ],
-        'site': str,
-        'version': str,
+        'site': unicode,
+        'version': unicode,
         'columns': {
             'date': {
-                'title': str,
-                'format': str
+                'title': unicode,
+                'format': unicode
             },
             Optional('time'): {
-                'title': str
+                'title': unicode
             },
             'location': {
-                'title': str
+                'title': unicode
             }
         },
         'mapping': {
-            str: str
+            unicode: unicode
         },
         'params': {
-            str: {
-                'unit': tb.ustr
+            unicode: {
+                'unit': unicode
             }
         }
     }, required=True)
