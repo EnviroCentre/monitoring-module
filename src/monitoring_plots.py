@@ -5,7 +5,7 @@
 
 from monitoring import plot
 import toolbox as tb
-from voluptuous import Schema, All, Any, Range, Datetime, Required, Lower
+from voluptuous import Schema, All, Any, Range, Datetime, Required, Optional, Lower
 
 
 class PlotTool(tb.Tool):
@@ -36,9 +36,9 @@ class PlotTool(tb.Tool):
             'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
         },
         'params': {
-            unicode: {
-                'scale': All(Lower, Any('lin', 'log'))
-            }
+            unicode: Any({
+                Optional('scale'): All(Lower, Any('lin', 'log'))
+            }, None)
         },
         Required('width', default=1200): All(int, Range(min=100, max=3000)),
         Required('height', default=800): All(int, Range(min=100, max=3000)),
