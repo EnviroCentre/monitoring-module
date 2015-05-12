@@ -102,27 +102,32 @@ def locationsAcross(config):
                     
             # Find data header row
             for row in csvReader:
-                if (config['columns']['parameter']['title'] in row and
-                    config['columns']['unit']['title'] in row):
+                # If header row, we must have parameter and unit header
+                try:
+                    paramCol = row.index(config['columns']['parameter']['title'])
+                    unitCol = row.index(config['columns']['unit']['title'])
                     break
+                except:
+                    continue
 
             # Then actual data
             for row in csvReader:
                 try:
-                    param = config['mapping'][row[0].strip()]
-                    for location, column in locationColumns.iteritems():
-                        value = tbu.parseMeasurement(row[column])
-                        if value:
-                            record = {
-                                'sampledate': sampleDate,
-                                'site': config['site'],
-                                'location': location,
-                                'parameter': param,
-                                'version': config['version'],
-                                'samplevalue': value, 
-                                'units': config['params'][param]['unit']
-                            }
-                            records.append(record)
+                    param = config['mapping'][row[paramCol]]
+                    if param in config['params']:
+                        for location, column in locationColumns.iteritems():
+                            value = tbu.parseMeasurement(row[column])
+                            if value:
+                                record = {
+                                    'sampledate': sampleDate,
+                                    'site': config['site'],
+                                    'location': location,
+                                    'parameter': param,
+                                    'version': config['version'],
+                                    'samplevalue': value, 
+                                    'units': config['params'][param]['unit']
+                                }
+                                records.append(record)
                 except KeyError:
                     # Skip if param not in import file
                     pass
