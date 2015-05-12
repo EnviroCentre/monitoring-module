@@ -16,31 +16,31 @@ def locationsDown(config):
                 # Find the header row first
                 try:
                     # If header row, we must have date and location
-                    dateColumn = row.index(config['columns']['date']['title'])
-                    locationColumn = row.index(config['columns']['location']['title'])
+                    dateCol = row.index(config['columns']['date']['title'])
+                    locationCol = row.index(config['columns']['location']['title'])
                 except ValueError:
                     # We're not in a header row, move to next line
                     continue
                 
-                # Optional time column
+                # Optional time col
                 try:
                     if config['columns']['time']:
-                        timeColumn = row.index(config['columns']['time']['title'])
+                        timeCol = row.index(config['columns']['time']['title'])
                     else:
-                        timeColumn = None
+                        timeCol = None
                 except KeyError:
-                    timeColumn = None
+                    timeCol = None
 
                 # Parameter columns
-                paramColumns = {}
-                for column, cell in enumerate(row):
+                paramCols = {}
+                for col, cell in enumerate(row):
                     try:
                         # Map cell onto param. Ignore non-ascii characters.
                         param = config['mapping'][cell.encode(encoding='ascii',
                                                               errors='ignore')]
                         # Only use param if in `config['params']`
                         if param in config['params']:
-                            paramColumns[param] = column
+                            paramCols[param] = col
                     except KeyError:
                         # Cell doesn't map onto param
                         pass
@@ -48,23 +48,23 @@ def locationsDown(config):
 
             # Then actual data
             for row in csvReader:
-                if len(row[locationColumn]) > 0:
+                if len(row[locationCol]) > 0:
                     
-                    dateStr = row[dateColumn]
-                    if not timeColumn is None:
-                        timeStr = row[timeColumn]
+                    dateStr = row[dateCol]
+                    if not timeCol is None:
+                        timeStr = row[timeCol]
                     else:
                         timeStr = "12:00:00"
                     sampleDate = tbu.parseDateTime(dateStr, timeStr, 
-                                                   dateFmt=config['columns']['date']['format'])
+                                                   config['columns']['date']['format'])
                     
-                    for param, column in paramColumns.iteritems():
-                        value = tbu.parseMeasurement(row[column])
+                    for param, col in paramCols.iteritems():
+                        value = tbu.parseMeasurement(row[col])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
                                 'site': config['site'],
-                                'location': row[locationColumn],
+                                'location': row[locationCol],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
@@ -85,18 +85,22 @@ def locationsAcross(config):
             csvReader = csv.reader(f)
             for row in csvReader:
                 # Find the row with locations
-                if config['rows']['location']['title'] in row:
+                try:
+                    startCol = row.index(config['rows']['location']['title']) + 1
                     # Dict of {'locationId': columnNo}
-                    locationColumns = {}
-                    for column, cell in enumerate(row[5:]):
+                    locationCols = {}
+                    for col, cell in enumerate(row[startCol:]):
                         if cell.strip():
-                            locationColumns[cell.upper()] = column + 5
+                            locationCols[cell.upper()] = col + startCol
+                    firstDataCol = min(locationCols.values())
                     break
+                except ValueError:
+                    continue
 
             # Date row (use first value for just now)
             for row in csvReader:
                 if config['rows']['date']['title'] in row:
-                    sampleDate = tbu.parseDateTime(row[5], "12:00:00", 
+                    sampleDate = tbu.parseDateTime(row[firstDataCol], "12:00:00", 
                                                    config['rows']['date']['format'])
                     break
                     
@@ -107,7 +111,7 @@ def locationsAcross(config):
                     paramCol = row.index(config['columns']['parameter']['title'])
                     unitCol = row.index(config['columns']['unit']['title'])
                     break
-                except:
+                except ValueError:
                     continue
 
             # Then actual data
@@ -115,8 +119,8 @@ def locationsAcross(config):
                 try:
                     param = config['mapping'][row[paramCol]]
                     if param in config['params']:
-                        for location, column in locationColumns.iteritems():
-                            value = tbu.parseMeasurement(row[column])
+                        for location, col in locationCols.iteritems():
+                            value = tbu.parseMeasurement(row[col])
                             if value:
                                 record = {
                                     'sampledate': sampleDate,
