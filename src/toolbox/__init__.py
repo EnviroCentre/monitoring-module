@@ -17,7 +17,7 @@ class Tool(object):
     """
     A tool for undertaking tasks in HEC-DSSVue.
     """
-    #: Configuaration schema (uses ``voluptuous`` library)
+    #: Configuaration validation schema (uses ``voluptuous`` library)
     schema = None
     #: Whether to refresh the HEC-DSSVue catalogue after completing the task.
     refreshCatalogue = 0
@@ -92,10 +92,10 @@ class Tool(object):
     
     def _configIsValid(self):
         """
-        Validate config file content.
+        Validate config file content
         
-        Currently checks for existence of required top-level config parameters/
-        keys only as specified in :attr:`.requiredParams`.
+        If :attr:`schema` has been set the `yaml` configuration file is checked
+        for the correct structure and content.
         """
         
         if self.schema:

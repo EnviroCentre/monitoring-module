@@ -30,7 +30,7 @@ class PlotTool(tb.Tool):
         ],
         'interval': unicode,
         'version': unicode,
-        Required('output_folder', default="Output"): unicode,
+        'output_folder': unicode,
         'period': {
             'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
             'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
@@ -40,8 +40,8 @@ class PlotTool(tb.Tool):
                 'scale': All(Lower, Any('lin', 'log'))
             }
         },
-        'width':  All(int, Range(min=100, max=3000)),
-        'height': All(int, Range(min=100, max=3000)),
+        Required('width', default=1200): All(int, Range(min=100, max=3000)),
+        Required('height', default=800): All(int, Range(min=100, max=3000)),
         Required('line', default={'width': defaultLineWidth, 
                                   'colours': defaultColours}): {
             Required('width', default=defaultLineWidth): 
@@ -56,7 +56,7 @@ class PlotTool(tb.Tool):
     
     def main(self):
         plotted, messages = plot.onePerParam(self.config, self.dssFilePath)
-        messages.insert(0, "%s Timeseries plots exported." % plotted)
+        messages.insert(0, "{} Timeseries plots exported.".format(plotted))
         self.message += "\n".join(messages)
 
 
