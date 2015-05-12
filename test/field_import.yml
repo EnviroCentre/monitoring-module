@@ -2,28 +2,34 @@ folder: C:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\
 files:
  - HI handheld.csv
 
-site: Glenchamber
+site: Site name
 version: RAW
 
 columns:
-  date: 1
-  time: 2
-  location: 21
+  date: 
+    title: Date
+    format: "%Y/%m/%d"
+  time: 
+    title: Time
+  location: 
+    title: Remarks
+  
+mapping:
+  C: TEMP
+  pH: PH
+  DO %: DO%
+  DO mg/l: DO
+  S/cm: EC
+  Salinity: SAL
 
 params:
   TEMP:
-    column: 3
     unit: degC
   PH:
-    column: 4
     unit: "-"
   DO%:
-    column: 7
-    unit: %
+    unit: "%"
   DO:
-    column: 8
     unit: mg/l
   EC:
-    column: 9
     unit: µS/cm
-  

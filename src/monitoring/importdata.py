@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import csv
 import os.path
 import toolbox.util as tbu
 
@@ -9,57 +10,68 @@ def locationsDown(config):
     for fileName in config['files']:
         importFile = os.path.join(config['folder'], fileName)
 
-        header_cells = []
-        try:
-            try:
-                f = open(importFile)
-            except IOError:
-                raise
-            
-            # Find the header row first
-            while 1:
-                cells = f.readline().split(',')
-                if cells[0].lower() == 'date':
-                    header_cells = cells
-                    break
+        with open(importFile) as f:
+            csvReader = csv.reader(f)
+            for row in csvReader:
+                # Find the header row first
+                try:
+                    # If header row, we must have date and location
+                    dateColumn = row.index(config['columns']['date']['title'])
+                    locationColumn = row.index(config['columns']['location']['title'])
+                except ValueError:
+                    # We're not in a header row, move to next line
+                    continue
+                
+                # Optional time column
+                try:
+                    if config['columns']['time']:
+                        timeColumn = row.index(config['columns']['time']['title'])
+                    else:
+                        timeColumn = None
+                except KeyError:
+                    timeColumn = None
 
-            # Potentially blank rows below the header line
-            while 1:
-                cells = f.readline().split(',')
-                if len(cells[0]) > 0:
-                    break
+                # Parameter columns
+                paramColumns = {}
+                for column, cell in enumerate(row):
+                    try:
+                        # Map cell onto param. Ignore non-ascii characters.
+                        param = config['mapping'][cell.encode(encoding='ascii',
+                                                              errors='ignore')]
+                        # Only use param if in `config['params']`
+                        if param in config['params']:
+                            paramColumns[param] = column
+                    except KeyError:
+                        # Cell doesn't map onto param
+                        pass
+                break
 
             # Then actual data
-            while 1:
-                if len(cells[config['columns']['location']-1]) > 0:
-                    for param, paramConfig in config['params'].iteritems():
-                        value = tbu.parseMeasurement(cells[paramConfig['column']-1])
+            for row in csvReader:
+                if len(row[locationColumn]) > 0:
+                    
+                    dateStr = row[dateColumn]
+                    if not timeColumn is None:
+                        timeStr = row[timeColumn]
+                    else:
+                        timeStr = "12:00:00"
+                    sampleDate = tbu.parseDateTime(dateStr, timeStr, 
+                                                   dateFmt=config['columns']['date']['format'])
+                    
+                    for param, column in paramColumns.iteritems():
+                        value = tbu.parseMeasurement(row[column])
                         if value:
-                            date_str = cells[config['columns']['date']-1]
-                            try:
-                                time_str = cells[int(config['columns']['time'])-1]
-                            except (KeyError, ValueError):
-                                time_str = "12:00:00"
-                            
                             record = {
-                                'sampledate': tbu.parseDateAndTime(date_str, 
-                                                                   time_str),
+                                'sampledate': sampleDate,
                                 'site': config['site'],
-                                'location': cells[config['columns']['location']-1],
+                                'location': row[locationColumn],
                                 'parameter': param,
                                 'version': config['version'],
                                 'samplevalue': value, 
-                                'units': paramConfig['unit']
+                                'units': config['params'][param]['unit']
                             }
                             records.append(record)
                         
-                cells = f.readline().split(',')
-                if len(cells[0]) == 0:
-                    break
-
-        finally:
-            f.close()
-        
     return records
     
 
@@ -69,40 +81,31 @@ def locationsAcross(config):
     for fileName in config['files']:
         importFile = os.path.join(config['folder'], fileName)
 
-        try:
-            try:
-                f = open(importFile)
-            except IOError:
-                raise
-            # Find the row with locations
-            while 1:
-                cells = f.readline().split(',')
-                if cells[1].lower() == 'client sample id.:':
+        with open(importFile) as f:
+            csvReader = csv.reader(f)
+            for row in csvReader:
+                # Find the row with locations
+                if row[1].lower() == 'client sample id.:':
                     # Dict of {'locationId': columnNo}
                     locationColumns = {}
-                    for i in range(5, len(cells)):
-                        if len(cells[i].strip()) > 0:
-                            locationColumns[cells[i].upper()] = i 
+                    for column, cell in enumerate(row[5:]):
+                        if cell.strip():
+                            locationColumns[cell.upper()] = column + 5
                     break
 
             # Date row (use first value for just now)
-            while 1:
-                cells = f.readline().split(',')
-                if cells[1].lower() == 'date sampled:':
-                    sampleDate = tbu.parseDateAndTime(cells[5], "12:00:00",
-                                                      "dd-mmm-yy")
+            for row in csvReader:
+                if row[1].lower() == 'date sampled:':
+                    sampleDate = tbu.parseDateTime(row[5], "12:00:00", 
+                                                   "%d-%b-%y")
                     break
 
             # Then actual data
-            while 1:
-                cells = f.readline().split(',')
-                if len(cells[0]) == 0:
-                    break
-
+            for row in csvReader:
                 try:
-                    param = config['mapping'][cells[0].strip()]
+                    param = config['mapping'][row[0].strip()]
                     for location, column in locationColumns.iteritems():
-                        value = tbu.parseMeasurement(cells[column])
+                        value = tbu.parseMeasurement(row[column])
                         if value:
                             record = {
                                 'sampledate': sampleDate,
@@ -114,12 +117,8 @@ def locationsAcross(config):
                                 'units': config['params'][param]['unit']
                             }
                             records.append(record)
-
                 except KeyError:
                     # Skip if param not in import file
                     pass
 
-        finally:
-            f.close()
-    
     return records

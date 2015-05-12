@@ -1,16 +1,24 @@
 import codecs
 from hec.script import MessageBox
 from os import path
-from toolbox.util import ValidationError, CancelledError
+from toolbox.util import CancelledError, ValidationError
 import yaml
+from voluptuous import MultipleInvalid
+
+def construct_yaml_str(self, node):
+    # Override the default string handling function to always return unicode 
+    return self.construct_scalar(node)
+
+yaml.Loader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
+yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:str', construct_yaml_str)
+
 
 class Tool(object):
     """
     A tool for undertaking tasks in HEC-DSSVue.
     """
-    
-    #: List of parameters/keys required in the config file.
-    requiredParams = []
+    #: Configuaration validation schema (uses ``voluptuous`` library)
+    schema = None
     #: Whether to refresh the HEC-DSSVue catalogue after completing the task.
     refreshCatalogue = 0
     
@@ -37,9 +45,9 @@ class Tool(object):
                 from javax.swing import JFileChooser
                 from javax.swing.filechooser import FileNameExtensionFilter
                 fileDialogue = JFileChooser(self.dssFilePath)
-                filter = FileNameExtensionFilter("Configuration file", 
+                filter = FileNameExtensionFilter("Configuration file (*.yml; *.yaml)", 
                                                  ["yaml", "yml"])
-                fileDialogue.addChoosableFileFilter(filter)
+                fileDialogue.setFileFilter(filter)
                 ret = fileDialogue.showOpenDialog(self.mainWindow)
                 if ret == JFileChooser.APPROVE_OPTION:
                     self.configFilePath = (fileDialogue.getSelectedFile().
@@ -53,19 +61,19 @@ class Tool(object):
         elif dssFilePath:
             raise ValueError("`configFileName` argument must be provided if `dssFilePath` is specified.")
         
-        #: Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the 
-        #: :meth:`main`.
+        #: Message to be displayed in HEC-DSSVue after running the tool. This 
+        #: attribute is typically set in the :meth:`main`.
         self.message = ""
         
         if self._toolIsValid():
-            configFile = codecs.open(self.configFilePath, encoding='utf-8')
-            self.config = yaml.load(configFile.read()).next()
-            configFile.close()
+            with codecs.open(self.configFilePath, encoding='utf-8') as configFile:
+                self.config = yaml.load(configFile.read())
             self._configIsValid()
         
     def _toolIsValid(self):
         """
-        Check if the tool is configured correctly with a valid config file and HEC-DSS database.
+        Check if the tool is configured correctly with a valid config file and 
+        HEC-DSS database.
         """
         
         # Check if HEC-DSS db exists
@@ -76,7 +84,7 @@ class Tool(object):
         
         # Check if config file exists
         if not path.isfile(self.configFilePath):
-            error = ValidationError("The configuration file %s does not exist.\n\nPlease create this file and try again." % self.configFilePath)
+            error = ValidationError("The configuration file {} does not exist.\n\nPlease create this file and try again.".format(self.configFilePath))
             MessageBox.showError(error.message, "HEC-DSSVue")
             raise error
         
@@ -84,38 +92,37 @@ class Tool(object):
     
     def _configIsValid(self):
         """
-        Validate config file content.
+        Validate config file content
         
-        Currently checks for existence of required top-level config parameters/keys only as specified in 
-        :attr:`.requiredParams`.
+        If :attr:`schema` has been set the `yaml` configuration file is checked
+        for the correct structure and content.
         """
         
-        errors = [ValidationError("The parameter '%s' does not exist." % param) 
-            for param in self.requiredParams if not param in self.config]
-
-        if errors:
-            self._displayConfigErrors(errors)
-            raise ValidationError(errors)
-        else:
-            return 1
+        if self.schema:
+            try:
+                self.config = self.schema(self.config) 
+            except MultipleInvalid as e:
+                self._displayConfigErrors(e.errors)
+                raise
+        return 1
     
     def _displayConfigErrors(self, errors):
         """
         Display configuration errors in the HEC-DSSVue window.
         """
         
-        message = "The configuration file %s is not valid.\nPlease check the content and try again." % self.configFilePath
+        message = "The configuration file {} is not valid.\nPlease check the content and try again.".format(self.configFilePath)
         message += "\n"
         for error in errors:
-            message += "\n - %s" % error.message
+            message += "\n - {}".format(error)
         MessageBox.showError(message, "HEC-DSSVue")
 
     def run(self):
         """
         Main tool execution method.
         
-        This method should be called after instantiating the tool to run it. The method executes :meth:`.main` followed
-        by :meth:`postRun`.
+        This method should be called after instantiating the tool to run it. The
+        method executes :meth:`.main` followed by :meth:`postRun`.
         """
         
         self.main()
@@ -134,8 +141,9 @@ class Tool(object):
         """
         Run additional tasks at the end of the core run.
         
-        By default this method refreshes the HEC-DSSVue catalogue (if :attr:`.refreshCatalogue` is true) and displays
-        any string in :attr:`.message`.
+        By default this method refreshes the HEC-DSSVue catalogue (if 
+        :attr:`.refreshCatalogue` is true) and displays any string in 
+        :attr:`.message`.
         """
         
         if self.refreshCatalogue and self.mainWindow:

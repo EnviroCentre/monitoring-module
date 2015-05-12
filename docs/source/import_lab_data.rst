@@ -18,11 +18,8 @@ Multiple `csv`-files can be imported at once.
    configuration parameters.
 
 
-Data import example
--------------------
-
 Getting everything in place
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 In this example, the file to be imported :file:`2015-01 Lab results.csv` is 
 saved in a project file structure as follows:: 
@@ -35,7 +32,7 @@ saved in a project file structure as follows::
             lab_import.yml
 
 The configuration file
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 The configuration file :file:`lab_import.yml` can be created as a simple text
 file with the following content:
@@ -130,7 +127,7 @@ best practice.
 
 
 Running the import
-~~~~~~~~~~~~~~~~~~
+------------------
 
 When the configuration has been set up, the data can be imported as follows:
 
@@ -142,7 +139,7 @@ When successfully completed, a message is displayed how many records have been
 imported and the catalogue is refreshed.
 
 Data post-processing
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 In this example, data were imported using `RAW` for the data version (F-part). 
 This allows review of data and corrections and manipulations using the

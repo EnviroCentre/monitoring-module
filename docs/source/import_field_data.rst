@@ -19,11 +19,8 @@ Multiple `csv`-files can be imported at once.
    tool's configuration parameters.
 
 
-Data import example
--------------------
-
 Getting everything in place
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 In this example, the file to be imported :file:`2015-01 Site measurements.csv`
 is saved in a project file structure as follows:: 
@@ -36,7 +33,7 @@ is saved in a project file structure as follows::
             field_import.yml
 
 The configuration file
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 The configuration file :file:`field_import.yml` can be created as a simple text
 file with the following content:
@@ -51,25 +48,31 @@ file with the following content:
     version: RAW
 
     columns:
-      date: 1
-      time: 2
-      location: 21
+      date: 
+        title: Date
+        format: "%Y/%m/%d"
+      time: 
+        title: Time
+      location: 
+        title: Location
+
+    mapping:
+      C: TEMP
+      pH: PH
+      DO %: DO%
+      DO mg/l: DO
+      S/cm: EC
 
     params:
       TEMP:
-        column: 3
         unit: degC
       PH:
-        column: 4
         unit: "-"
       DO%:
-        column: 7
-        unit: %
+        unit: "%"
       DO:
-        column: 8
         unit: mg/l
       EC:
-        column: 9
         unit: µS/cm
 
 
@@ -81,9 +84,10 @@ file with the following content:
 
 
 The configuration file describes the files to be imported as well as information
-about which `csv`-file columns to be imported. Measured parameter columns can be 
-modified as required by editing the ``params`` section of the configuration 
-file.
+about which `csv`-file columns to be imported. The ``mapping`` section of the 
+configuration file indicates which column headings map onto the parameters to be
+saved into the database. Special symbols (non-ASCII characters) should be 
+omitted from the ``mapping`` section.
 
 Parameter values in the import file starting with `<` are interpreted as being 
 below the meter's limit of detection (LOD). Such measurements are imported as 
@@ -91,15 +95,8 @@ below the meter's limit of detection (LOD). Such measurements are imported as
 best practice.
 
 
-.. warning::
-   
-   The date column is assumed to be formatted as ``yyyy/mm/dd``! 
-
-   If the time column is omitted all times are set to 12:00:00 hrs.
-
-
 Running the import
-~~~~~~~~~~~~~~~~~~
+------------------
 
 When the configuration has been set up, the data can be imported as follows:
 
@@ -114,7 +111,7 @@ When successfully completed, a message is displayed how many records have been
 imported and the catalogue is refreshed.
 
 Data post-processing
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 In this example, data were imported using `RAW` for the data version (F-part). 
 This allows review of data and corrections and manipulations using the
