@@ -32,12 +32,18 @@ RequestExecutionLevel highest
 ; Language settings
 !insertmacro MUI_LANGUAGE "English"
 
-Section "Install module scripts"
+Section "Module scripts"
     SetOutPath "$APPDATA\HEC\HEC-DSSVue\scripts"
-    File /r "..\..\src\*.py"
+    File "..\..\src\*.py"
+
+    SetOutPath "$APPDATA\HEC\HEC-DSSVue\scripts\monitoring"
+    File "..\..\src\monitoring\*.py"
+
+    SetOutPath "$APPDATA\HEC\HEC-DSSVue\scripts\toolbox"
+    File "..\..\src\toolbox\*.py"
 SectionEnd
 
-Section "Example tool configuration files"
-    SetOutPath "$DOCUMENTS\Monitoring Module"
-    File "..\..\src\*.yml"
+Section "Python libraries"
+    SetOutPath "$InstDir\jython\lib\site-packages"
+    File /r "..\..\src\lib\*.py"
 SectionEnd
