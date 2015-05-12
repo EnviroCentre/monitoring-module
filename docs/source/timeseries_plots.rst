@@ -54,14 +54,13 @@ file with the following content:
       EC:
         scale: log
       PH:
-        scale: lin
       TEMP:
-        scale: lin
       TURB:
         scale: log
       ORP:
-        scale: lin
-
+    
+    # Optional settings below with defaults shown
+    
     width: 1200
     height: 800
 
@@ -116,4 +115,4 @@ When the configuration has been set up, the plots can be generated as follows:
     window. 
 
 The plots are briefly shown on the screen as they are created and then exported
-into the ``output_folder`` as `PNG`-files.
+into the ``output_folder`` as `JPG`-files.
