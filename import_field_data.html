@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. Importing “field” data &mdash; Monitoring Module for HEC-DSSVue 0.1.2
+  <title>2. Importing “field” data &mdash; Monitoring Module for HEC-DSSVue 0.1.4
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
  documentation" href="index.html"/>
         <link rel="next" title="3. Importing lab data" href="import_lab_data.html"/>
         <link rel="prev" title="1. Introduction" href="intro.html"/> 
@@ -68,11 +68,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">2. Importing &#8220;field&#8221; data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data-import-example">2.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">2.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">2.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-import">2.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-import-example">3.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
@@ -145,10 +151,8 @@ with the following meters:</p>
 <p class="last">Other meters and <cite>csv</cite> input file formats may be supported by tweaking the
 tool&#8217;s configuration parameters.</p>
 </div>
-<div class="section" id="data-import-example">
-<h2>2.1. Data import example<a class="headerlink" href="#data-import-example" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="getting-everything-in-place">
-<h3>2.1.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h3>
+<h2>2.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h2>
 <p>In this example, the file to be imported <code class="file docutils literal"><span class="pre">2015-01</span> <span class="pre">Site</span> <span class="pre">measurements.csv</span></code>
 is saved in a project file structure as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>C:\
@@ -161,37 +165,43 @@ is saved in a project file structure as follows:</p>
 </div>
 </div>
 <div class="section" id="the-configuration-file">
-<h3>2.1.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h3>
+<h2>2.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>The configuration file <code class="file docutils literal"><span class="pre">field_import.yml</span></code> can be created as a simple text
 file with the following content:</p>
-<div class="highlight-yaml"><div class="highlight"><pre>folder: C:\Project\Import data
-files:
- - 2015-01 Site measurements.csv
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">folder</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">C:\Project\Import data</span>
+<span class="l-Scalar-Plain">files</span><span class="p-Indicator">:</span>
+ <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">2015-01 Site measurements.csv</span>
 
-site: Example site
-version: RAW
+<span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Example site</span>
+<span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RAW</span>
 
-columns:
-  date: 1
-  time: 2
-  location: 21
+<span class="l-Scalar-Plain">columns</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">date</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Date</span>
+    <span class="l-Scalar-Plain">format</span><span class="p-Indicator">:</span> <span class="s">&quot;%Y/%m/%d&quot;</span>
+  <span class="l-Scalar-Plain">time</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Time</span>
+  <span class="l-Scalar-Plain">location</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Location</span>
 
-params:
-  TEMP:
-    column: 3
-    unit: degC
-  PH:
-    column: 4
-    unit: &quot;-&quot;
-  DO%:
-    column: 7
-    unit: %
-  DO:
-    column: 8
-    unit: mg/l
-  EC:
-    column: 9
-    unit: µS/cm
+<span class="l-Scalar-Plain">mapping</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">C</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TEMP</span>
+  <span class="l-Scalar-Plain">pH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">PH</span>
+  <span class="l-Scalar-Plain">DO %</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">DO%</span>
+  <span class="l-Scalar-Plain">DO mg/l</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">DO</span>
+  <span class="l-Scalar-Plain">S/cm</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">EC</span>
+
+<span class="l-Scalar-Plain">params</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">TEMP</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">degC</span>
+  <span class="l-Scalar-Plain">PH</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="s">&quot;-&quot;</span>
+  <span class="l-Scalar-Plain">DO%</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="s">&quot;%&quot;</span>
+  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mg/l</span>
+  <span class="l-Scalar-Plain">EC</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">µS/cm</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -200,21 +210,17 @@ params:
 correctly. The example is best copied exactly as provided!</p>
 </div>
 <p>The configuration file describes the files to be imported as well as information
-about which <cite>csv</cite>-file columns to be imported. Measured parameter columns can be
-modified as required by editing the <code class="docutils literal"><span class="pre">params</span></code> section of the configuration
-file.</p>
+about which <cite>csv</cite>-file columns to be imported. The <code class="docutils literal"><span class="pre">mapping</span></code> section of the
+configuration file indicates which column headings map onto the parameters to be
+saved into the database. Special symbols (non-ASCII characters) should be
+omitted from the <code class="docutils literal"><span class="pre">mapping</span></code> section.</p>
 <p>Parameter values in the import file starting with <cite>&lt;</cite> are interpreted as being
 below the meter&#8217;s limit of detection (LOD). Such measurements are imported as
 50% of the LOD to allow numeric evaluations and plotting in line with current
 best practice.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>The date column is assumed to be formatted as <code class="docutils literal"><span class="pre">yyyy/mm/dd</span></code>!</p>
-<p class="last">If the time column is omitted all times are set to 12:00:00 hrs.</p>
-</div>
 </div>
 <div class="section" id="running-the-import">
-<h3>2.1.3. Running the import<a class="headerlink" href="#running-the-import" title="Permalink to this headline">¶</a></h3>
+<h2>2.3. Running the import<a class="headerlink" href="#running-the-import" title="Permalink to this headline">¶</a></h2>
 <p>When the configuration has been set up, the data can be imported as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -229,12 +235,11 @@ window.</li>
 imported and the catalogue is refreshed.</p>
 </div>
 <div class="section" id="data-post-processing">
-<h3>2.1.4. Data post-processing<a class="headerlink" href="#data-post-processing" title="Permalink to this headline">¶</a></h3>
+<h2>2.4. Data post-processing<a class="headerlink" href="#data-post-processing" title="Permalink to this headline">¶</a></h2>
 <p>In this example, data were imported using <cite>RAW</cite> for the data version (F-part).
 This allows review of data and corrections and manipulations using the
 HEC-DSSVue built-in functionality. Quality assured data can then be saved using
 a different version, for example <cite>OBS</cite>.</p>
-</div>
 </div>
 </div>
 
@@ -257,7 +262,7 @@ a different version, for example <cite>OBS</cite>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 29/04/2015.
+      Last updated on 12/05/2015.
     </p>
   </div>
 
@@ -278,7 +283,7 @@ a different version, for example <cite>OBS</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.2
+            VERSION:'0.1.4
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.1.2
+  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.1.4
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
  documentation" href="index.html"/>
         <link rel="prev" title="1. Introduction" href="dev_intro.html"/> 
 
@@ -67,11 +67,17 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="import_field_data.html">2. Importing &#8220;field&#8221; data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-import-example">2.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#getting-everything-in-place">2.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#the-configuration-file">2.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#running-the-import">2.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-import-example">3.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
@@ -143,9 +149,9 @@ dialogue is displayed prompting for a configuration file.</p>
 <p>The attribute <code class="xref py py-attr docutils literal"><span class="pre">config</span></code> will be set containing the parsed yaml 
 config file.</p>
 <dl class="attribute">
-<dt id="toolbox.Tool.requiredParams">
-<code class="descname">requiredParams</code><em class="property"> = []</em><a class="headerlink" href="#toolbox.Tool.requiredParams" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of parameters/keys required in the config file.</p>
+<dt id="toolbox.Tool.schema">
+<code class="descname">schema</code><em class="property"> = None</em><a class="headerlink" href="#toolbox.Tool.schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configuaration validation schema (uses <code class="docutils literal"><span class="pre">voluptuous</span></code> library)</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -157,16 +163,16 @@ config file.</p>
 <dl class="attribute">
 <dt id="toolbox.Tool.message">
 <code class="descname">message</code><em class="property"> = None</em><a class="headerlink" href="#toolbox.Tool.message" title="Permalink to this definition">¶</a></dt>
-<dd><p>Message to be displayed in HEC-DSSVue after running the tool. This attribute is typically set in the
-<a class="reference internal" href="#toolbox.Tool.main" title="toolbox.Tool.main"><code class="xref py py-meth docutils literal"><span class="pre">main()</span></code></a>.</p>
+<dd><p>Message to be displayed in HEC-DSSVue after running the tool. This
+attribute is typically set in the <a class="reference internal" href="#toolbox.Tool.main" title="toolbox.Tool.main"><code class="xref py py-meth docutils literal"><span class="pre">main()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="toolbox.Tool.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.Tool.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main tool execution method.</p>
-<p>This method should be called after instantiating the tool to run it. The method executes <a class="reference internal" href="#toolbox.Tool.main" title="toolbox.Tool.main"><code class="xref py py-meth docutils literal"><span class="pre">main()</span></code></a> followed
-by <a class="reference internal" href="#toolbox.Tool.postRun" title="toolbox.Tool.postRun"><code class="xref py py-meth docutils literal"><span class="pre">postRun()</span></code></a>.</p>
+<p>This method should be called after instantiating the tool to run it. The
+method executes <a class="reference internal" href="#toolbox.Tool.main" title="toolbox.Tool.main"><code class="xref py py-meth docutils literal"><span class="pre">main()</span></code></a> followed by <a class="reference internal" href="#toolbox.Tool.postRun" title="toolbox.Tool.postRun"><code class="xref py py-meth docutils literal"><span class="pre">postRun()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -180,8 +186,9 @@ by <a class="reference internal" href="#toolbox.Tool.postRun" title="toolbox.Too
 <dt id="toolbox.Tool.postRun">
 <code class="descname">postRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.Tool.postRun" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run additional tasks at the end of the core run.</p>
-<p>By default this method refreshes the HEC-DSSVue catalogue (if <a class="reference internal" href="#toolbox.Tool.refreshCatalogue" title="toolbox.Tool.refreshCatalogue"><code class="xref py py-attr docutils literal"><span class="pre">refreshCatalogue</span></code></a> is true) and displays
-any string in <a class="reference internal" href="#toolbox.Tool.message" title="toolbox.Tool.message"><code class="xref py py-attr docutils literal"><span class="pre">message</span></code></a>.</p>
+<p>By default this method refreshes the HEC-DSSVue catalogue (if 
+<a class="reference internal" href="#toolbox.Tool.refreshCatalogue" title="toolbox.Tool.refreshCatalogue"><code class="xref py py-attr docutils literal"><span class="pre">refreshCatalogue</span></code></a> is true) and displays any string in 
+<a class="reference internal" href="#toolbox.Tool.message" title="toolbox.Tool.message"><code class="xref py py-attr docutils literal"><span class="pre">message</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -210,6 +217,12 @@ list can be an actual <cite>list</cite> or an instance of <a class="reference in
 set.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="toolbox.util.CancelledError">
+<em class="property">class </em><code class="descclassname">toolbox.util.</code><code class="descname">CancelledError</code><a class="headerlink" href="#toolbox.util.CancelledError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Operation cancellation/interruption by the user.</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="toolbox.util.parseMeasurement">
 <code class="descclassname">toolbox.util.</code><code class="descname">parseMeasurement</code><span class="sig-paren">(</span><em>valueStr</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.parseMeasurement" title="Permalink to this definition">¶</a></dt>
@@ -219,17 +232,10 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
 </dd></dl>
 
 <dl class="function">
-<dt id="toolbox.util.parseDateAndTime">
-<code class="descclassname">toolbox.util.</code><code class="descname">parseDateAndTime</code><span class="sig-paren">(</span><em>dateStr</em>, <em>timeStr</em>, <em>dateFmt='yyyy/mm/dd'</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.parseDateAndTime" title="Permalink to this definition">¶</a></dt>
+<dt id="toolbox.util.parseDateTime">
+<code class="descclassname">toolbox.util.</code><code class="descname">parseDateTime</code><span class="sig-paren">(</span><em>dateStr</em>, <em>timeStr</em>, <em>dateFmt='%Y/%m/%d'</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.parseDateTime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return HecTime from date and time strings.</p>
-<p>Supported date formats are:</p>
-<blockquote>
-<div><ul class="simple">
-<li><cite>yyyy/mm/dd</cite> (default)</li>
-<li><cite>dd-mmm-yy</cite></li>
-</ul>
-</div></blockquote>
-<p>Time format is always <cite>hh:mm:ss</cite>.</p>
+<p>Time format is always <cite>%H:%M:%S</cite>.</p>
 </dd></dl>
 
 </div>
@@ -252,7 +258,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 29/04/2015.
+      Last updated on 12/05/2015.
     </p>
   </div>
 
@@ -273,7 +279,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.2
+            VERSION:'0.1.4
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

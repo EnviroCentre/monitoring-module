@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4. Creating timeseries plots &mdash; Monitoring Module for HEC-DSSVue 0.1.2
+  <title>4. Creating timeseries plots &mdash; Monitoring Module for HEC-DSSVue 0.1.4
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
  documentation" href="index.html"/>
         <link rel="next" title="1. Introduction" href="dev_intro.html"/>
         <link rel="prev" title="3. Importing lab data" href="import_lab_data.html"/> 
@@ -68,11 +68,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="import_field_data.html">2. Importing &#8220;field&#8221; data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-import-example">2.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#getting-everything-in-place">2.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#the-configuration-file">2.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#running-the-import">2.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-import-example">3.1. Data import example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">4. Creating timeseries plots</a><ul>
@@ -173,13 +179,12 @@ file with the following content:</p>
   <span class="l-Scalar-Plain">EC</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">PH</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lin</span>
   <span class="l-Scalar-Plain">TEMP</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lin</span>
   <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">ORP</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lin</span>
+
+<span class="c1"># Optional settings below with defaults shown</span>
 
 <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
 <span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">800</span>
@@ -236,7 +241,7 @@ window.</li>
 </ol>
 </div></blockquote>
 <p>The plots are briefly shown on the screen as they are created and then exported
-into the <code class="docutils literal"><span class="pre">output_folder</span></code> as <cite>PNG</cite>-files.</p>
+into the <code class="docutils literal"><span class="pre">output_folder</span></code> as <cite>JPG</cite>-files.</p>
 </div>
 </div>
 </div>
@@ -260,7 +265,7 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 29/04/2015.
+      Last updated on 12/05/2015.
     </p>
   </div>
 
@@ -281,7 +286,7 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.2
+            VERSION:'0.1.4
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
