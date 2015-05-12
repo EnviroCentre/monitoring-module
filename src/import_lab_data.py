@@ -17,6 +17,23 @@ class ImportTool(tb.Tool):
         ],
         'site': unicode,
         'version': unicode,
+        'rows': {
+            'location': {
+                'title': unicode
+            },
+            'date': {
+                'title': unicode,
+                'format': unicode
+            },
+        },
+        'columns': {
+            'parameter': {
+                'title': unicode
+            },
+            'unit': {
+                'title': unicode
+            },
+        },
         'mapping': {
             unicode: unicode
         },

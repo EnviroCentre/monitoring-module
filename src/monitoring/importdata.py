@@ -85,7 +85,7 @@ def locationsAcross(config):
             csvReader = csv.reader(f)
             for row in csvReader:
                 # Find the row with locations
-                if row[1].lower() == 'client sample id.:':
+                if config['rows']['location']['title'] in row:
                     # Dict of {'locationId': columnNo}
                     locationColumns = {}
                     for column, cell in enumerate(row[5:]):
@@ -95,9 +95,15 @@ def locationsAcross(config):
 
             # Date row (use first value for just now)
             for row in csvReader:
-                if row[1].lower() == 'date sampled:':
+                if config['rows']['date']['title'] in row:
                     sampleDate = tbu.parseDateTime(row[5], "12:00:00", 
-                                                   "%d-%b-%y")
+                                                   config['rows']['date']['format'])
+                    break
+                    
+            # Find data header row
+            for row in csvReader:
+                if (config['columns']['parameter']['title'] in row and
+                    config['columns']['unit']['title'] in row):
                     break
 
             # Then actual data
