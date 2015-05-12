@@ -22,6 +22,8 @@ API Reference
 .. autoclass:: toolbox.util.ValidationError
    :members:
 
+.. autoclass:: toolbox.util.CancelledError
+
 .. autofunction:: toolbox.util.parseMeasurement
 
-.. autofunction:: toolbox.util.parseDateAndTime
+.. autofunction:: toolbox.util.parseDateTime
