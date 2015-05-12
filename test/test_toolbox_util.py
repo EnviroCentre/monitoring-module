@@ -24,7 +24,7 @@ class ToolboxUtilTestCase(unittest.TestCase):
         self.assertEqual(result, 1.0)
         
     def testDateDefaultFormat(self):
-        dt = toolbox.util.parseDateAndTime("2015/12/31", "01:00:00")
+        dt = toolbox.util.parseDateTime("2015/12/31", "01:00:00")
         self.assertEqual(dt.year(), 2015)
         self.assertEqual(dt.month(), 12)
         self.assertEqual(dt.day(), 31)
@@ -32,7 +32,7 @@ class ToolboxUtilTestCase(unittest.TestCase):
         self.assertEqual(dt.minute(), 0)
 
     def testDateyyyymmddFormat(self):
-        dt = toolbox.util.parseDateAndTime("2015/12/31", "01:00:00", "yyyy/mm/dd")
+        dt = toolbox.util.parseDateTime("2015/12/31", "01:00:00", "%Y/%m/%d")
         self.assertEqual(dt.year(), 2015)
         self.assertEqual(dt.month(), 12)
         self.assertEqual(dt.day(), 31)
@@ -40,7 +40,7 @@ class ToolboxUtilTestCase(unittest.TestCase):
         self.assertEqual(dt.minute(), 0)
 
     def testDateddmmmyyFormat(self):
-        dt = toolbox.util.parseDateAndTime("31-Dec-15", "01:00:00", "dd-mmm-yy")
+        dt = toolbox.util.parseDateTime("31-Dec-15", "01:00:00", "%d-%b-%y")
         self.assertEqual(dt.year(), 2015)
         self.assertEqual(dt.month(), 12)
         self.assertEqual(dt.day(), 31)
