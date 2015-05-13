@@ -147,6 +147,23 @@ def timeseries(config):
         with open(importFile) as f:
             csvReader = csv.reader(f)
             for row in csvReader:
-                pass # TODO
+                if len([cell for cell in row if cell in config['mapping']]) < 2:
+                    continue
+                
+                # Parameter columns
+                paramCols = {}
+                for col, cell in enumerate(row):
+                    try:
+                        # Map cell onto param. Ignore non-ascii characters.
+                        param = config['mapping'][cell.encode(encoding='ascii',
+                                                              errors='ignore')]
+                        # Only use param if in `config['params']`
+                        if param in config['params']:
+                            paramCols[param] = col
+                    except KeyError:
+                        # Cell doesn't map onto param
+                        pass
+                break
+            print(paramCols)
             
     return ts

@@ -154,5 +154,14 @@ class LabDataImportTestCase(unittest.TestCase):
                              % (values[i], location))
         
 
+class LoggerImportTestCase(unittest.TestCase):
+    def testChemtest(self):
+        configFileName = 'logger_import.yml'
+        with codecs.open(configFileName, encoding='utf-8') as configFile:
+            config = yaml.load(configFile.read())
+            
+        ts = importdata.timeseries(config)
+
+
 if __name__ == '__main__':
     unittest.main()
