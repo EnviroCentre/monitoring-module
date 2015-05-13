@@ -137,3 +137,16 @@ def locationsAcross(config):
                     pass
 
     return records
+
+def timeseries(config):
+    ts = []
+
+    for fileName in config['files']:
+        importFile = os.path.join(config['folder'], fileName)
+
+        with open(importFile) as f:
+            csvReader = csv.reader(f)
+            for row in csvReader:
+                pass # TODO
+            
+    return ts

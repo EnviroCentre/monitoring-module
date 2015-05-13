@@ -1,0 +1,35 @@
+folder: C:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\Import
+files:
+ - In-Situ logger.csv
+
+site: Site name
+version: RAW
+
+columns:
+  date: 
+    title: Date
+    format: "%d/%m/%Y"
+  time: 
+    title: Time
+  
+mapping:
+  Temperature: TEMP
+  Turbidity: TURB
+  pH: PH
+  Rugged DO Sat: DO%
+  Rugged DO: DO
+  Conductivity: EC
+
+params:
+  TEMP:
+    unit: degC
+  TURB:
+    unit: FNU
+  PH:
+    unit: "-"
+  DO%:
+    unit: "%"
+  DO:
+    unit: mg/l
+  EC:
+    unit: µS/cm
