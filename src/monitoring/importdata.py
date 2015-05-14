@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import csv
+import monitoring as mon
 import os.path
 import toolbox.util as tbu
+from collections import defaultdict
+from datetime import datetime
+from hec.script import Constants
 
 
 def locationsDown(config):
@@ -139,15 +143,16 @@ def locationsAcross(config):
     return records
 
 def timeseries(config):
-    ts = []
+    records = []
 
-    for fileName in config['files']:
+    for fileName, loc in config['files'].iteritems():
         importFile = os.path.join(config['folder'], fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
             for row in csvReader:
                 if len([cell for cell in row if cell in config['mapping']]) < 2:
+                    # Not in header if less than 2 parameter headings found
                     continue
                 
                 # Parameter columns
@@ -164,6 +169,56 @@ def timeseries(config):
                         # Cell doesn't map onto param
                         pass
                 break
-            print(paramCols)
+                
+            dateCol = None
+            timeCol = None
+            interval = None
+            startTime = None
+            # Dict of {'param': [value1, values2, ...]}
+            values = defaultdict(list)
+            for row in csvReader:
+                # Find date and time columns
+                if dateCol is None or timeCol is None:
+                    for col, cell in enumerate(row):
+                        if dateCol is None:
+                            try:
+                                datetime.strptime(cell, config['date_format'])
+                                dateCol = col
+                            except ValueError:
+                                pass
+                        if timeCol is None:
+                            try:
+                                datetime.strptime(cell, "%H:%M:%S")
+                                timeCol = col
+                            except ValueError:
+                                pass
+                
+                # If date and time columns founds, we're on a data row
+                if dateCol >= 0 and timeCol >= 0:
+                    # First row gives start time
+                    if startTime is None:
+                        startTime = tbu.parseDateTime(row[dateCol], row[timeCol], 
+                                                      config['date_format']).value()
+                    # Second row gives interval
+                    elif interval is None:
+                        interval = tbu.parseDateTime(row[dateCol], row[timeCol], 
+                                                     config['date_format']).value() - startTime
+                    # In all rows we read all params
+                    for param, col in paramCols.iteritems():
+                        try:
+                            values[param].append(float(row[col])) 
+                        except ValueError:
+                            values[param].append(Constants.UNDEFINED)
             
-    return ts
+        for param in paramCols:
+            record = mon.Record(site=config['site'],
+                                location=loc,
+                                parameter=param, 
+                                version=config['version'],
+                                units=config['params'][param]['unit'], 
+                                startTime=startTime,
+                                interval=interval,
+                                values=values[param])
+            records.append(record)
+            
+    return records
