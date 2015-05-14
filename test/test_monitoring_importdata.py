@@ -155,7 +155,7 @@ class LabDataImportTestCase(unittest.TestCase):
         
 
 class LoggerImportTestCase(unittest.TestCase):
-    def testChemtest(self):
+    def testInSituLogger(self):
         configFileName = 'logger_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             config = yaml.load(configFile.read())
