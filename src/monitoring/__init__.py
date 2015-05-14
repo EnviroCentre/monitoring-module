@@ -39,7 +39,7 @@ class Record(object):
             
     @property
     def fullName(self):
-        return "{0.site}/{0.location}/{0.parameter}//{0.interval:d}MIN/{0.version}".format(self)
+        return "/{0.site}/{0.location}/{0.parameter}//{0.interval:d}MIN/{0.version}/".format(self)
     
     @property
     def times(self):
