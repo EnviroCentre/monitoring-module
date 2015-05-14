@@ -114,6 +114,54 @@ def _timeSeriesContainer(record):
     return tsc
 
 
+def _tscFromRecord(record):
+    """
+    Convert simple records object to HEC timeseries container
+    
+    :param record: Record object
+    :type record: :class:`monitoring.Record`
+    """   
+    
+    tsc = hec.io.TimeSeriesContainer()
+    tsc.watershed = record.site
+    tsc.location = record.location
+    tsc.parameter = record.parameter
+    tsc.version = record.version
+    tsc.interval = record.interval
+    tsc.fullName = record.fullName
+    tsc.values = record.values
+    tsc.times = record.times
+    tsc.startTime = record.startTime
+    tsc.endTime = record.endTime
+    tsc.numberValues = len(record)
+    tsc.units = record.units
+    tsc.type = record.type
+    return tsc
+
+
+def saveRecords(records, dssFilePath):
+    """
+    Save simple record objects to DSS file
+    
+    :param record: Record object
+    :type record: :class:`monitoring.Record`
+    :param dssFilePath: HEC-DSS database to save record to
+    :param dssFilePath: str
+    :return: Number of records saved
+    :rtype: int
+    """   
+
+    saved = 0
+    try:
+        dssFile = hec.heclib.dss.HecDss.open(dssFilePath)
+        for record in records:
+            dssFile.put(_tscFromRecord(record))
+            saved += 1
+    finally:
+        dssFile.close()
+    return saved
+
+
 def parseMeasurement(valueStr):
     """
     Return numeric value of measurement string.
