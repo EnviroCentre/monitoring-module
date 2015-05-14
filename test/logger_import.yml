@@ -1,16 +1,11 @@
 folder: C:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\Import
 files:
- - In-Situ logger.csv
+  In-Situ logger.csv: Location A
 
 site: Site name
 version: RAW
 
-columns:
-  date: 
-    title: Date
-    format: "%d/%m/%Y"
-  time: 
-    title: Time
+date_format: "%d/%m/%Y"
   
 mapping:
   Temperature: TEMP
