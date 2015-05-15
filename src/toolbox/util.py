@@ -66,54 +66,9 @@ class ValidationError(Exception):
     
 
 class CancelledError(Exception):
-    """
-    Operation cancellation/interruption by the user.
-    """
-    pass
+    """Operation cancellation/interruption by the user."""
 
     
-def saveIrregularRecords(records, dssFilePath):
-    saved = 0
-    try:
-        dssFile = hec.heclib.dss.HecDss.open(dssFilePath)
-        for record in records:
-            dssFile.put(_timeSeriesContainer(record))
-            saved += 1
-    finally:
-        dssFile.close()
-    return saved
-
-
-def _timeSeriesContainer(record):
-    """
-    record:
-      site:
-      location:
-      parameter:
-      version:
-      units:
-      sampledate:
-      samplevalue:
-    """
-    tsc = hec.io.TimeSeriesContainer()
-    
-    tsc.watershed = record['site']
-    tsc.location = record['location']
-    tsc.parameter = record['parameter']
-    tsc.version = record['version']
-    tsc.fullName = "/%s/%s/%s//IR-YEAR/%s/" % (tsc.watershed, tsc.location, tsc.parameter, tsc.version)
-    tsc.interval = -1  # irregular
-    tsc.values = [record['samplevalue']]
-    tsc.times = [record['sampledate'].value()]
-    tsc.startTime = tsc.times[0]
-    tsc.endTime = tsc.times[-1]
-    tsc.numberValues = 1
-    tsc.units = record['units']
-    tsc.type = "INST-VAL"
-    
-    return tsc
-
-
 def _tscFromRecord(record):
     """
     Convert simple records object to HEC timeseries container
