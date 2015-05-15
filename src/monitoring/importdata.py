@@ -65,15 +65,13 @@ def locationsDown(config):
                     for param, col in paramCols.iteritems():
                         value = tbu.parseMeasurement(row[col])
                         if value:
-                            record = {
-                                'sampledate': sampleDate,
-                                'site': config['site'],
-                                'location': row[locationCol],
-                                'parameter': param,
-                                'version': config['version'],
-                                'samplevalue': value, 
-                                'units': config['params'][param]['unit']
-                            }
+                            record = mon.Record(site=config['site'],
+                                                location=row[locationCol],
+                                                parameter=param,
+                                                version=config['version'],
+                                                units=config['params'][param]['unit'], 
+                                                startTime=sampleDate.value(),
+                                                values=value)
                             records.append(record)
                         
     return records

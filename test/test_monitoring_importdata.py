@@ -7,7 +7,8 @@ import unittest
 import yaml
 import codecs
 from monitoring import importdata
-from operator import itemgetter
+from operator import attrgetter
+from hec.heclib.util import HecTime
  
 
 class FieldDataImportTestCase(unittest.TestCase):
@@ -21,36 +22,28 @@ class FieldDataImportTestCase(unittest.TestCase):
 
         records = importdata.locationsDown(config)
         # Records are not in the same order as input file
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
         self.assertEqual(len(records), 40)
-        self.assertTrue(all(record['site'] == 'Site name' 
-                        for record in records))
-        self.assertTrue(all(record['version'] == 'RAW' 
-                        for record in records))
+        self.assertTrue(all(record.site == 'SITE NAME' for record in records))
+        self.assertTrue(all(record.version == 'RAW' for record in records))
         
         seen = set()
         seen_add = seen.add
         # One date/time per location
-        ymdhmss = [(record['sampledate'].year(), 
-                    record['sampledate'].month(),
-                    record['sampledate'].day(),
-                    record['sampledate'].hour(), 
-                    record['sampledate'].minute(),
-                    record['sampledate'].second())
-            for record in records 
-            if not (record['location'] in seen or seen_add(record['location']))]
+        times = [record.times[0] for record in records 
+            if not (record.location in seen or seen_add(record.location))]
         expected = [
-            (2015, 3, 25, 12, 15, 0),
-            (2015, 3, 25, 11, 36, 0),
-            (2015, 3, 25, 13, 6, 0),
-            (2015, 3, 25, 10, 49, 0),
-            (2015, 3, 25, 12, 57, 0),
-            (2015, 3, 25, 11, 49, 0),
-            (2015, 3, 25, 12, 2, 0),
-            (2015, 3, 25, 13, 42, 0)
+            HecTime("25MAR2015 12:15").value(),
+            HecTime("25MAR2015 11:36").value(),
+            HecTime("25MAR2015 13:06").value(),
+            HecTime("25MAR2015 10:49").value(),
+            HecTime("25MAR2015 12:57").value(),
+            HecTime("25MAR2015 11:49").value(),
+            HecTime("25MAR2015 12:02").value(),
+            HecTime("25MAR2015 13:42").value()
         ]
-        self.assertEqual(ymdhmss, expected)
+        self.assertEqual(times, expected)
         
         expected = [
             [4.91, 42.4, 100, 5.77, 7.92],
@@ -62,7 +55,7 @@ class FieldDataImportTestCase(unittest.TestCase):
             [9.9, 81.1, 49, 5.53, 5.99],
             [8.45, 72.2, 17, 8.2, 7.48],
         ]
-        values = [record['samplevalue'] for record in records]
+        values = [record.values[0] for record in records]
         values = [values[i:i + 5] for i in range(0, len(values), 5)]
 
         self.assertEqual(values, expected)
@@ -72,24 +65,22 @@ class FieldDataImportTestCase(unittest.TestCase):
         del config['columns']['time']
 
         records = importdata.locationsDown(config)
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
-        hmss = [(record['sampledate'].hour(), 
-                 record['sampledate'].minute(),
-                 record['sampledate'].second()) for record in records] 
-        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("25MAR2015 12:00").value()
+                        for time in times))
 
     def testHIHandheldNoneTime(self):
         config = self.config
         config['columns']['time'] = None
 
         records = importdata.locationsDown(config)
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
-        hmss = [(record['sampledate'].hour(), 
-                 record['sampledate'].minute(),
-                 record['sampledate'].second()) for record in records] 
-        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("25MAR2015 12:00").value()
+                        for time in times))
 
 class LabDataImportTestCase(unittest.TestCase):
     def testChemtest(self):

@@ -48,7 +48,7 @@ class Record(object):
                          self.startTime + len(self) * self.interval, 
                          self.interval)
         elif len(self) == 1:
-            return [self.start]
+            return [self.startTime]
         else:
             return []
         
