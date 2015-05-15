@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.1.4
+  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.2.0
  documentation</title>
   
 
@@ -31,9 +31,9 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.2.0
  documentation" href="index.html"/>
-        <link rel="next" title="4. Creating timeseries plots" href="timeseries_plots.html"/>
+        <link rel="next" title="4. Importing logger data" href="import_logger_data.html"/>
         <link rel="prev" title="2. Importing “field” data" href="import_field_data.html"/> 
 
   
@@ -81,8 +81,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">4.1. Plotting example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">5.1. Plotting example</a></li>
 </ul>
 </li>
 </ul>
@@ -174,6 +181,19 @@ file with the following content:</p>
 
 <span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Site name</span>
 <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RAW</span>
+
+<span class="l-Scalar-Plain">rows</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">location</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&quot;Client</span><span class="nv"> </span><span class="s">Sample</span><span class="nv"> </span><span class="s">ID.:&quot;</span>
+  <span class="l-Scalar-Plain">date</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&quot;Date</span><span class="nv"> </span><span class="s">Sampled:&quot;</span>
+    <span class="l-Scalar-Plain">format</span><span class="p-Indicator">:</span> <span class="s">&quot;%d-%b-%y&quot;</span>
+
+<span class="l-Scalar-Plain">columns</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">parameter</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Determinand</span>
+  <span class="l-Scalar-Plain">unit</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Units</span>
 
 <span class="l-Scalar-Plain">mapping</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">pH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">PH</span>
@@ -276,7 +296,7 @@ a different version, for example <cite>OBS</cite>.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="timeseries_plots.html" class="btn btn-neutral float-right" title="4. Creating timeseries plots">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="import_logger_data.html" class="btn btn-neutral float-right" title="4. Importing logger data">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="import_field_data.html" class="btn btn-neutral" title="2. Importing “field” data"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -289,7 +309,7 @@ a different version, for example <cite>OBS</cite>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 12/05/2015.
+      Last updated on 15/05/2015.
     </p>
   </div>
 
@@ -310,7 +330,7 @@ a different version, for example <cite>OBS</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.4
+            VERSION:'0.2.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

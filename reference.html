@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.1.4
+  <title>2. API Reference &mdash; Monitoring Module for HEC-DSSVue 0.2.0
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.2.0
  documentation" href="index.html"/>
         <link rel="prev" title="1. Introduction" href="dev_intro.html"/> 
 
@@ -80,8 +80,15 @@
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">4.1. Plotting example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">5.1. Plotting example</a></li>
 </ul>
 </li>
 </ul>
@@ -201,20 +208,14 @@ method executes <a class="reference internal" href="#toolbox.Tool.main" title="t
 <dt id="toolbox.util.relativeFolder">
 <code class="descclassname">toolbox.util.</code><code class="descname">relativeFolder</code><span class="sig-paren">(</span><em>folder</em>, <em>dssFilePath</em>, <em>createFolder='ifrelative'</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.relativeFolder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an absolute path to <code class="docutils literal"><span class="pre">folder</span></code> relative to <code class="docutils literal"><span class="pre">dssFilePath</span></code>.</p>
-<p>If the path <code class="docutils literal"><span class="pre">folder</span></code> is already absolute, it will simply return the path. <code class="docutils literal"><span class="pre">createFolder</span></code> is one of
-&#8216;ifrelative&#8217;, &#8216;ifabsolute&#8217; or &#8216;allways&#8217;.</p>
+<p>If the path <code class="docutils literal"><span class="pre">folder</span></code> is already absolute, it will simply return the path. 
+<code class="docutils literal"><span class="pre">createFolder</span></code> is one of &#8216;ifrelative&#8217;, &#8216;ifabsolute&#8217; or &#8216;allways&#8217;.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="toolbox.util.ValidationError">
-<em class="property">class </em><code class="descclassname">toolbox.util.</code><code class="descname">ValidationError</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#toolbox.util.ValidationError" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">toolbox.util.</code><code class="descname">ValidationError</code><a class="headerlink" href="#toolbox.util.ValidationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>An error while validating data.</p>
-<p>Based on <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ValidationError</span></code>. Copyright © Django Software Foundation and individual 
-contributors. All rights reserved.</p>
-<p>The <code class="docutils literal"><span class="pre">message</span></code> argument can be a single error, a list of errors. What we define as an &#8220;error&#8221; can be either 
-a simple string or an instance of ValidationError with its message attribute set, and what we define as
-list can be an actual <cite>list</cite> or an instance of <a class="reference internal" href="#toolbox.util.ValidationError" title="toolbox.util.ValidationError"><code class="xref py py-class docutils literal"><span class="pre">ValidationError</span></code></a> with its <code class="xref py py-attr docutils literal"><span class="pre">error_list`</span></code> attribute
-set.</p>
 </dd></dl>
 
 <dl class="class">
@@ -258,7 +259,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 12/05/2015.
+      Last updated on 15/05/2015.
     </p>
   </div>
 
@@ -279,7 +280,7 @@ returned value is 50% of the value after the <code class="docutils literal"><spa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.4
+            VERSION:'0.2.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

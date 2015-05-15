@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.1.4
+  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.2.0
  documentation</title>
   
 
@@ -31,10 +31,10 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.1.4
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.2.0
  documentation" href="index.html"/>
         <link rel="next" title="2. API Reference" href="reference.html"/>
-        <link rel="prev" title="4. Creating timeseries plots" href="timeseries_plots.html"/> 
+        <link rel="prev" title="5. Creating timeseries plots" href="timeseries_plots.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -81,8 +81,15 @@
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">4. Creating timeseries plots</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">4.1. Plotting example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#plotting-example">5.1. Plotting example</a></li>
 </ul>
 </li>
 </ul>
@@ -158,12 +165,19 @@ creating plots, etc.).</li>
 <span class="c"># displaytouser=true</span>
 <span class="c"># displayinselector=true</span>
 
-<span class="kn">import</span> <span class="nn">toolbox</span>
+<span class="kn">import</span> <span class="nn">toolbox</span> <span class="kn">as</span> <span class="nn">tb</span>
+<span class="kn">import</span> <span class="nn">voluptuous</span> <span class="kn">as</span> <span class="nn">v</span>
 <span class="kn">from</span> <span class="nn">some_module</span> <span class="kn">import</span> <span class="n">do_something</span>
 
-<span class="k">class</span> <span class="nc">ExampleTool</span><span class="p">(</span><span class="n">toolbox</span><span class="o">.</span><span class="n">Tool</span><span class="p">):</span>
-    <span class="n">requiredParams</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;folder&#39;</span><span class="p">,</span> <span class="s">&#39;files&#39;</span><span class="p">,</span> <span class="s">&#39;site&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+<span class="k">class</span> <span class="nc">ExampleTool</span><span class="p">(</span><span class="n">tb</span><span class="o">.</span><span class="n">Tool</span><span class="p">):</span>
     <span class="n">refreshCatalogue</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># Update catalogue when completed</span>
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
+        <span class="s">&#39;folder&#39;</span><span class="p">:</span> <span class="nb">unicode</span><span class="p">,</span>
+        <span class="s">&#39;files&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="nb">unicode</span>
+        <span class="p">],</span>
+        <span class="s">&#39;site&#39;</span><span class="p">:</span> <span class="nb">unicode</span>
+    <span class="p">},</span> <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">do_something</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dssFilePath</span><span class="p">)</span>
@@ -187,6 +201,9 @@ like this.</p>
 <span class="nn">...</span>
 </pre></div>
 </div>
+<p>The configuration file is first validated using the <code class="docutils literal"><span class="pre">schema</span></code> attribute. This
+uses the <a class="reference external" href="https://pypi.python.org/pypi/voluptuous">voluptuous library</a>
+for validation.</p>
 <p>The user is prompted to select the configuration file when running the tool.
 Alternatively, the tool can be created like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">tool</span> <span class="o">=</span> <span class="n">ExampleTool</span><span class="p">(</span><span class="n">configFileName</span><span class="p">,</span> <span class="n">fullPathToDssFile</span><span class="p">)</span>
@@ -225,7 +242,7 @@ Jython errors will be displayed in this window.</p>
         <a href="reference.html" class="btn btn-neutral float-right" title="2. API Reference">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="timeseries_plots.html" class="btn btn-neutral" title="4. Creating timeseries plots"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -235,7 +252,7 @@ Jython errors will be displayed in this window.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 12/05/2015.
+      Last updated on 15/05/2015.
     </p>
   </div>
 
@@ -256,7 +273,7 @@ Jython errors will be displayed in this window.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.4
+            VERSION:'0.2.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
