@@ -31,12 +31,19 @@ Example of a HEC-DSS script using the :class:`toolbox.Tool`:
     # displaytouser=true
     # displayinselector=true
 
-    import toolbox
+    import toolbox as tb
+    import voluptuous as v
     from some_module import do_something
 
-    class ExampleTool(toolbox.Tool):
-        requiredParams = ['folder', 'files', 'site', ...]
+    class ExampleTool(tb.Tool):
         refreshCatalogue = 1  # Update catalogue when completed
+        schema = v.Schema({
+            'folder': unicode,
+            'files': [
+                unicode
+            ],
+            'site': unicode
+        }, required=True)
 
         def main(self):
             do_something(self.config, self.dssFilePath)
@@ -63,6 +70,9 @@ like this.
     site: Site name
     ...
 
+The configuration file is first validated using the ``schema`` attribute. This
+uses the `voluptuous library <https://pypi.python.org/pypi/voluptuous>`_ 
+for validation.
 
 The user is prompted to select the configuration file when running the tool. 
 Alternatively, the tool can be created like this::
