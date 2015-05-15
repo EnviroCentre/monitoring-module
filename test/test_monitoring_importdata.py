@@ -148,7 +148,29 @@ class LoggerImportTestCase(unittest.TestCase):
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             config = yaml.load(configFile.read())
             
-        ts = importdata.timeseries(config)
+        records = importdata.timeseries(config)
+        records.sort(key=attrgetter('parameter'))
+        
+        self.assertEqual(len(records), 6)
+        self.assertTrue(all(r.site == 'SITE NAME' for r in records))
+        self.assertTrue(all(r.location == 'LOCATION A' for r in records))
+        self.assertTrue(all(r.version == 'RAW' for r in records))
+        self.assertTrue(all(r.interval == 15 for r in records))
+        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:09").value() 
+                        for r in records))
+        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:24").value() 
+                        for r in records))
+        self.assertTrue(all(len(r) == 2598 for r in records))
+        self.assertEqual([r.parameter for r in records], 
+                         ['DO', 'DO%', 'EC', 'PH', 'TEMP', 'TURB'])
+        self.assertEqual([r.units for r in records], 
+                         ['mg/l', '%', u'µS/cm', '-', 'degC', 'FNU'])
+        # First values
+        self.assertEqual([r.values[0] for r in records],
+                         [10.94, 93.786, 0.66, 8.32, 7.68, 0])
+        # Last values
+        self.assertEqual([r.values[-1] for r in records],
+                         [9.64, 101.7251, 41.62, 5.96, 16.79, 1])
 
 
 if __name__ == '__main__':
