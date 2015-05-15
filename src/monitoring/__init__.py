@@ -39,7 +39,7 @@ class Record(object):
             
     @property
     def fullName(self):
-        return "/{0.site}/{0.location}/{0.parameter}//{0.interval:d}MIN/{0.version}/".format(self)
+        return "/{0.site}/{0.location}/{0.parameter}//{0.intervalStr}/{0.version}/".format(self)
     
     @property
     def times(self):
@@ -51,6 +51,14 @@ class Record(object):
             return [self.startTime]
         else:
             return []
+        
+    @property
+    def intervalStr(self):
+        if self.interval == -1:
+            return "IR-YEAR"
+        else:
+            # TODO: durations greater than 60mins
+            return "{:d}MIN".format(self.interval)
         
     @property
     def endTime(self):
