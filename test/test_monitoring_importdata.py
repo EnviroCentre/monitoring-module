@@ -90,15 +90,12 @@ class LabDataImportTestCase(unittest.TestCase):
 
         records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 106)
-        self.assertTrue(all(record['site'] == 'Site name' 
-                        for record in records))
-        self.assertTrue(all(record['version'] == 'RAW' 
-                        for record in records))
-
-        ymds = [(record['sampledate'].year(), 
-                 record['sampledate'].month(),
-                 record['sampledate'].day()) for record in records] 
-        self.assertTrue(all(ymd == (2015, 2, 10) for ymd in ymds))
+        self.assertTrue(all(record.site == 'SITE NAME' for record in records))
+        self.assertTrue(all(record.version == 'RAW' for record in records))
+        
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("10FEB2015 12:00").value()
+                        for time in times))
 
         params = {
             'PH': ('-', 8),
@@ -120,8 +117,8 @@ class LabDataImportTestCase(unittest.TestCase):
         }
 
         for param, paramConfig in params.iteritems():
-            units = [record['units'] for record in records 
-                if record['parameter'] == param]
+            units = [record.units for record in records 
+                if record.parameter == param]
             self.assertEqual(units, [paramConfig[0]] * paramConfig[1],
                              "Error in units %s for parameter %s" 
                              % (units, param))
@@ -138,8 +135,8 @@ class LabDataImportTestCase(unittest.TestCase):
             [8.5, 8.2, 12, 4.3, 2.5, 6.7, 5, 6.3, 1.8, 20, 140]
         ]
         for i, location in enumerate(locations):
-            values = [record['samplevalue'] for record in records 
-                if record['location'] == location]
+            values = [record.values[0] for record in records 
+                if record.location == location]
             self.assertEqual(values, expected[i], 
                              "Error in records %s for location %s" 
                              % (values[i], location))

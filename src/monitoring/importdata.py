@@ -124,15 +124,13 @@ def locationsAcross(config):
                         for location, col in locationCols.iteritems():
                             value = tbu.parseMeasurement(row[col])
                             if value:
-                                record = {
-                                    'sampledate': sampleDate,
-                                    'site': config['site'],
-                                    'location': location,
-                                    'parameter': param,
-                                    'version': config['version'],
-                                    'samplevalue': value, 
-                                    'units': config['params'][param]['unit']
-                                }
+                                record = mon.Record(site=config['site'],
+                                                    location=location,
+                                                    parameter=param,
+                                                    version=config['version'],
+                                                    units=config['params'][param]['unit'], 
+                                                    startTime=sampleDate.value(),
+                                                    values=value)
                                 records.append(record)
                 except KeyError:
                     # Skip if param not in import file
