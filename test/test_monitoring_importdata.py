@@ -143,11 +143,14 @@ class LabDataImportTestCase(unittest.TestCase):
         
 
 class LoggerImportTestCase(unittest.TestCase):
-    def testInSituLogger(self):
+    def setUp(self):
         configFileName = 'logger_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
-            config = yaml.load(configFile.read())
-            
+            self.config = yaml.load(configFile.read())
+    
+    def testInSituLogger(self):
+        config = self.config
+        
         records = importdata.timeseries(config)
         records.sort(key=attrgetter('parameter'))
         
@@ -156,9 +159,9 @@ class LoggerImportTestCase(unittest.TestCase):
         self.assertTrue(all(r.location == 'LOCATION A' for r in records))
         self.assertTrue(all(r.version == 'RAW' for r in records))
         self.assertTrue(all(r.interval == 15 for r in records))
-        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:09").value() 
+        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:15").value() 
                         for r in records))
-        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:24").value() 
+        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:30").value() 
                         for r in records))
         self.assertTrue(all(len(r) == 2598 for r in records))
         self.assertEqual([r.parameter for r in records], 
@@ -171,6 +174,17 @@ class LoggerImportTestCase(unittest.TestCase):
         # Last values
         self.assertEqual([r.values[-1] for r in records],
                          [9.64, 101.7251, 41.62, 5.96, 16.79, 1])
+
+    def testInSituLoggerNoSnap(self):
+        config = self.config
+        config['interval_snap'] = False
+        
+        records = importdata.timeseries(config)
+
+        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:09").value() 
+                        for r in records))
+        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:24").value() 
+                        for r in records))
 
 
 if __name__ == '__main__':

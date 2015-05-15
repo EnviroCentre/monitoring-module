@@ -48,6 +48,7 @@ file with the following content:
     version: RAW
 
     date_format: "%d/%m/%Y"
+    interval_snap: yes
 
     mapping:
       Temperature: TEMP

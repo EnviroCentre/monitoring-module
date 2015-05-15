@@ -166,10 +166,7 @@ def timeseries(config):
                         pass
                 break
                 
-            dateCol = None
-            timeCol = None
-            interval = None
-            startTime = None
+            dateCol = timeCol = interval = startTime = None
             # Dict of {'param': [value1, values2, ...]}
             values = defaultdict(list)
             for row in csvReader:
@@ -199,6 +196,9 @@ def timeseries(config):
                     elif interval is None:
                         interval = tbu.parseDateTime(row[dateCol], row[timeCol], 
                                                      config['date_format']).value() - startTime
+                        if config['interval_snap']:
+                            startTime = int(round(startTime / float(interval))) * interval
+                            
                     # In all rows we read all params
                     for param, col in paramCols.iteritems():
                         try:

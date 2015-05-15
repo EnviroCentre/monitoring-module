@@ -6,6 +6,7 @@ site: Site name
 version: RAW
 
 date_format: "%d/%m/%Y"
+interval_snap: yes
   
 mapping:
   Temperature: TEMP
