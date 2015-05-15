@@ -47,6 +47,19 @@ file with the following content:
     site: Site name
     version: RAW
 
+    rows:
+      location:
+        title: "Client Sample ID.:"
+      date:
+        title: "Date Sampled:"
+        format: "%d-%b-%y"
+
+    columns:
+      parameter:
+        title: Determinand
+      unit:
+        title: Units
+
     mapping:
       pH: PH
       Suspended Solids At 105C: SS

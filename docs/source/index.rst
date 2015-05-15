@@ -17,6 +17,7 @@ User manual
    intro
    import_field_data
    import_lab_data
+   import_logger_data
    timeseries_plots
 
 Developer guide

@@ -7,7 +7,8 @@ import unittest
 import yaml
 import codecs
 from monitoring import importdata
-from operator import itemgetter
+from operator import attrgetter
+from hec.heclib.util import HecTime
  
 
 class FieldDataImportTestCase(unittest.TestCase):
@@ -21,36 +22,28 @@ class FieldDataImportTestCase(unittest.TestCase):
 
         records = importdata.locationsDown(config)
         # Records are not in the same order as input file
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
         self.assertEqual(len(records), 40)
-        self.assertTrue(all(record['site'] == 'Site name' 
-                        for record in records))
-        self.assertTrue(all(record['version'] == 'RAW' 
-                        for record in records))
+        self.assertTrue(all(record.site == 'SITE NAME' for record in records))
+        self.assertTrue(all(record.version == 'RAW' for record in records))
         
         seen = set()
         seen_add = seen.add
         # One date/time per location
-        ymdhmss = [(record['sampledate'].year(), 
-                    record['sampledate'].month(),
-                    record['sampledate'].day(),
-                    record['sampledate'].hour(), 
-                    record['sampledate'].minute(),
-                    record['sampledate'].second())
-            for record in records 
-            if not (record['location'] in seen or seen_add(record['location']))]
+        times = [record.times[0] for record in records 
+            if not (record.location in seen or seen_add(record.location))]
         expected = [
-            (2015, 3, 25, 12, 15, 0),
-            (2015, 3, 25, 11, 36, 0),
-            (2015, 3, 25, 13, 6, 0),
-            (2015, 3, 25, 10, 49, 0),
-            (2015, 3, 25, 12, 57, 0),
-            (2015, 3, 25, 11, 49, 0),
-            (2015, 3, 25, 12, 2, 0),
-            (2015, 3, 25, 13, 42, 0)
+            HecTime("25MAR2015 12:15").value(),
+            HecTime("25MAR2015 11:36").value(),
+            HecTime("25MAR2015 13:06").value(),
+            HecTime("25MAR2015 10:49").value(),
+            HecTime("25MAR2015 12:57").value(),
+            HecTime("25MAR2015 11:49").value(),
+            HecTime("25MAR2015 12:02").value(),
+            HecTime("25MAR2015 13:42").value()
         ]
-        self.assertEqual(ymdhmss, expected)
+        self.assertEqual(times, expected)
         
         expected = [
             [4.91, 42.4, 100, 5.77, 7.92],
@@ -62,7 +55,7 @@ class FieldDataImportTestCase(unittest.TestCase):
             [9.9, 81.1, 49, 5.53, 5.99],
             [8.45, 72.2, 17, 8.2, 7.48],
         ]
-        values = [record['samplevalue'] for record in records]
+        values = [record.values[0] for record in records]
         values = [values[i:i + 5] for i in range(0, len(values), 5)]
 
         self.assertEqual(values, expected)
@@ -72,24 +65,22 @@ class FieldDataImportTestCase(unittest.TestCase):
         del config['columns']['time']
 
         records = importdata.locationsDown(config)
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
-        hmss = [(record['sampledate'].hour(), 
-                 record['sampledate'].minute(),
-                 record['sampledate'].second()) for record in records] 
-        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("25MAR2015 12:00").value()
+                        for time in times))
 
     def testHIHandheldNoneTime(self):
         config = self.config
         config['columns']['time'] = None
 
         records = importdata.locationsDown(config)
-        records.sort(key=itemgetter('location', 'parameter'))
+        records.sort(key=attrgetter('location', 'parameter'))
         
-        hmss = [(record['sampledate'].hour(), 
-                 record['sampledate'].minute(),
-                 record['sampledate'].second()) for record in records] 
-        self.assertTrue(all(hms == (12, 0, 0) for hms in hmss))
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("25MAR2015 12:00").value()
+                        for time in times))
 
 class LabDataImportTestCase(unittest.TestCase):
     def testChemtest(self):
@@ -99,15 +90,12 @@ class LabDataImportTestCase(unittest.TestCase):
 
         records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 106)
-        self.assertTrue(all(record['site'] == 'Site name' 
-                        for record in records))
-        self.assertTrue(all(record['version'] == 'RAW' 
-                        for record in records))
-
-        ymds = [(record['sampledate'].year(), 
-                 record['sampledate'].month(),
-                 record['sampledate'].day()) for record in records] 
-        self.assertTrue(all(ymd == (2015, 2, 10) for ymd in ymds))
+        self.assertTrue(all(record.site == 'SITE NAME' for record in records))
+        self.assertTrue(all(record.version == 'RAW' for record in records))
+        
+        times = [record.times[0] for record in records] 
+        self.assertTrue(all(time == HecTime("10FEB2015 12:00").value()
+                        for time in times))
 
         params = {
             'PH': ('-', 8),
@@ -129,8 +117,8 @@ class LabDataImportTestCase(unittest.TestCase):
         }
 
         for param, paramConfig in params.iteritems():
-            units = [record['units'] for record in records 
-                if record['parameter'] == param]
+            units = [record.units for record in records 
+                if record.parameter == param]
             self.assertEqual(units, [paramConfig[0]] * paramConfig[1],
                              "Error in units %s for parameter %s" 
                              % (units, param))
@@ -147,12 +135,57 @@ class LabDataImportTestCase(unittest.TestCase):
             [8.5, 8.2, 12, 4.3, 2.5, 6.7, 5, 6.3, 1.8, 20, 140]
         ]
         for i, location in enumerate(locations):
-            values = [record['samplevalue'] for record in records 
-                if record['location'] == location]
+            values = [record.values[0] for record in records 
+                if record.location == location]
             self.assertEqual(values, expected[i], 
                              "Error in records %s for location %s" 
                              % (values[i], location))
         
+
+class LoggerImportTestCase(unittest.TestCase):
+    def setUp(self):
+        configFileName = 'logger_import.yml'
+        with codecs.open(configFileName, encoding='utf-8') as configFile:
+            self.config = yaml.load(configFile.read())
+    
+    def testInSituLogger(self):
+        config = self.config
+        
+        records = importdata.timeseries(config)
+        records.sort(key=attrgetter('parameter'))
+        
+        self.assertEqual(len(records), 6)
+        self.assertTrue(all(r.site == 'SITE NAME' for r in records))
+        self.assertTrue(all(r.location == 'LOCATION A' for r in records))
+        self.assertTrue(all(r.version == 'RAW' for r in records))
+        self.assertTrue(all(r.interval == 15 for r in records))
+        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:15").value() 
+                        for r in records))
+        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:30").value() 
+                        for r in records))
+        self.assertTrue(all(len(r) == 2598 for r in records))
+        self.assertEqual([r.parameter for r in records], 
+                         ['DO', 'DO%', 'EC', 'PH', 'TEMP', 'TURB'])
+        self.assertEqual([r.units for r in records], 
+                         ['mg/l', '%', u'µS/cm', '-', 'degC', 'FNU'])
+        # First values
+        self.assertEqual([r.values[0] for r in records],
+                         [10.94, 93.786, 0.66, 8.32, 7.68, 0])
+        # Last values
+        self.assertEqual([r.values[-1] for r in records],
+                         [9.64, 101.7251, 41.62, 5.96, 16.79, 1])
+
+    def testInSituLoggerNoSnap(self):
+        config = self.config
+        config['interval_snap'] = False
+        
+        records = importdata.timeseries(config)
+
+        self.assertTrue(all(r.startTime == HecTime("25MAR2015 14:09").value() 
+                        for r in records))
+        self.assertTrue(all(r.endTime == HecTime("21APR2015 15:24").value() 
+                        for r in records))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-# name=Import lab data
+# name=Import logger data
 # displayinmenu=true
 # displaytouser=true
 # displayinselector=true
@@ -12,28 +12,12 @@ from voluptuous import Schema
 class ImportTool(tb.Tool):
     schema = Schema({
         'folder': unicode,
-        'files': [
-            unicode
-        ],
+        'files': {
+            unicode: unicode
+        },
         'site': unicode,
         'version': unicode,
-        'rows': {
-            'location': {
-                'title': unicode
-            },
-            'date': {
-                'title': unicode,
-                'format': unicode
-            },
-        },
-        'columns': {
-            'parameter': {
-                'title': unicode
-            },
-            'unit': {
-                'title': unicode
-            },
-        },
+        'date_format': unicode,
         'mapping': {
             unicode: unicode
         },
@@ -43,13 +27,13 @@ class ImportTool(tb.Tool):
             }
         }
     }, required=True)
-
+    
     refreshCatalogue = 1
     
     def main(self):
-        records = importdata.locationsAcross(self.config)
+        records = importdata.timeseries(self.config)
         imported = tbu.saveRecords(records, self.dssFilePath)
-        self.message = "{} Records imported.".format(imported)
+        self.message = "{} Timeseries imported.".format(imported)
 
 
 tool = ImportTool()
