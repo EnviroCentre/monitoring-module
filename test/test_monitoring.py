@@ -49,6 +49,31 @@ class RecordTestCase(unittest.TestCase):
         """Single-value records always treated as irregular"""
         r = mon.Record(values=1, interval=999)
         self.assertEqual(r.interval, -1)
+        
+    def testIntervalStr15Min(self):
+        r = mon.Record(interval=15)
+        self.assertEqual(r.intervalStr, '15MIN')
+
+    def testIntervalStr59Min(self):
+        r = mon.Record(interval=59)
+        self.assertEqual(r.intervalStr, '59MIN')
+
+    def testIntervalStr1Hour(self):
+        r = mon.Record(interval=60)
+        self.assertEqual(r.intervalStr, '1HOUR')
+
+    def testIntervalStr23Hour(self):
+        r = mon.Record(interval=23*60)
+        self.assertEqual(r.intervalStr, '23HOUR')
+
+    def testIntervalStr1Day(self):
+        r = mon.Record(interval=24*60)
+        self.assertEqual(r.intervalStr, '1DAY')
+
+    def testIntervalStr2Day(self):
+        r = mon.Record(interval=24*60*2)
+        self.assertEqual(r.intervalStr, '2DAY')
+
 
 if __name__ == '__main__':
     unittest.main()
