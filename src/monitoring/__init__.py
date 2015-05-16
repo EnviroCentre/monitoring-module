@@ -2,7 +2,7 @@ import collections
 
 
 class Record(object):
-    def __init__(self, site=None, location=None, parameter=None, version=None,
+    def __init__(self, site="", location="", parameter="", version="",
                  units="-", startTime=None, interval=-1, values=[]):
         self.site = site.upper()
         self.location = location.upper()
@@ -12,10 +12,7 @@ class Record(object):
         self.startTime = startTime
         self.interval = interval
         self.type = "INST-VAL"
-        if isinstance(values, collections.Sequence):
-            self._values = values
-        else:
-            self._values = [values]
+        self.values = values
     
     @property
     def origin(self):
@@ -36,6 +33,7 @@ class Record(object):
             self._values = v
         else:
             self._values = [v]
+            self.interval = -1
             
     @property
     def fullName(self):
