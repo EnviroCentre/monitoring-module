@@ -196,8 +196,6 @@ def timeseries(config):
                     elif interval is None:
                         interval = tbu.parseDateTime(row[dateCol], row[timeCol], 
                                                      config['date_format']).value() - startTime
-                        if config['interval_snap']:
-                            startTime = int(round(startTime / float(interval))) * interval
                             
                     # In all rows we read all params
                     for param, col in paramCols.iteritems():
@@ -205,6 +203,16 @@ def timeseries(config):
                             values[param].append(float(row[col])) 
                         except ValueError:
                             values[param].append(Constants.UNDEFINED)
+
+        # Check if interval matches number of row and end date/time
+        endTime = tbu.parseDateTime(row[dateCol], row[timeCol], 
+                                    config['date_format']).value()
+        if not endTime == startTime + interval * (len(values[param])-1):
+            raise ValueError("Import file {} does not appear to have a regular interval".format(importFile))
+        
+        # Shift the times to match proper interval times
+        if config['interval_snap']:
+            startTime = int(round(startTime / float(interval))) * interval
             
         for param in paramCols:
             record = mon.Record(site=config['site'],
