@@ -117,14 +117,16 @@ def paramPerPage(config, dssFilePath):
             messages.append("No data for parameter '{}'.".format(param))
             continue
         
+        thDatasets = []
         for dataset in datasets:
-            vpLayout = layout.addViewport()
-            vpLayout.addCurve('Y1', dataset)
+            vp = layout.addViewport()
+            vp.addCurve('Y1', dataset)
             try:
                 th = config['thresholds'][param][dataset.location]
                 if not th is None:
                     thRec = constantTsc(th, minDate, maxDate, templateTsc=dataset)
-                    vpLayout.addCurve('Y1', thRec)
+                    thDatasets.append(thRec)
+                    vp.addCurve('Y1', thRec)
             except KeyError:
                 pass
                         
@@ -140,7 +142,10 @@ def paramPerPage(config, dssFilePath):
             curve = plot.getCurve(dataset)
             curve.setLineColor('{}, {}, {}'.format(*config['line']['colour']))
             curve.setLineWidth(config['line']['width'])
+            plot.setLegendLabelText(dataset, dataset.location)
             vp = plot.getViewport(dataset.fullName)
+            #print(dir(vp.getProperties()))
+            #vp.drawViewportLegendAlign('Right')
             vp.getAxis('X1').setScaleLimits(minDate.value(), maxDate.value())
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
@@ -149,6 +154,16 @@ def paramPerPage(config, dssFilePath):
                     vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
+        for dataset in thDatasets:
+            curve = plot.getCurve(dataset)
+            
+            curve.setLabel(dataset.version)
+            curve.setLabelVisible(1)
+            curve.setLineColor('50, 50, 50')
+            curve.setLineWidth(config['line']['width'])
+            curve.setLineStyle('Dash')
+            
+        
         # Set all y-axes same limits
         for index, vp in enumerate(plot.getViewports()):
             vp.getAxis('Y1').setScaleLimits(ymin, ymax)
