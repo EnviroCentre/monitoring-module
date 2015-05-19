@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
+import copy
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.script import Plot
+
 
 
 def _coloursByLocation(config):
@@ -102,7 +104,7 @@ def paramPerPage(config, dssFilePath):
         layout = Plot.newPlotLayout()
 
         dataPaths = [
-            "/{}/{}/{}//{}/{}/".format(config['site'].upper(), 
+            '/{}/{}/{}//{}/{}/'.format(config['site'].upper(), 
                                        loc.upper(), 
                                        param.upper(), 
                                        config['interval'].upper(), 
@@ -112,13 +114,20 @@ def paramPerPage(config, dssFilePath):
         datasets = [dssFile.get(dp, 1) for dp in dataPaths]
         datasets = [d for d in datasets if d.numberValues > 0]
         if not datasets:
-            messages.append("No data for parameter '%s'." % param)
+            messages.append("No data for parameter '{}'.".format(param))
             continue
         
         for dataset in datasets:
             vpLayout = layout.addViewport()
             vpLayout.addCurve('Y1', dataset)
-        
+            try:
+                th = config['thresholds'][param][dataset.location]
+                if not th is None:
+                    thRec = constantTsc(th, minDate, maxDate, templateTsc=dataset)
+                    vpLayout.addCurve('Y1', thRec)
+            except KeyError:
+                pass
+                        
         plot.configurePlotLayout(layout)
         plot.setPlotTitleText(param)
         plot.setPlotTitleVisible(1)
@@ -153,3 +162,13 @@ def paramPerPage(config, dssFilePath):
     dssFile.done()
     return plotted, messages
 
+def constantTsc(value, startDate, endDate, templateTsc):
+    rec = copy.copy(templateTsc)
+    rec.values = [value] * 2
+    rec.times = [startDate.value(), endDate.value()]
+    rec.type = 'INST-VAL'
+    rec.interval = -1
+    rec.version = 'THRESHOLD'
+    rec.numberValues = 2
+    rec.fullName = "/{0.watershed}/{0.location}/{0.parameter}//IR-DECADE/{0.version}/".format(rec)
+    return rec
