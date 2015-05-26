@@ -135,8 +135,11 @@ def paramPerPage(config, dssFilePath):
         plot.setPlotTitleVisible(1)
         plot.setLocation(-10000, -10000)
         plot.setSize(config['width'], config['height'])
-        plot.showPlot()
-
+        panel = plot.getPlotpanel()
+        prop = panel.getProperties()
+        prop.setViewportSpaceSize(0)
+        
+        # Format normal data curves
         ymin, ymax = float('+inf'), float('-inf')
         for dataset in datasets:
             curve = plot.getCurve(dataset)
@@ -149,11 +152,10 @@ def paramPerPage(config, dssFilePath):
             vp.getAxis('X1').setScaleLimits(minDate.value(), maxDate.value())
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
-            if paramConfig:
-                if paramConfig['scale'].lower() == 'log':
-                    vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
+        
+        # Format threshold curves
         for dataset in thDatasets:
             curve = plot.getCurve(dataset)
             
@@ -162,12 +164,17 @@ def paramPerPage(config, dssFilePath):
             curve.setLineColor('50, 50, 50')
             curve.setLineWidth(config['line']['width'])
             curve.setLineStyle('Dash')
-            
+           
+        plot.showPlot()
+        plot.setSize(config['width'], config['height'])
         
         # Set all y-axes same limits
         for index, vp in enumerate(plot.getViewports()):
             vp.getAxis('Y1').setScaleLimits(ymin, ymax)
-
+            if paramConfig:
+                if paramConfig['scale'].lower() == 'log':
+                    vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+        
         plot.saveToJpeg(os.path.join(outputFolder, 
                         config['version'] + "_" + param),
                         95)
