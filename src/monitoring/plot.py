@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import os
 import copy
+import os
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
@@ -94,15 +94,14 @@ def paramPerPage(config, dssFilePath):
     messages = []
     
     outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
-    dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
 
-    for param, paramConfig in config['params'].iteritems():
-        plot = Plot.newPlot(param)
-        layout = Plot.newPlotLayout()
+    dssFile = HecDss.open(dssFilePath, str(minDate), str(maxDate))
 
+    for param, paramConfig in config['params'].iteritems():
+        plots = []
         dataPaths = [
             '/{}/{}/{}//{}/{}/'.format(config['site'].upper(), 
                                        loc.upper(), 
@@ -119,6 +118,9 @@ def paramPerPage(config, dssFilePath):
         
         thDatasets = []
         for dataset in datasets:
+            plot = Plot.newPlot(param)
+            layout = Plot.newPlotLayout()
+            layout.setHasLegend(0)
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
             try:
@@ -130,56 +132,56 @@ def paramPerPage(config, dssFilePath):
             except KeyError:
                 pass
                         
-        plot.configurePlotLayout(layout)
-        plot.setPlotTitleText(param)
-        plot.setPlotTitleVisible(1)
-        plot.setLocation(-10000, -10000)
-        plot.setSize(config['width'], config['height'])
-        panel = plot.getPlotpanel()
-        prop = panel.getProperties()
-        prop.setViewportSpaceSize(0)
+            plot.configurePlotLayout(layout)
+            plot.setPlotTitleText("{0.parameter} at {0.location}".format(dataset))
+            plot.setPlotTitleVisible(1)
+            plot.setLocation(-10000, -10000)
+            plot.setSize(config['width'], config['height'])
+            panel = plot.getPlotpanel()
+            prop = panel.getProperties()
+            prop.setViewportSpaceSize(0)
+            plots.append(plot)
         
         # Format normal data curves
         ymin, ymax = float('+inf'), float('-inf')
-        for dataset in datasets:
+        for dataset, plot in zip(datasets, plots):
             curve = plot.getCurve(dataset)
             curve.setLineColor('{}, {}, {}'.format(*config['line']['colour']))
             curve.setLineWidth(config['line']['width'])
             plot.setLegendLabelText(dataset, dataset.location)
             vp = plot.getViewport(dataset.fullName)
-            #print(dir(vp.getProperties()))
-            #vp.drawViewportLegendAlign('Right')
-            vp.getAxis('X1').setScaleLimits(minDate.value(), maxDate.value())
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
-            ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
-            ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
-        
-        # Format threshold curves
-        for dataset in thDatasets:
-            curve = plot.getCurve(dataset)
-            
-            curve.setLabel(dataset.version)
-            curve.setLabelVisible(1)
-            curve.setLineColor('50, 50, 50')
-            curve.setLineWidth(config['line']['width'])
-            curve.setLineStyle('Dash')
-           
-        plot.showPlot()
-        plot.setSize(config['width'], config['height'])
-        
-        # Set all y-axes same limits
-        for index, vp in enumerate(plot.getViewports()):
-            vp.getAxis('Y1').setScaleLimits(ymin, ymax)
             if paramConfig:
                 if paramConfig['scale'].lower() == 'log':
                     vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+            ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
+            ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
         
-        plot.saveToJpeg(os.path.join(outputFolder, 
-                        config['version'] + "_" + param),
-                        95)
-        plot.close()
-        plotted += 1
+            # Format threshold curves
+            associatedThDatasets = [d for d in thDatasets 
+                                    if d.location == dataset.location]
+            for thDataset in associatedThDatasets:
+                curve = plot.getCurve(thDataset)
+                curve.setLabel(thDataset.version)
+                curve.setLabelVisible(1)
+                curve.setLineColor('50, 50, 50')
+                curve.setLineWidth(config['line']['width'])
+                curve.setLineStyle('Dash')
+        
+        for dataset, plot in zip(datasets, plots):
+            plot.showPlot()
+            plot.setSize(config['width'], config['height'])
+            # Set all y-axes same limits
+            vp = plot.getViewports()[0]
+            vp.getAxis('Y1').setScaleLimits(ymin, ymax)
+            vp.getAxis('X1').setScaleLimits(minDate.value(), maxDate.value())
+        
+            plot.saveToJpeg(os.path.join(outputFolder, 
+                            "TH plot-{0.parameter}-{0.version}-{0.location}"
+                            .format(dataset)), 95)
+            plot.close()
+            plotted += 1
 
     dssFile.done()
     return plotted, messages

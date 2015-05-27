@@ -40,7 +40,7 @@ class PlotTool(tb.Tool):
             }, None)
         },
         Required('width', default=1200): All(int, Range(min=100, max=3000)),
-        Required('height', default=1200): All(int, Range(min=100, max=3000)),
+        Required('height', default=300): All(int, Range(min=100, max=3000)),
         Required('line', default={'width': defaultLineWidth, 
                                   'colour': defaultColour}): {
             Required('width', default=defaultLineWidth): 
