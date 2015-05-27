@@ -124,11 +124,13 @@ def paramPerPage(config, dssFilePath):
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
             try:
-                th = config['thresholds'][param][dataset.location]
-                if not th is None:
-                    thRec = constantTsc(th, minDate, maxDate, templateTsc=dataset)
-                    thDatasets.append(thRec)
-                    vp.addCurve('Y1', thRec)
+                thresholds = config['thresholds'][param][dataset.location]
+                if not thresholds is None:
+                    for value, label in thresholds.iteritems():
+                        thRec = constantTsc(value, label, minDate, maxDate, 
+                                            templateTsc=dataset)
+                        thDatasets.append(thRec)
+                        vp.addCurve('Y1', thRec)
             except KeyError:
                 pass
                         
@@ -160,7 +162,7 @@ def paramPerPage(config, dssFilePath):
         
             # Format threshold curves
             associatedThDatasets = [d for d in thDatasets 
-                                    if d.location == dataset.location]
+                if d.location == dataset.location]
             for thDataset in associatedThDatasets:
                 curve = plot.getCurve(thDataset)
                 curve.setLabel(thDataset.version)
@@ -186,13 +188,13 @@ def paramPerPage(config, dssFilePath):
     dssFile.done()
     return plotted, messages
 
-def constantTsc(value, startDate, endDate, templateTsc):
+def constantTsc(value, version, startDate, endDate, templateTsc):
     rec = copy.copy(templateTsc)
     rec.values = [value] * 2
     rec.times = [startDate.value(), endDate.value()]
     rec.type = 'INST-VAL'
     rec.interval = -1
-    rec.version = 'THRESHOLD'
+    rec.version = version.upper()
     rec.numberValues = 2
     rec.fullName = "/{0.watershed}/{0.location}/{0.parameter}//IR-DECADE/{0.version}/".format(rec)
     return rec

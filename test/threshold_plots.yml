@@ -15,19 +15,24 @@ period:
   
 thresholds:
   DO:
-    CM1: 10
-    CM2: 8.5
+    CM1: 
+      10: threshold
+    CM2: 
+      12: upper threshold
+      8.5: lower threshold
     CM3:
   TURB:
-    CM1: 1000
-    CM2: 1000
+    CM1: 
+      1000: trigger value
+    CM2: 
+      1000: trigger
     CM3:
 
 params:
   DO:
-    scale: log
+    scale: lin
   DO%:
-    scale: log
+    scale: lin
   EC:
     scale: log
   PH:
@@ -40,7 +45,7 @@ params:
     scale: lin
 
 width: 1200
-height: 1200
+height: 300
 
 line:
   width: 1.25

@@ -31,7 +31,7 @@ class PlotTool(tb.Tool):
         },
         Optional('thresholds'): {
             unicode: {
-                unicode: Any(float, int, None)
+                unicode: Any({Any(float, int): unicode}, None)
             }
         },
         'params': {
