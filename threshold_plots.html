@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. Creating timeseries plots &mdash; Monitoring Module for HEC-DSSVue 0.3.0
+  <title>6. Creating timeseries plots with thresholds &mdash; Monitoring Module for HEC-DSSVue 0.3.0
  documentation</title>
   
 
@@ -33,8 +33,8 @@
   
     <link rel="top" title="Monitoring Module for HEC-DSSVue 0.3.0
  documentation" href="index.html"/>
-        <link rel="next" title="6. Creating timeseries plots with thresholds" href="threshold_plots.html"/>
-        <link rel="prev" title="4. Importing logger data" href="import_logger_data.html"/> 
+        <link rel="next" title="1. Introduction" href="dev_intro.html"/>
+        <link rel="prev" title="5. Creating timeseries plots" href="timeseries_plots.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -88,16 +88,16 @@
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">5. Creating timeseries plots</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">5.1. Getting everything in place</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">5.2. The configuration file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#creating-the-plots">5.3. Creating the plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots with thresholds</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#getting-everything-in-place">6.1. Getting everything in place</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#the-configuration-file">6.2. The configuration file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#creating-the-plots">6.3. Creating the plots</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">6. Creating timeseries plots with thresholds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">6.1. Getting everything in place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">6.2. The configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-plots">6.3. Creating the plots</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>5. Creating timeseries plots</li>
+    <li>6. Creating timeseries plots with thresholds</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -147,20 +147,20 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="creating-timeseries-plots">
-<h1>5. Creating timeseries plots<a class="headerlink" href="#creating-timeseries-plots" title="Permalink to this headline">¶</a></h1>
-<p>A series of timeseries plots can be exported using the <cite>Monitoring Module</cite> for
-a range of locations and parameters. One graph is created for each parameter
-showing all locations.</p>
+  <div class="section" id="creating-timeseries-plots-with-thresholds">
+<h1>6. Creating timeseries plots with thresholds<a class="headerlink" href="#creating-timeseries-plots-with-thresholds" title="Permalink to this headline">¶</a></h1>
+<p>A series of timeseries plots with one or more threshold lines can be exported
+using the <cite>Monitoring Module</cite> for a range of locations and parameters. One graph
+is created per parameter, per location.</p>
 <div class="section" id="getting-everything-in-place">
-<h2>5.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h2>
+<h2>6.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h2>
 <p>In this example, the following project file structure is used:</p>
 <div class="highlight-python"><div class="highlight"><pre>C:\
     Project\
         Output\
             (empty)
         Monitoring data.dss
-        plots.yml
+        threshold_plots.yml
 </pre></div>
 </div>
 <p>The <code class="file docutils literal"><span class="pre">Monitoring</span> <span class="pre">data.dss</span></code> file includes some data for site <cite>Example site</cite>
@@ -168,9 +168,9 @@ showing all locations.</p>
 15-minute interval and version <cite>OBS</cite> (F-part).</p>
 </div>
 <div class="section" id="the-configuration-file">
-<h2>5.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h2>
-<p>The configuration file <code class="file docutils literal"><span class="pre">plots.yml</span></code> can be created as a simple text
-file with the following content:</p>
+<h2>6.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The configuration file <code class="file docutils literal"><span class="pre">threshold_plots.yml</span></code> can be created as a simple
+text file with the following content:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Example site</span>
 <span class="l-Scalar-Plain">locations</span><span class="p-Indicator">:</span>
  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">L1</span>
@@ -184,11 +184,24 @@ file with the following content:</p>
   <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">01JAN2000 00:00</span>
   <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">31DEC2000 24:00</span>
 
+<span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">CM1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">10</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">threshold</span>
+    <span class="l-Scalar-Plain">CM2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">12</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">upper threshold</span>
+      <span class="l-Scalar-Plain">8.5</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lower threshold</span>
+    <span class="l-Scalar-Plain">CM3</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">CM1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+    <span class="l-Scalar-Plain">CM2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+    <span class="l-Scalar-Plain">CM3</span><span class="p-Indicator">:</span>
+
 <span class="l-Scalar-Plain">params</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">DO%</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">EC</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">PH</span><span class="p-Indicator">:</span>
@@ -200,57 +213,29 @@ file with the following content:</p>
 <span class="c1"># Optional settings below with defaults shown</span>
 
 <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
-<span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">800</span>
+<span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">300</span>
 
 <span class="l-Scalar-Plain">line</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1.25</span>
-  <span class="l-Scalar-Plain">colours</span><span class="p-Indicator">:</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">31</span><span class="p-Indicator">,</span> <span class="nv">120</span><span class="p-Indicator">,</span> <span class="nv">180</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">223</span><span class="p-Indicator">,</span> <span class="nv">138</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">51</span><span class="p-Indicator">,</span> <span class="nv">160</span><span class="p-Indicator">,</span>  <span class="nv">44</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">251</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">,</span> <span class="nv">153</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">227</span><span class="p-Indicator">,</span>  <span class="nv">26</span><span class="p-Indicator">,</span>  <span class="nv">28</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">253</span><span class="p-Indicator">,</span> <span class="nv">191</span><span class="p-Indicator">,</span> <span class="nv">111</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">255</span><span class="p-Indicator">,</span> <span class="nv">127</span><span class="p-Indicator">,</span>   <span class="nv">0</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">202</span><span class="p-Indicator">,</span> <span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">214</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">106</span><span class="p-Indicator">,</span>  <span class="nv">61</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">]</span>
+  <span class="l-Scalar-Plain">colour</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
 </pre></div>
-</div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">The configuration file is structured according to the <a class="reference external" href="http://yaml.org">YAML format</a>. Indentation is important to define the configuration
-correctly. The example is best copied exactly as provided!</p>
 </div>
 <p>The configuration file lists the locations and parameters to plot as well as
 the folder to export the images into.</p>
-<blockquote>
-<div><ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">output_folder</span></code> is relative to the location of the <cite>dss</cite> file.</li>
-<li>The horizontal axis is limited to the period defined by the <code class="docutils literal"><span class="pre">start</span></code> and
-<code class="docutils literal"><span class="pre">end</span></code> settings. These must be formatted as date/times as in the example.</li>
-<li>The vertical axis can be set to a logarithmic scale by setting the
-parameter&#8217;s <code class="docutils literal"><span class="pre">scale</span></code> configuration to <cite>log</cite>. If the parameter values are
-zero or less, the axis is always linear and a warning message is displayed.</li>
-<li>The <code class="docutils literal"><span class="pre">width</span></code> and <code class="docutils literal"><span class="pre">height</span></code> settings define the dimensions of the plot
-window in pixels. The actual exported image is slightly smaller than this.</li>
-<li>A set of colours for individual curves on the graph (one for each location)
-is set by the <code class="docutils literal"><span class="pre">line</span></code>, <code class="docutils literal"><span class="pre">colours</span></code> settings which is a list of RGB colour
-values. If there are more locations than in the colours list, the colours at
-the beginning of the list are used twice.</li>
-</ul>
-</div></blockquote>
+<p>Multiple thresholds can be specified per parameter, per location using the
+<code class="docutils literal"><span class="pre">thresholds</span></code> section like this: <code class="samp docutils literal"><em><span class="pre">numeric</span> <span class="pre">value</span></em><span class="pre">:</span> <em><span class="pre">line</span> <span class="pre">label</span></em></code></p>
 </div>
 <div class="section" id="creating-the-plots">
-<h2>5.3. Creating the plots<a class="headerlink" href="#creating-the-plots" title="Permalink to this headline">¶</a></h2>
+<h2>6.3. Creating the plots<a class="headerlink" href="#creating-the-plots" title="Permalink to this headline">¶</a></h2>
 <p>When the configuration has been set up, the plots can be generated as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li>Open the <code class="file docutils literal"><span class="pre">Monitoring</span> <span class="pre">data.dss</span></code> file in HEC-DSSVue.</li>
-<li>Select menu item <span class="menuselection">Scripts ‣ Monitoring plots</span> or
-alternatively click on <span class="menuselection">Monitoring plots</span> on the toolbar.</li>
-<li>Choose the configuration file <code class="file docutils literal"><span class="pre">plots.yml</span></code> in the file selection
-window.</li>
+<li>Select menu item <span class="menuselection">Scripts ‣ Monitoring threshold plots</span> or
+alternatively click on <span class="menuselection">Monitoring threshold plots</span> on the
+toolbar.</li>
+<li>Choose the configuration file <code class="file docutils literal"><span class="pre">threshold_plots.yml</span></code> in the file
+selection window.</li>
 </ol>
 </div></blockquote>
 <p>The plots are briefly shown on the screen as they are created and then exported
@@ -264,10 +249,10 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="threshold_plots.html" class="btn btn-neutral float-right" title="6. Creating timeseries plots with thresholds">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dev_intro.html" class="btn btn-neutral float-right" title="1. Introduction">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="import_logger_data.html" class="btn btn-neutral" title="4. Importing logger data"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
