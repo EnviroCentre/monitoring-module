@@ -6,11 +6,8 @@ a range of locations and parameters. One graph is created for each parameter
 showing all locations.
 
 
-Plotting example
-----------------
-
 Getting everything in place
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 In this example, the following project file structure is used:: 
 
@@ -25,8 +22,9 @@ The :file:`Monitoring data.dss` file includes some data for site `Example site`
 (A-part), locations `L1` and `L2` (B-part) for a range of parameters at a 
 15-minute interval and version `OBS` (F-part).
 
+
 The configuration file
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 The configuration file :file:`plots.yml` can be created as a simple text
 file with the following content:
@@ -104,7 +102,7 @@ the folder to export the images into.
 
 
 Creating the plots
-~~~~~~~~~~~~~~~~~~
+------------------
 
 When the configuration has been set up, the plots can be generated as follows:
 

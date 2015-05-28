@@ -2,7 +2,7 @@ import collections
 
 
 class Record(object):
-    def __init__(self, site=None, location=None, parameter=None, version=None,
+    def __init__(self, site="", location="", parameter="", version="",
                  units="-", startTime=None, interval=-1, values=[]):
         self.site = site.upper()
         self.location = location.upper()
@@ -12,10 +12,7 @@ class Record(object):
         self.startTime = startTime
         self.interval = interval
         self.type = "INST-VAL"
-        if isinstance(values, collections.Sequence):
-            self._values = values
-        else:
-            self._values = [values]
+        self.values = values
     
     @property
     def origin(self):
@@ -36,6 +33,7 @@ class Record(object):
             self._values = v
         else:
             self._values = [v]
+            self.interval = -1
             
     @property
     def fullName(self):
@@ -57,8 +55,19 @@ class Record(object):
         if self.interval == -1:
             return "IR-YEAR"
         else:
-            # TODO: durations greater than 60mins
-            return "{:d}MIN".format(self.interval)
+            units = [
+                ('MIN', 60),
+                ('HOUR', 60 * 24),
+                ('DAY', 1e9),
+            ]
+            factor = 1
+            for unit in units:
+                if self.interval < unit[1]:
+                    unitStr = unit[0]
+                    break
+                else:
+                    factor = unit[1]
+            return "{0:d}{1}".format(self.interval/factor, unitStr)
         
     @property
     def endTime(self):
