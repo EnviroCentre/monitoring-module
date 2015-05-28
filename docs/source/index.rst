@@ -19,6 +19,7 @@ User manual
    import_lab_data
    import_logger_data
    timeseries_plots
+   threshold_plots
 
 Developer guide
 ---------------
