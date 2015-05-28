@@ -83,7 +83,7 @@ The configuration file lists the locations and parameters to plot as well as
 the folder to export the images into. 
 
 Multiple thresholds can be specified per parameter, per location using the 
-``thresholds`` section like this: ``numeric value: line label``
+``thresholds`` section like this: :samp:`{numeric value}: {line label}`
 
 
 Creating the plots
