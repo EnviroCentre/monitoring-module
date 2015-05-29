@@ -63,7 +63,7 @@ def locationsDown(config):
                                                    config['columns']['date']['format'])
                     
                     for param, col in paramCols.iteritems():
-                        value = tbu.parseMeasurement(row[col])
+                        value, quality = tbu.parseMeasurement(row[col])
                         if value:
                             record = mon.Record(site=config['site'],
                                                 location=row[locationCol],
@@ -71,7 +71,8 @@ def locationsDown(config):
                                                 version=config['version'],
                                                 units=config['params'][param]['unit'], 
                                                 startTime=sampleDate.value(),
-                                                values=value)
+                                                values=value,
+                                                qualities=quality)
                             records.append(record)
                         
     return records
@@ -122,7 +123,7 @@ def locationsAcross(config):
                     param = config['mapping'][row[paramCol]]
                     if param in config['params']:
                         for location, col in locationCols.iteritems():
-                            value = tbu.parseMeasurement(row[col])
+                            value, quality = tbu.parseMeasurement(row[col])
                             if value:
                                 record = mon.Record(site=config['site'],
                                                     location=location,
@@ -130,7 +131,8 @@ def locationsAcross(config):
                                                     version=config['version'],
                                                     units=config['params'][param]['unit'], 
                                                     startTime=sampleDate.value(),
-                                                    values=value)
+                                                    values=value,
+                                                    qualities=quality)
                                 records.append(record)
                 except KeyError:
                     # Skip if param not in import file

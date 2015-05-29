@@ -53,8 +53,10 @@ class FieldDataImportTestCase(unittest.TestCase):
         ]
         values = [record.values[0] for record in records]
         values = [values[i:i + 5] for i in range(0, len(values), 5)]
-
         self.assertEqual(values, expected)
+        
+        qualities = [record.qualities[0] for record in records]
+        self.assertEqual(qualities, [3] * len(records))
     
     def testHIHandheldNoTime(self):
         config = self.config

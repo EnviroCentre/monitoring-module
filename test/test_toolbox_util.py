@@ -5,19 +5,19 @@ class ToolboxUtilTestCase(unittest.TestCase):
 
     def testParseMeasurement(self):
         result = toolbox.util.parseMeasurement("1.234")
-        self.assertEqual(result, 1.234)
+        self.assertEqual(result, (1.234, 3))
 
     def testParseMeasurementSpaces(self):
         result = toolbox.util.parseMeasurement(" 1.234 ")
-        self.assertEqual(result, 1.234)
+        self.assertEqual(result, (1.234, 3))
 
     def testParseMeasurementBelowLOD(self):
         result = toolbox.util.parseMeasurement("<2.0")
-        self.assertEqual(result, 1.0)
+        self.assertEqual(result, (1.0, 16777347))
 
     def testParseMeasurementBelowLODSpaces(self):
         result = toolbox.util.parseMeasurement(" < 2.0 ")
-        self.assertEqual(result, 1.0)
+        self.assertEqual(result, (1.0, 16777347))
         
     def testDateDefaultFormat(self):
         dt = toolbox.util.parseDateTime("2015/12/31", "01:00:00")
