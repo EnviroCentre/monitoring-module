@@ -4,11 +4,14 @@ Monitoring Module for HEC-DSSVue
 A set of scripts for managing environmental monitoring data within the 
 HEC-DSSVue software.
 
+Read the `documentation <https://envirocentre.github.io/monitoring-module>`_.
+
+
 Terms & Conditions
 ------------------
 
 This software is released under the terms of the MIT licence. See 
-`Readme file <https://envirocentre.github.io/monitoring-module>`_
+`LICENSE file <LICENSE>`_
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
