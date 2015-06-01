@@ -79,6 +79,20 @@ of the configuration file indicates which column headings map onto the
 parameters to be saved into the database. Special symbols (non-ASCII characters)
 should be omitted from the ``mapping`` section.
 
+The following tags can be used to specify the date format:
+
+=== ============== === ===================== === ==============
+Day                Month                     Year
+------------------ ------------------------- ------------------
+Tag Example        Tag Example               Tag Example
+=== ============== === ===================== === ==============
+%d  01, 02, .., 31 %b  Jan, Feb, ..          %y  00, 01, .., 99
+|                  %B  January, February, .. %Y  1970, 2013, ..
+|                  %m  01, 02, .., 12        |
+=== ============== === ===================== === ==============
+
+The time column is always assumed to be formatted as ``%H:%M:%S``.
+
 .. important::
 
    Unlike the other import tools, the ``files`` section lists the file names 

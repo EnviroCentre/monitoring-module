@@ -89,6 +89,21 @@ configuration file indicates which column headings map onto the parameters to be
 saved into the database. Special symbols (non-ASCII characters) should be 
 omitted from the ``mapping`` section.
 
+The following tags can be used to specify the date format:
+
+=== ============== === ===================== === ==============
+Day                Month                     Year
+------------------ ------------------------- ------------------
+Tag Example        Tag Example               Tag Example
+=== ============== === ===================== === ==============
+%d  01, 02, .., 31 %b  Jan, Feb, ..          %y  00, 01, .., 99
+|                  %B  January, February, .. %Y  1970, 2013, ..
+|                  %m  01, 02, .., 12        |
+=== ============== === ===================== === ==============
+
+The `time` column is optional. If not specified, all times are set to 
+12:00:00 hrs. The time format is always assumed to be ``%H:%M:%S``.
+
 Parameter values in the import file starting with `<` are interpreted as being 
 below the meter's limit of detection (LOD). Such measurements are imported as 
 50% of the LOD to allow numeric evaluations and plotting in line with current 
