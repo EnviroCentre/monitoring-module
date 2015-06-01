@@ -18,6 +18,7 @@ class ImportTool(tb.Tool):
         'site': unicode,
         'version': unicode,
         'date_format': unicode,
+        'interval_snap': bool,
         'mapping': {
             unicode: unicode
         },

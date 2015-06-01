@@ -3,7 +3,8 @@ import collections
 
 class Record(object):
     def __init__(self, site="", location="", parameter="", version="",
-                 units="-", startTime=None, interval=-1, values=[]):
+                 units="-", startTime=None, interval=-1, values=None, 
+                 qualities=None):
         self.site = site.upper()
         self.location = location.upper()
         self.parameter = parameter.upper()
@@ -13,6 +14,7 @@ class Record(object):
         self.interval = interval
         self.type = "INST-VAL"
         self.values = values
+        self.qualities = qualities
     
     @property
     def origin(self):
@@ -34,6 +36,19 @@ class Record(object):
         else:
             self._values = [v]
             self.interval = -1
+
+    @property
+    def qualities(self):
+        return self._qualities
+
+    @qualities.setter
+    def qualities(self, q):
+        if q is None:
+            self._qualities = None
+        elif isinstance(q, collections.Sequence):
+            self._qualities = q
+        else:
+            self._qualities = [q]
             
     @property
     def fullName(self):
@@ -67,7 +82,7 @@ class Record(object):
                     break
                 else:
                     factor = unit[1]
-            return "{0:d}{1}".format(self.interval/factor, unitStr)
+            return "{0:d}{1}".format(self.interval / factor, unitStr)
         
     @property
     def endTime(self):

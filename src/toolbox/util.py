@@ -49,6 +49,8 @@ def _tscFromRecord(record):
     tsc.interval = record.interval
     tsc.fullName = record.fullName
     tsc.values = record.values
+    if not record.qualities is None:
+        tsc.quality = record.qualities
     tsc.times = record.times
     tsc.startTime = record.startTime
     tsc.endTime = record.endTime
@@ -83,18 +85,24 @@ def saveRecords(records, dssFilePath):
 
 def parseMeasurement(valueStr):
     """
-    Return numeric value of measurement string.
+    Return numeric value of measurement string and quality flag as tuple.
     
     If ``valueStr`` starts with ``<`` (i.e. below limit of detection), the 
     returned value is 50% of the value after the ``<``.
     """
+    # HEC quality flags
+    TESTED = 1 << 0
+    VALID = 1 << 1
+    MISSING = 1 << 3
+    CHANGED = 1 << 7
+    USER_DEF = 1 << 24
     try:
-        return float(valueStr)
+        return float(valueStr), TESTED | VALID
     except ValueError:
         if valueStr.strip().startswith('<'):
-            return float(valueStr.strip(' <')) * 0.5
+            return float(valueStr.strip(' <')) * 0.5, TESTED | VALID | CHANGED | USER_DEF
         else:
-            return None
+            return None, TESTED | MISSING
 
 def parseDateTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
     """
