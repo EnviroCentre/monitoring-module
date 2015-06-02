@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import copy
+import numbers
 import os
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.script import Plot
-
 
 
 def _coloursByLocation(config):
@@ -123,16 +123,11 @@ def paramPerPage(config, dssFilePath):
             layout.setHasLegend(0)
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
-            try:
-                thresholds = config['thresholds'][param][dataset.location]
-                if not thresholds is None:
-                    for value, label in thresholds.iteritems():
-                        thRec = constantTsc(value, label, minDate, maxDate, 
-                                            templateTsc=dataset)
-                        thDatasets.append(thRec)
-                        vp.addCurve('Y1', thRec)
-            except KeyError:
-                pass
+            thTscs = _thresholdTscs(dataset, config['thresholds'], 
+                                    minDate, maxDate)
+            thDatasets += thTscs
+            for thTsc in thTscs:
+                vp.addCurve('Y1', thTsc)
                         
             plot.configurePlotLayout(layout)
             plot.setPlotTitleText("{0.parameter} at {0.location}".format(dataset))
@@ -188,6 +183,7 @@ def paramPerPage(config, dssFilePath):
     dssFile.done()
     return plotted, messages
 
+
 def constantTsc(value, version, startDate, endDate, templateTsc):
     rec = copy.copy(templateTsc)
     rec.values = [value] * 2
@@ -198,3 +194,31 @@ def constantTsc(value, version, startDate, endDate, templateTsc):
     rec.numberValues = 2
     rec.fullName = "/{0.watershed}/{0.location}/{0.parameter}//IR-DECADE/{0.version}/".format(rec)
     return rec
+
+
+def _thresholdTscs(parentTsc, thConfig, minDate, maxDate):
+    """
+    Return all tresholds associated with ``parentTsc`` as a list of 
+    :class:`TimeSeriesContainers` between ``minDate`` and ``maxDate``.
+    """
+    try:
+        thresholds = thConfig[parentTsc.parameter][parentTsc.location]
+        if thresholds is None:
+            return []
+    
+        tscs = []
+        for value, label in thresholds.iteritems():
+            if isinstance(value, numbers.Real):
+                thValue = value
+            elif value == 'mean':
+                thValue = 0
+            elif value[-2:] == 'sd':  # e.g. +2sd, -1sd
+                mult = int(value[:2])
+                thValue = 0 * mult
+            else:
+                continue
+            tscs.append(constantTsc(thValue, label, minDate, maxDate, 
+                        templateTsc=parentTsc))
+        return tscs
+    except KeyError:
+        return []
