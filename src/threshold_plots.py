@@ -29,9 +29,12 @@ class PlotTool(tb.Tool):
             'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
             'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
         },
-        Optional('thresholds'): {
+        Required('thresholds', default={}): {
             unicode: {
-                unicode: Any({Any(float, int): unicode}, None)
+                unicode: Any(
+                    {Any(float, int, 'mean', '+1sd', '+2sd', '-1sd', '-2sd'): unicode}, 
+                    None
+                )
             }
         },
         'params': {

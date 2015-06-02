@@ -128,24 +128,24 @@ def paramPerPage(config, dssFilePath):
             thDatasets += thTscs
             for thTsc in thTscs:
                 vp.addCurve('Y1', thTsc)
-                        
+
             plot.configurePlotLayout(layout)
-            plot.setPlotTitleText("{0.parameter} at {0.location}".format(dataset))
-            plot.setPlotTitleVisible(1)
-            plot.setLocation(-10000, -10000)
-            plot.setSize(config['width'], config['height'])
-            panel = plot.getPlotpanel()
-            prop = panel.getProperties()
-            prop.setViewportSpaceSize(0)
             plots.append(plot)
         
         # Format normal data curves
         ymin, ymax = float('+inf'), float('-inf')
         for dataset, plot in zip(datasets, plots):
+            plot.setPlotTitleText("{0.parameter} at {0.location}".format(dataset))
+            plot.setPlotTitleVisible(1)
+            plot.setLocation(-10000, -10000)
+            plot.setSize(config['width'], config['height'])
+            plot.setLegendLabelText(dataset, dataset.location)
+            panelProp = plot.getPlotpanel().getProperties()
+            panelProp.setViewportSpaceSize(0)
+
             curve = plot.getCurve(dataset)
             curve.setLineColor('{}, {}, {}'.format(*config['line']['colour']))
             curve.setLineWidth(config['line']['width'])
-            plot.setLegendLabelText(dataset, dataset.location)
             vp = plot.getViewport(dataset.fullName)
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
@@ -185,6 +185,11 @@ def paramPerPage(config, dssFilePath):
 
 
 def constantTsc(value, version, startDate, endDate, templateTsc):
+    """
+    Return a :class:`TimeSeriesContainer` with a constant value and specified 
+    ``version`` (F-part) between ``startDate`` and ``endDate``. All other
+    parameters are taken from ``templateTsc``.
+    """
     rec = copy.copy(templateTsc)
     rec.values = [value] * 2
     rec.times = [startDate.value(), endDate.value()]
@@ -196,10 +201,10 @@ def constantTsc(value, version, startDate, endDate, templateTsc):
     return rec
 
 
-def _thresholdTscs(parentTsc, thConfig, minDate, maxDate):
+def _thresholdTscs(parentTsc, thConfig, startDate, endDate):
     """
     Return all tresholds associated with ``parentTsc`` as a list of 
-    :class:`TimeSeriesContainers` between ``minDate`` and ``maxDate``.
+    :class:`TimeSeriesContainers` between ``startDate`` and ``endDate``.
     """
     try:
         thresholds = thConfig[parentTsc.parameter][parentTsc.location]
@@ -217,7 +222,7 @@ def _thresholdTscs(parentTsc, thConfig, minDate, maxDate):
                 thValue = 0 * mult
             else:
                 continue
-            tscs.append(constantTsc(thValue, label, minDate, maxDate, 
+            tscs.append(constantTsc(thValue, label, startDate, endDate, 
                         templateTsc=parentTsc))
         return tscs
     except KeyError:

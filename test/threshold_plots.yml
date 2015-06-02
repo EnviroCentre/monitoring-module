@@ -13,6 +13,14 @@ period:
   start: 01MAR2014 00:00
   end:   31MAR2015 00:00
   
+baseline:
+  all:
+    start:
+    end:
+  CM2:
+    start:
+    end:
+
 thresholds:
   DO:
     CM1: 
@@ -23,9 +31,11 @@ thresholds:
     CM3:
   TURB:
     CM1: 
-      1000: trigger value
+      mean: baseline mean
+      +2sd: +2 std. dev.
     CM2: 
-      1000: trigger
+      mean: baseline mean
+      +2sd: +2 std. dev.
     CM3:
 
 params:
