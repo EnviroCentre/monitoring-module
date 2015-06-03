@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import copy
+import math
 import numbers
 import os
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
+from hec.hecmath import HecMath
 from hec.script import Plot
 
 
@@ -123,7 +125,7 @@ def paramPerPage(config, dssFilePath):
             layout.setHasLegend(0)
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
-            thTscs = _thresholdTscs(dataset, config['thresholds'], 
+            thTscs = _thresholdTscs(dataset, dssFilePath, config, 
                                     minDate, maxDate)
             thDatasets += thTscs
             for thTsc in thTscs:
@@ -149,9 +151,8 @@ def paramPerPage(config, dssFilePath):
             vp = plot.getViewport(dataset.fullName)
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
-            if paramConfig:
-                if paramConfig['scale'].lower() == 'log':
-                    vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+            if _paramScale(param, config) == 'log':
+                vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
         
@@ -201,29 +202,111 @@ def constantTsc(value, version, startDate, endDate, templateTsc):
     return rec
 
 
-def _thresholdTscs(parentTsc, thConfig, startDate, endDate):
+def _tscStats(hmc, scale='lin'):
+    """
+    Return mean and standard deviation of a dataset.
+    
+    :param hmc: Input timeseries
+    :type hmc: :class:`HecMath`
+    :param scale: If set to ``log``, the stats will be taken from the 
+                  log-transformed timeseries.
+    :type sale: str
+    :return: mean and standard deviation
+    :rtype: (float, float)
+    """
+    if scale == 'log':
+        hmc = hmc.log()
+    return hmc.mean(), hmc.standardDeviation()
+
+
+def _baselineHmc(parentTsc, dssFilePath, startDate, endDate):
+    """
+    Return the baseline timeseries between two dates.
+    
+    Note: ``parentTsc`` does not necessarily need to contain the baseline 
+    period. It's just used for the metadata.
+    
+    :param parentTsc: The timeseries for which the baseline period should be
+                      extracted
+    :type parentTsc: :class:`TimeSeriesContainer`
+    :param dssFilePath: File path to HEC-DSS file to load data from
+    :type dssFilePath: str
+    :param startDate: Start of baseline period
+    :type startDate: str
+    :param endDate: End of baseline period
+    :type endDate: str
+    :return: Baseline timeseries
+    :rtype: :class:`HecMath`
+    """
+    dssFile = HecDss.open(dssFilePath)
+    return dssFile.read(parentTsc.fullName, str(startDate), str(endDate))
+
+
+def _thresholdTscs(parentTsc, dssFilePath, config, startDate, endDate):
     """
     Return all tresholds associated with ``parentTsc`` as a list of 
     :class:`TimeSeriesContainers` between ``startDate`` and ``endDate``.
     """
     try:
-        thresholds = thConfig[parentTsc.parameter][parentTsc.location]
+        thresholds = config['thresholds'][parentTsc.parameter][parentTsc.location]
         if thresholds is None:
             return []
-    
-        tscs = []
-        for value, label in thresholds.iteritems():
-            if isinstance(value, numbers.Real):
-                thValue = value
-            elif value == 'mean':
-                thValue = 0
-            elif value[-2:] == 'sd':  # e.g. +2sd, -1sd
-                mult = int(value[:2])
-                thValue = 0 * mult
-            else:
-                continue
-            tscs.append(constantTsc(thValue, label, startDate, endDate, 
-                        templateTsc=parentTsc))
-        return tscs
     except KeyError:
         return []
+    
+    # If there is any threshold like `mean` or `+2sd`, calculate baseline stats
+    if any(isinstance(value, unicode) for value in thresholds):
+        period = _baselinePeriod(parentTsc.location, config)
+        baselineHmc = _baselineHmc(parentTsc, dssFilePath, *period)
+        scale = _paramScale(parentTsc.parameter, config)
+        mean, sd = _tscStats(baselineHmc, scale=scale)
+
+    tscs = []
+    for value, label in thresholds.iteritems():
+        if isinstance(value, numbers.Real):
+            # Simple numeric threshold
+            thValue = value
+        else:
+            # Baseline stats thresholds
+            if value == 'mean':
+                thValue = mean
+                if scale == 'log':
+                    thValue = math.exp(thValue)
+            elif value[-2:] == 'sd':  # e.g. +2sd, -1sd
+                mult = int(value[:2])
+                thValue = mean + sd * mult
+                if scale == 'log':
+                    thValue = math.exp(thValue)
+            else:
+                continue
+        tscs.append(constantTsc(thValue, label, startDate, endDate, 
+                    templateTsc=parentTsc))
+    return tscs
+
+
+def _baselinePeriod(location, config):
+    try:
+        # Try if there is a location-specific baseline period
+        baseline = config['baseline'][location]
+    except KeyError:
+        try:
+            # Otherwise use site-wide period
+            baseline = config['baseline']['all']
+        except KeyError:
+            return None
+    return HecTime(baseline['start']), HecTime(baseline['end'])
+
+
+def _paramScale(param, config):
+    scale = None
+    paramConfig = config['params'][param]
+    if paramConfig:
+        try:
+            scale = paramConfig['scale'].lower() 
+        except KeyError:
+            pass
+
+    if scale in ['lin', 'log']:
+        return scale
+    else:
+        return 'lin'
