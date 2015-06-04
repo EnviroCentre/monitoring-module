@@ -7,7 +7,7 @@ import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
 from hec.hecmath import HecMath
-from hec.script import Plot
+from hec.script import Plot, AxisMarker
 
 
 def _coloursByLocation(config):
@@ -125,6 +125,7 @@ def paramPerPage(config, dssFilePath):
             layout.setHasLegend(0)
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
+            # Thresholds
             thTscs = _thresholdTscs(dataset, dssFilePath, config, 
                                     minDate, maxDate)
             thDatasets += thTscs
@@ -153,6 +154,9 @@ def paramPerPage(config, dssFilePath):
             vp.getAxis('Y1').setLabel(dataset.units)
             if _paramScale(param, config) == 'log':
                 vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+            # Vertical lines
+            if _baselinePeriod(dataset.location, config):
+                vp.addAxisMarker(_baselineMarker(dataset.location, config))
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
         
@@ -310,3 +314,11 @@ def _paramScale(param, config):
         return scale
     else:
         return 'lin'
+
+def _baselineMarker(location, config):
+    baselineEnd = _baselinePeriod(location, config)[1]
+    marker = AxisMarker()
+    marker.axis = 'X'
+    marker.value = str(baselineEnd)
+    marker.labelText = "BASELINE"
+    return marker
