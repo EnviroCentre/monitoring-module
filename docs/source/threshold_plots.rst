@@ -100,3 +100,53 @@ When the configuration has been set up, the plots can be generated as follows:
 
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `JPG`-files.
+
+
+Baseline statistics thresholds
+------------------------------
+
+Instead of specifying the value for a threshold line, the `Monitoring Module` 
+can also plot horizontal lines based on summary statistics of the baseline 
+period. Supported statistics are:
+
+ - mean
+ - any number of standard deviations above or below the mean, for example mean
+   + 2 standard deviations.
+
+Statistic thresholds are specified like this: 
+:samp:`{statistic}: {line label}` where :samp:`{statistic}` is one of ``mean``, 
+:samp:`+{n}sd` or :samp:`-{n}sd`.
+
+Or with an example within the config file (for example :file:`threshold_plots.yml`):
+
+.. code-block:: yaml
+
+    thresholds:
+      DO:
+        CM1: 
+          mean: baseline average
+          +2sd: +2 std. dev.
+        CM2: 
+          mean: baseline average
+          +2sd: +2 std. dev.
+          -2sd: -2 std. dev.
+
+If a parameter is plotted on a log scale (as specified in the ``params`` 
+section), the statistics are computed on a log scale. The baseline dataset is 
+log-transformed before calculating the mean and standard deviation.
+
+The baseline period itself is specified like this:
+
+.. code-block:: yaml
+
+    baseline:
+      all:
+        start: 01MAR2014 00:00
+        end:   01JUL2014 00:00 
+      CM2:
+        start: 01MAR2014 00:00
+        end:   01SEP2014 00:00
+
+The ``all`` section specifies the baseline period for all locations within the
+site and other locations can be overridden as shown if there are differences
+between the locations.
