@@ -33,8 +33,8 @@ file with the following content:
 
     site: Example site
     locations:
-     - L1
-     - L2
+     - LOCATION 1
+     - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -42,7 +42,7 @@ file with the following content:
 
     period:
       start: 01JAN2000 00:00
-      end:   31DEC2000 24:00
+      end:   01JAN2001 00:00
 
     params:
       DO:
@@ -57,25 +57,6 @@ file with the following content:
         scale: log
       ORP:
     
-    # Optional settings below with defaults shown
-    
-    width: 1200
-    height: 800
-
-    line:
-      width: 1.25
-      colours:
-       - [166, 206, 227]
-       - [ 31, 120, 180]
-       - [178, 223, 138]
-       - [ 51, 160,  44]
-       - [251, 154, 153]
-       - [227,  26,  28]
-       - [253, 191, 111]
-       - [255, 127,   0]
-       - [202, 178, 214]
-       - [106,  61, 154]
-
 
 .. tip::
 
@@ -93,13 +74,6 @@ the folder to export the images into.
  - The vertical axis can be set to a logarithmic scale by setting the 
    parameter's ``scale`` configuration to `log`. If the parameter values are 
    zero or less, the axis is always linear and a warning message is displayed.
- - The ``width`` and ``height`` settings define the dimensions of the plot
-   window in pixels. The actual exported image is slightly smaller than this.
- - A set of colours for individual curves on the graph (one for each location)
-   is set by the ``line``, ``colours`` settings which is a list of RGB colour
-   values. If there are more locations than in the colours list, the colours at
-   the beginning of the list are used twice.
-
 
 Creating the plots
 ------------------
@@ -114,3 +88,37 @@ When the configuration has been set up, the plots can be generated as follows:
 
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `JPG`-files.
+
+Optional settings
+-----------------
+
+The following settings are optional and the defaults can be overriden if 
+required:
+
+.. code-block:: yaml
+
+    width: 1200
+    height: 800
+
+    line:
+      width: 1.25
+      colours:
+       - [166, 206, 227]
+       - [ 31, 120, 180]
+       - [178, 223, 138]
+       - [ 51, 160,  44]
+       - [251, 154, 153]
+       - [227,  26,  28]
+       - [253, 191, 111]
+       - [255, 127,   0]
+       - [202, 178, 214]
+       - [106,  61, 154]
+
+Explanation:
+
+ - The ``width`` and ``height`` settings define the dimensions of the plot
+   window in pixels. The actual exported image is slightly smaller than this.
+ - A set of colours for individual curves on the graph (one for each location)
+   is set by the ``line``, ``colours`` settings which is a list of RGB colour
+   values. If there are more locations than in the colours list, the colours at
+   the beginning of the list are used twice.
