@@ -123,11 +123,3 @@ When the configuration has been set up, the data can be imported as follows:
 
 When successfully completed, a message is displayed how many records have been 
 imported and the catalogue is refreshed.
-
-Data post-processing
---------------------
-
-In this example, data were imported using `RAW` for the data version (F-part). 
-This allows review of data and corrections and manipulations using the
-HEC-DSSVue built-in functionality. Quality assured data can then be saved using
-a different version, for example `OBS`.
