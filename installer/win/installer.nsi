@@ -13,8 +13,8 @@
 
 !define MUI_FINISHPAGE_LINK "${ORG_NAME} website"
 !define MUI_FINISHPAGE_LINK_LOCATION "${ORG_URL}"
-!define MUI_FINISHPAGE_RUN $INSTDIR\HEC-DSSVue.exe
-!define MUI_FINISHPAGE_RUN_TEXT "Open HEC-DSSVue"
+!define MUI_FINISHPAGE_SHOWREADME "https://envirocentre.github.io/monitoring-module"
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "Read the manual"
 
 Name "${APP_NAME}"
 

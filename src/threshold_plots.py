@@ -16,6 +16,10 @@ class PlotTool(tb.Tool):
     ]
     defaultColour = [166, 206, 227]
     defaultLineWidth = 1.25
+    period = {
+        'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
+        'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 31DEC2000 23:59")
+    }
     
     schema = Schema({
         'site': unicode,
@@ -25,13 +29,16 @@ class PlotTool(tb.Tool):
         'interval': unicode,
         'version': unicode,
         'output_folder': unicode,
-        'period': {
-            'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
-            'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
+        'period': period,
+        Optional('baseline'): {
+            unicode: period
         },
-        Optional('thresholds'): {
+        Required('thresholds', default={}): {
             unicode: {
-                unicode: Any({Any(float, int): unicode}, None)
+                unicode: Any(
+                    {Any(float, int, 'mean', '+1sd', '+2sd', '-1sd', '-2sd'): unicode}, 
+                    None
+                )
             }
         },
         'params': {

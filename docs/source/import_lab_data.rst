@@ -126,6 +126,18 @@ about which `csv`-file rows (parameters) to be imported. Analysed parameters can
 be modified as required by editing the ``mapping`` and ``params`` sections of 
 the configuration file.
 
+The following tags can be used to specify the date format:
+
+=== ============== === ===================== === ==============
+Day                Month                     Year
+------------------ ------------------------- ------------------
+Tag Example        Tag Example               Tag Example
+=== ============== === ===================== === ==============
+%d  01, 02, .., 31 %b  Jan, Feb, ..          %y  00, 01, .., 99
+|                  %B  January, February, .. %Y  1970, 2013, ..
+|                  %m  01, 02, .., 12        |
+=== ============== === ===================== === ==============
+
 Parameter values in the import file starting with `<` are interpreted as being 
 below the meter's limit of detection (LOD). Such measurements are imported as 
 50% of the LOD to allow numeric evaluations and plotting in line with current 
@@ -150,11 +162,3 @@ When the configuration has been set up, the data can be imported as follows:
 
 When successfully completed, a message is displayed how many records have been 
 imported and the catalogue is refreshed.
-
-Data post-processing
---------------------
-
-In this example, data were imported using `RAW` for the data version (F-part). 
-This allows review of data and corrections and manipulations using the
-HEC-DSSVue built-in functionality. Quality assured data can then be saved using
-a different version, for example `OBS`.
