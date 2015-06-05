@@ -5,9 +5,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6. Creating timeseries plots with thresholds &mdash; Monitoring Module for HEC-DSSVue 0.3.1
+  <title>6. Creating timeseries plots with thresholds &mdash; Monitoring Module for HEC-DSSVue 0.4.0
  documentation</title>
   
 
@@ -15,7 +16,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -31,13 +31,13 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.3.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.0
  documentation" href="index.html"/>
         <link rel="next" title="1. Introduction" href="dev_intro.html"/>
         <link rel="prev" title="5. Creating timeseries plots" href="timeseries_plots.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -49,8 +49,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> Monitoring Module for HEC-DSSVue</a>
+
         
+          <a href="index.html" class="icon icon-home"> Monitoring Module for HEC-DSSVue
+        
+
+        
+        </a>
+
         
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,6 +65,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -71,33 +79,33 @@
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#getting-everything-in-place">2.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#the-configuration-file">2.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#running-the-import">2.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.4. Optional settings</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">6. Creating timeseries plots with thresholds</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-the-plots">6.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-settings">6.5. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -110,7 +118,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#tool-a-tool-base-class">2.1.1. <code class="docutils literal"><span class="pre">Tool</span></code> &#8212; A tool base class</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox.util">2.2. <code class="docutils literal"><span class="pre">toolbox.util</span></code> &#8212; Common utility functions</a></li>
 </ul>
 </li>
@@ -140,6 +151,8 @@
       
     <li>6. Creating timeseries plots with thresholds</li>
       <li class="wy-breadcrumbs-aside">
+        
+          
         
       </li>
   </ul>
@@ -173,8 +186,8 @@ is created per parameter, per location.</p>
 text file with the following content:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Example site</span>
 <span class="l-Scalar-Plain">locations</span><span class="p-Indicator">:</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">L1</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">L2</span>
+ <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 1</span>
+ <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 2</span>
 <span class="l-Scalar-Plain">interval</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">15MIN</span>
 <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OBS</span>
 
@@ -182,22 +195,20 @@ text file with the following content:</p>
 
 <span class="l-Scalar-Plain">period</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">01JAN2000 00:00</span>
-  <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">31DEC2000 24:00</span>
+  <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">01JAN2001 00:00</span>
 
 <span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">CM1</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">10</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">threshold</span>
-    <span class="l-Scalar-Plain">CM2</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">12</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">upper threshold</span>
       <span class="l-Scalar-Plain">8.5</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lower threshold</span>
-    <span class="l-Scalar-Plain">CM3</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">CM1</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
-    <span class="l-Scalar-Plain">CM2</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
       <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
-    <span class="l-Scalar-Plain">CM3</span><span class="p-Indicator">:</span>
 
 <span class="l-Scalar-Plain">params</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
@@ -209,15 +220,6 @@ text file with the following content:</p>
   <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
     <span class="l-Scalar-Plain">scale</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">log</span>
   <span class="l-Scalar-Plain">ORP</span><span class="p-Indicator">:</span>
-
-<span class="c1"># Optional settings below with defaults shown</span>
-
-<span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
-<span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">300</span>
-
-<span class="l-Scalar-Plain">line</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1.25</span>
-  <span class="l-Scalar-Plain">colour</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
 </pre></div>
 </div>
 <p>The configuration file lists the locations and parameters to plot as well as
@@ -241,6 +243,63 @@ selection window.</li>
 <p>The plots are briefly shown on the screen as they are created and then exported
 into the <code class="docutils literal"><span class="pre">output_folder</span></code> as <cite>JPG</cite>-files.</p>
 </div>
+<div class="section" id="baseline-statistics-thresholds">
+<h2>6.4. Baseline statistics thresholds<a class="headerlink" href="#baseline-statistics-thresholds" title="Permalink to this headline">¶</a></h2>
+<p>Instead of specifying the value for a threshold line, the <cite>Monitoring Module</cite>
+can also plot horizontal lines based on summary statistics of the baseline
+period. Supported statistics are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>mean</li>
+<li>any number of standard deviations above or below the mean</li>
+</ul>
+</div></blockquote>
+<p>Statistic thresholds are specified like this:
+<code class="samp docutils literal"><em><span class="pre">statistic</span></em><span class="pre">:</span> <em><span class="pre">line</span> <span class="pre">label</span></em></code> where <code class="samp docutils literal"><em><span class="pre">statistic</span></em></code> is one of <code class="docutils literal"><span class="pre">mean</span></code>,
+<code class="samp docutils literal"><span class="pre">+</span><em><span class="pre">n</span></em><span class="pre">sd</span></code> or <code class="samp docutils literal"><span class="pre">-</span><em><span class="pre">n</span></em><span class="pre">sd</span></code>.</p>
+<p>Or with an example within the config file (for example <code class="file docutils literal"><span class="pre">threshold_plots.yml</span></code>):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">mean</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">baseline average</span>
+      <span class="l-Scalar-Plain">+2sd</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">+2 std. dev.</span>
+    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">mean</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">baseline average</span>
+      <span class="l-Scalar-Plain">+2sd</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">+2 std. dev.</span>
+      <span class="l-Scalar-Plain">-2sd</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">-2 std. dev.</span>
+</pre></div>
+</div>
+<p>If a parameter is plotted on a log scale (as specified in the <code class="docutils literal"><span class="pre">params</span></code>
+section), the statistics are computed on a log scale. The baseline dataset is
+log-transformed before calculating the mean and standard deviation.</p>
+<p>The baseline period itself is specified like this:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">baseline</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">01MAR2014 00:00</span>
+    <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">01JUL2014 00:00</span>
+  <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">01MAR2014 00:00</span>
+    <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">01SEP2014 00:00</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">all</span></code> section specifies the baseline period for all locations within the
+site and other locations can be overridden as shown if there are differences
+between the locations.</p>
+<p>The end of the baseline period is shown on the plot by a vertical line.</p>
+</div>
+<div class="section" id="optional-settings">
+<h2>6.5. Optional settings<a class="headerlink" href="#optional-settings" title="Permalink to this headline">¶</a></h2>
+<p>The following settings are optional and the defaults can be overriden if
+required:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
+<span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">300</span>
+
+<span class="l-Scalar-Plain">line</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1.25</span>
+  <span class="l-Scalar-Plain">colour</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -249,10 +308,10 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dev_intro.html" class="btn btn-neutral float-right" title="1. Introduction">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dev_intro.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -262,13 +321,12 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 01/06/2015.
+      Last updated on 05/06/2015.
     </p>
   </div>
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 
@@ -283,7 +341,7 @@ into the <code class="docutils literal"><span class="pre">output_folder</span></
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.1
+            VERSION:'0.4.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

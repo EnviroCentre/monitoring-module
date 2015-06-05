@@ -5,9 +5,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. Importing “field” data &mdash; Monitoring Module for HEC-DSSVue 0.3.1
+  <title>2. Importing “field” data &mdash; Monitoring Module for HEC-DSSVue 0.4.0
  documentation</title>
   
 
@@ -15,7 +16,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -31,13 +31,13 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.3.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.0
  documentation" href="index.html"/>
         <link rel="next" title="3. Importing lab data" href="import_lab_data.html"/>
         <link rel="prev" title="1. Introduction" href="intro.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -49,8 +49,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> Monitoring Module for HEC-DSSVue</a>
+
         
+          <a href="index.html" class="icon icon-home"> Monitoring Module for HEC-DSSVue
+        
+
+        
+        </a>
+
         
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,6 +65,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -71,33 +79,33 @@
 <li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">2.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">2.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-the-import">2.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.4. Optional settings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots with thresholds</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#creating-the-plots">6.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.5. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -110,7 +118,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#tool-a-tool-base-class">2.1.1. <code class="docutils literal"><span class="pre">Tool</span></code> &#8212; A tool base class</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox.util">2.2. <code class="docutils literal"><span class="pre">toolbox.util</span></code> &#8212; Common utility functions</a></li>
 </ul>
 </li>
@@ -140,6 +151,8 @@
       
     <li>2. Importing &#8220;field&#8221; data</li>
       <li class="wy-breadcrumbs-aside">
+        
+          
         
       </li>
   </ul>
@@ -229,6 +242,64 @@ about which <cite>csv</cite>-file columns to be imported. The <code class="docut
 configuration file indicates which column headings map onto the parameters to be
 saved into the database. Special symbols (non-ASCII characters) should be
 omitted from the <code class="docutils literal"><span class="pre">mapping</span></code> section.</p>
+<p>The following tags can be used to specify the date format:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="24%" />
+<col width="5%" />
+<col width="36%" />
+<col width="5%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Day</th>
+<th class="head" colspan="2">Month</th>
+<th class="head" colspan="2">Year</th>
+</tr>
+<tr class="row-even"><th class="head">Tag</th>
+<th class="head">Example</th>
+<th class="head">Tag</th>
+<th class="head">Example</th>
+<th class="head">Tag</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>%d</td>
+<td>01, 02, .., 31</td>
+<td>%b</td>
+<td>Jan, Feb, ..</td>
+<td>%y</td>
+<td>00, 01, .., 99</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</td>
+<td>&nbsp;</td>
+<td>%B</td>
+<td>January, February, ..</td>
+<td>%Y</td>
+<td>1970, 2013, ..</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</td>
+<td>&nbsp;</td>
+<td>%m</td>
+<td>01, 02, .., 12</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>The <cite>time</cite> column is optional. If not specified, all times are set to
+12:00:00 hrs. The time format is always assumed to be <code class="docutils literal"><span class="pre">%H:%M:%S</span></code>.</p>
 <p>Parameter values in the import file starting with <cite>&lt;</cite> are interpreted as being
 below the meter&#8217;s limit of detection (LOD). Such measurements are imported as
 50% of the LOD to allow numeric evaluations and plotting in line with current
@@ -249,13 +320,6 @@ window.</li>
 <p>When successfully completed, a message is displayed how many records have been
 imported and the catalogue is refreshed.</p>
 </div>
-<div class="section" id="data-post-processing">
-<h2>2.4. Data post-processing<a class="headerlink" href="#data-post-processing" title="Permalink to this headline">¶</a></h2>
-<p>In this example, data were imported using <cite>RAW</cite> for the data version (F-part).
-This allows review of data and corrections and manipulations using the
-HEC-DSSVue built-in functionality. Quality assured data can then be saved using
-a different version, for example <cite>OBS</cite>.</p>
-</div>
 </div>
 
 
@@ -264,10 +328,10 @@ a different version, for example <cite>OBS</cite>.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="import_lab_data.html" class="btn btn-neutral float-right" title="3. Importing lab data">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="import_lab_data.html" class="btn btn-neutral float-right" title="3. Importing lab data" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="intro.html" class="btn btn-neutral" title="1. Introduction"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="intro.html" class="btn btn-neutral" title="1. Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -277,13 +341,12 @@ a different version, for example <cite>OBS</cite>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 01/06/2015.
+      Last updated on 05/06/2015.
     </p>
   </div>
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 
@@ -298,7 +361,7 @@ a different version, for example <cite>OBS</cite>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.1
+            VERSION:'0.4.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

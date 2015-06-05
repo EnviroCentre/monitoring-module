@@ -5,9 +5,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.3.1
+  <title>1. Introduction &mdash; Monitoring Module for HEC-DSSVue 0.4.0
  documentation</title>
   
 
@@ -15,7 +16,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -31,13 +31,13 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.3.1
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.0
  documentation" href="index.html"/>
         <link rel="next" title="2. API Reference" href="reference.html"/>
         <link rel="prev" title="6. Creating timeseries plots with thresholds" href="threshold_plots.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -49,8 +49,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> Monitoring Module for HEC-DSSVue</a>
+
         
+          <a href="index.html" class="icon icon-home"> Monitoring Module for HEC-DSSVue
+        
+
+        
+        </a>
+
         
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,6 +65,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
+
+        
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -71,33 +79,33 @@
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#getting-everything-in-place">2.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#the-configuration-file">2.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_field_data.html#running-the-import">2.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_field_data.html#data-post-processing">2.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_lab_data.html">3. Importing lab data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#getting-everything-in-place">3.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#the-configuration-file">3.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#running-the-import">3.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_lab_data.html#data-post-processing">3.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="import_logger_data.html">4. Importing logger data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#getting-everything-in-place">4.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#the-configuration-file">4.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
-<li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#data-post-processing">4.4. Data post-processing</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.4. Optional settings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots with thresholds</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#creating-the-plots">6.3. Creating the plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.5. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -110,7 +118,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">2. API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox">2.1. <code class="docutils literal"><span class="pre">toolbox</span></code> &#8212; Toolboxes in HEC-DSSVue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference.html#tool-a-tool-base-class">2.1.1. <code class="docutils literal"><span class="pre">Tool</span></code> &#8212; A tool base class</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#module-toolbox.util">2.2. <code class="docutils literal"><span class="pre">toolbox.util</span></code> &#8212; Common utility functions</a></li>
 </ul>
 </li>
@@ -140,6 +151,8 @@
       
     <li>1. Introduction</li>
       <li class="wy-breadcrumbs-aside">
+        
+          
         
       </li>
   </ul>
@@ -247,10 +260,10 @@ Jython errors will be displayed in this window.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="reference.html" class="btn btn-neutral float-right" title="2. API Reference">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="reference.html" class="btn btn-neutral float-right" title="2. API Reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="threshold_plots.html" class="btn btn-neutral" title="6. Creating timeseries plots with thresholds"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="threshold_plots.html" class="btn btn-neutral" title="6. Creating timeseries plots with thresholds" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -260,13 +273,12 @@ Jython errors will be displayed in this window.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 01/06/2015.
+      Last updated on 05/06/2015.
     </p>
   </div>
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 
@@ -281,7 +293,7 @@ Jython errors will be displayed in this window.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.1
+            VERSION:'0.4.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
