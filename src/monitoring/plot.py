@@ -321,4 +321,10 @@ def _baselineMarker(location, config):
     marker.axis = 'X'
     marker.value = str(baselineEnd)
     marker.labelText = "BASELINE"
+    marker.fillPattern = 'Diagonal Cross'
+    marker.fillStyle = 'Below'
+    marker.fillColor = 'lightgray'
+    marker.lineColor = 'lightgray'
+    marker.labelColor = 'gray'
+    
     return marker
