@@ -33,8 +33,8 @@ text file with the following content:
 
     site: Example site
     locations:
-     - L1
-     - L2
+     - LOCATION 1
+     - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -42,22 +42,20 @@ text file with the following content:
 
     period:
       start: 01JAN2000 00:00
-      end:   31DEC2000 24:00
+      end:   01JAN2001 00:00
 
     thresholds:
       DO:
-        CM1: 
+        LOCATION 1: 
           10: threshold
-        CM2: 
+        LOCATION 2: 
           12: upper threshold
           8.5: lower threshold
-        CM3:
       TURB:
-        CM1: 
+        LOCATION 1: 
           1000: trigger value
-        CM2: 
+        LOCATION 2: 
           1000: trigger value
-        CM3:    
 
     params:
       DO:
@@ -70,15 +68,6 @@ text file with the following content:
         scale: log
       ORP:
     
-    # Optional settings below with defaults shown
-    
-    width: 1200
-    height: 300
-
-    line:
-      width: 1.25
-      colour: [166, 206, 227]
-
 The configuration file lists the locations and parameters to plot as well as 
 the folder to export the images into. 
 
@@ -110,8 +99,7 @@ can also plot horizontal lines based on summary statistics of the baseline
 period. Supported statistics are:
 
  - mean
- - any number of standard deviations above or below the mean, for example mean
-   + 2 standard deviations.
+ - any number of standard deviations above or below the mean
 
 Statistic thresholds are specified like this: 
 :samp:`{statistic}: {line label}` where :samp:`{statistic}` is one of ``mean``, 
@@ -123,10 +111,10 @@ Or with an example within the config file (for example :file:`threshold_plots.ym
 
     thresholds:
       DO:
-        CM1: 
+        LOCATION 1: 
           mean: baseline average
           +2sd: +2 std. dev.
-        CM2: 
+        LOCATION 2: 
           mean: baseline average
           +2sd: +2 std. dev.
           -2sd: -2 std. dev.
@@ -143,10 +131,29 @@ The baseline period itself is specified like this:
       all:
         start: 01MAR2014 00:00
         end:   01JUL2014 00:00 
-      CM2:
+      LOCATION 2:
         start: 01MAR2014 00:00
         end:   01SEP2014 00:00
 
 The ``all`` section specifies the baseline period for all locations within the
 site and other locations can be overridden as shown if there are differences
 between the locations.
+
+The end of the baseline period is shown on the plot by a vertical line.
+
+
+Optional settings
+-----------------
+
+The following settings are optional and the defaults can be overriden if 
+required:
+
+.. code-block:: yaml
+    
+    width: 1200
+    height: 300
+
+    line:
+      width: 1.25
+      colour: [166, 206, 227]
+
