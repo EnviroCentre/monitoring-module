@@ -1,4 +1,4 @@
-folder: c:\Users\fhollebrandse\Documents\NetBeansProjects\HecDssMonitoring\test\Import
+folder: '%USERPROFILE%\NetBeansProjects\HecDssMonitoring\test\Import'
 files:
  - Chemtest lab.csv
 

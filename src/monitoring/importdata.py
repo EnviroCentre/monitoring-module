@@ -12,7 +12,8 @@ def locationsDown(config):
     records = []
 
     for fileName in config['files']:
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
@@ -82,7 +83,8 @@ def locationsAcross(config):
     records = []
 
     for fileName in config['files']:
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
@@ -144,7 +146,8 @@ def timeseries(config):
     records = []
 
     for fileName, loc in config['files'].iteritems():
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
