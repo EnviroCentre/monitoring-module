@@ -21,8 +21,8 @@ def locationsDown(config):
                 # Find the header row first
                 try:
                     # If header row, we must have date and location
-                    dateCol = row.index(config['columns']['date']['title'])
-                    locationCol = row.index(config['columns']['location']['title'])
+                    dateCol = tbu.index_ign_case(row, config['columns']['date']['title'])
+                    locationCol = tbu.index_ign_case(row, config['columns']['location']['title'])
                 except ValueError:
                     # We're not in a header row, move to next line
                     continue
@@ -30,7 +30,7 @@ def locationsDown(config):
                 # Optional time col
                 try:
                     if config['columns']['time']:
-                        timeCol = row.index(config['columns']['time']['title'])
+                        timeCol = tbu.index_ign_case(row, config['columns']['time']['title'])
                     else:
                         timeCol = None
                 except KeyError:
@@ -91,7 +91,7 @@ def locationsAcross(config):
             for row in csvReader:
                 # Find the row with locations
                 try:
-                    startCol = row.index(config['rows']['location']['title']) + 1
+                    startCol = tbu.index_ign_case(row, config['rows']['location']['title']) + 1
                     # Dict of {'locationId': columnNo}
                     locationCols = {}
                     for col, cell in enumerate(row[startCol:]):
@@ -104,17 +104,20 @@ def locationsAcross(config):
 
             # Date row (use first value for just now)
             for row in csvReader:
-                if config['rows']['date']['title'] in row:
+                try:
+                    tbu.index_ign_case(row, config['rows']['date']['title'])
                     sampleDate = tbu.parseDateTime(row[firstDataCol], "12:00:00", 
                                                    config['rows']['date']['format'])
                     break
+                except ValueError:
+                    continue
                     
             # Find data header row
             for row in csvReader:
                 # If header row, we must have parameter and unit header
                 try:
-                    paramCol = row.index(config['columns']['parameter']['title'])
-                    unitCol = row.index(config['columns']['unit']['title'])
+                    paramCol = tbu.index_ign_case(row, config['columns']['parameter']['title'])
+                    unitCol = tbu.index_ign_case(row, config['columns']['unit']['title'])
                     break
                 except ValueError:
                     continue

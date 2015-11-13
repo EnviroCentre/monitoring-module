@@ -104,6 +104,7 @@ def parseMeasurement(valueStr):
         else:
             return None, TESTED | MISSING
 
+
 def parseDateTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
     """
     Return HecTime from date and time strings.
@@ -114,3 +115,10 @@ def parseDateTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
     pyDate = datetime.strptime(dateStr + timeStr, dateFmt + "%H:%M:%S")
     # Create HecTime from USA date format
     return HecTime(pyDate.strftime("%m/%d/%Y %H:%M:%S"))
+
+
+def index_ign_case(haystack, needle):
+    """
+    Return index of needle in haystack. Case insensitive.
+    """
+    return list(map(str.lower, haystack)).index(needle.lower())
