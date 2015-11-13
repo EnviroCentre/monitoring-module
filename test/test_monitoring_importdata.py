@@ -139,6 +139,14 @@ class LabDataImportTestCase(unittest.TestCase):
                              "Error in records %s for location %s" 
                              % (values[i], location))
         
+    def testExova(self):
+        configFileName = 'lab_import_exova.yml'
+        with codecs.open(configFileName, encoding='utf-8') as configFile:
+            config = yaml.load(configFile.read())
+
+        records = importdata.locationsAcross(config)
+        self.assertEqual(len(records), 16)
+        
 
 class LoggerImportTestCase(unittest.TestCase):
     def setUp(self):
