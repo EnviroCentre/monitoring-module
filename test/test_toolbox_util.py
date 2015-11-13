@@ -42,6 +42,13 @@ class ToolboxUtilTestCase(unittest.TestCase):
         self.assertEqual(dt.day(), 31)
         self.assertEqual(dt.hour(), 1)
         self.assertEqual(dt.minute(), 0)
+        
+    def testIndexIgnoreCase(self):
+        row = ['hello', 'World']
+        self.assertEqual(toolbox.util.index_ign_case(row, 'HELLO'), 0)
+        self.assertEqual(toolbox.util.index_ign_case(row, 'world'), 1)
+        self.assertEqual(toolbox.util.index_ign_case(row, 'World'), 1)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -7,16 +7,16 @@ version: LAB
 
 rows:
   location:
-    title: "Client sample ref:"
+    title: "Client Sample ref:"
   date:
-    title: "Date sampled:"
+    title: "Date Sampled:"
     format: "%d/%m/%Y"
 
 columns:
   parameter:
-    title: Determinand
+    title: determinand
   unit:
-    title: Units
+    title: units
 
 mapping:
   pH (w): PH
