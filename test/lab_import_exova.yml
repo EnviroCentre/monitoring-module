@@ -1,0 +1,47 @@
+folder: '%USERPROFILE%\NetBeansProjects\HecDssMonitoring\test\Import'
+files:
+- Exova.csv
+
+site: Gapel Quarry
+version: LAB
+
+rows:
+  location:
+    title: "Client sample ref:"
+  date:
+    title: "Date sampled:"
+    format: "%d/%m/%Y"
+
+columns:
+  parameter:
+    title: Determinand
+  unit:
+    title: Units
+
+mapping:
+  pH (w): PH
+  Conductivity (w): CONDUCTIVITY
+  Nitrate (w): NITRATE
+  Lead (w): LEAD
+  E Coli: E COLI
+  Enterococci: ENTEROCOCCI
+  Total Coliforms: TOTAL COLIFORMS
+  Turbidity: TURBIDITY
+
+params:
+  PH:
+    unit: "-"
+  CONDUCTIVITY:
+    unit: µS/cm
+  NITRATE:
+    unit: mg/l
+  LEAD:
+    unit: µg/l
+  E COLI:
+    unit: MPN/100ml
+  ENTEROCOCCI:
+    unit: cfu/100mls
+  TOTAL COLIFORMS:
+    unit: MPN/100ml
+  TURBIDITY:
+    unit: FTU

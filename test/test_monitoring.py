@@ -47,27 +47,27 @@ class RecordTestCase(unittest.TestCase):
         self.assertEqual(r.interval, -1)
         
     def testIntervalStr15Min(self):
-        r = mon.Record(interval=15)
+        r = mon.Record(interval=15, values=[1, 2])
         self.assertEqual(r.intervalStr, '15MIN')
 
     def testIntervalStr59Min(self):
-        r = mon.Record(interval=59)
+        r = mon.Record(interval=59, values=[1, 2])
         self.assertEqual(r.intervalStr, '59MIN')
 
     def testIntervalStr1Hour(self):
-        r = mon.Record(interval=60)
+        r = mon.Record(interval=60, values=[1, 2])
         self.assertEqual(r.intervalStr, '1HOUR')
 
     def testIntervalStr23Hour(self):
-        r = mon.Record(interval=23*60)
+        r = mon.Record(interval=23*60, values=[1, 2])
         self.assertEqual(r.intervalStr, '23HOUR')
 
     def testIntervalStr1Day(self):
-        r = mon.Record(interval=24*60)
+        r = mon.Record(interval=24*60, values=[1, 2])
         self.assertEqual(r.intervalStr, '1DAY')
 
     def testIntervalStr2Day(self):
-        r = mon.Record(interval=24*60*2)
+        r = mon.Record(interval=24*60*2, values=[1, 2])
         self.assertEqual(r.intervalStr, '2DAY')
 
 

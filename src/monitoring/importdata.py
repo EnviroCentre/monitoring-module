@@ -12,7 +12,8 @@ def locationsDown(config):
     records = []
 
     for fileName in config['files']:
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
@@ -64,7 +65,7 @@ def locationsDown(config):
                     
                     for param, col in paramCols.iteritems():
                         value, quality = tbu.parseMeasurement(row[col])
-                        if value:
+                        if not value is None:
                             record = mon.Record(site=config['site'],
                                                 location=row[locationCol],
                                                 parameter=param,
@@ -82,7 +83,8 @@ def locationsAcross(config):
     records = []
 
     for fileName in config['files']:
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
@@ -124,7 +126,7 @@ def locationsAcross(config):
                     if param in config['params']:
                         for location, col in locationCols.iteritems():
                             value, quality = tbu.parseMeasurement(row[col])
-                            if value:
+                            if not value is None:
                                 record = mon.Record(site=config['site'],
                                                     location=location,
                                                     parameter=param,
@@ -137,14 +139,15 @@ def locationsAcross(config):
                 except KeyError:
                     # Skip if param not in import file
                     pass
-
+    
     return records
 
 def timeseries(config):
     records = []
 
     for fileName, loc in config['files'].iteritems():
-        importFile = os.path.join(config['folder'], fileName)
+        importFile = os.path.join(os.path.expandvars(config['folder']),
+                                  fileName)
 
         with open(importFile) as f:
             csvReader = csv.reader(f)
