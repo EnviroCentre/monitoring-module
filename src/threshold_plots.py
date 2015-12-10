@@ -15,7 +15,7 @@ class PlotTool(tb.Tool):
         All(int, Range(min=0, max=255))
     ]
     defaultColour = [166, 206, 227]
-    defaultLineWidth = 1.25
+    defaultLineWidth = 2
     period = {
         'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
         'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 31DEC2000 23:59")

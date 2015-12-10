@@ -21,7 +21,7 @@ class PlotTool(tb.Tool):
         [202, 178, 214],
         [106,  61, 154]
     ]
-    defaultLineWidth = 1.25
+    defaultLineWidth = 2
     
     schema = Schema({
         'site': unicode,
