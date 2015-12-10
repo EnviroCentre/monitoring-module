@@ -100,7 +100,8 @@ class Tool(object):
         
         if self.schema:
             try:
-                self.config = self.schema(self.config) 
+                self.config = self.schema(self.config)
+                self.config['config_folder'] = os.path.dirname(self.configFilePath)
             except MultipleInvalid as e:
                 self._displayConfigErrors(e.errors)
                 raise

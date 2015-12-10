@@ -2,6 +2,7 @@
 import unittest
 import yaml
 import codecs
+import os.path
 from monitoring import importdata
 from operator import attrgetter
 from hec.heclib.util import HecTime
@@ -12,6 +13,7 @@ class FieldDataImportTestCase(unittest.TestCase):
         configFileName = 'field_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             self.config = yaml.load(configFile.read())
+            self.config['config_folder'] = os.path.abspath('test')
         
     def testHIHandheld(self):
         config = self.config
@@ -85,6 +87,7 @@ class LabDataImportTestCase(unittest.TestCase):
         configFileName = 'lab_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             config = yaml.load(configFile.read())
+            config['config_folder'] = os.path.abspath('test')
 
         records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 106)
@@ -143,6 +146,7 @@ class LabDataImportTestCase(unittest.TestCase):
         configFileName = 'lab_import_exova.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             config = yaml.load(configFile.read())
+            config['config_folder'] = os.path.abspath('test')
 
         records = importdata.locationsAcross(config)
         self.assertEqual(len(records), 16)
@@ -153,6 +157,7 @@ class LoggerImportTestCase(unittest.TestCase):
         configFileName = 'logger_import.yml'
         with codecs.open(configFileName, encoding='utf-8') as configFile:
             self.config = yaml.load(configFile.read())
+            self.config['config_folder'] = os.path.abspath('test')
     
     def testInSituLogger(self):
         config = self.config
