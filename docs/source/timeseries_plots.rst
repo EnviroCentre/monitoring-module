@@ -101,6 +101,7 @@ required:
     height: 800
 
     line:
+      markers: yes
       width: 2
       colours:
       - [166, 206, 227]
@@ -122,3 +123,4 @@ Explanation:
    is set by the ``line``, ``colours`` settings which is a list of RGB colour
    values. If there are more locations than in the colours list, the colours at
    the beginning of the list are used twice.
+ - Line symbol markers can be switched off by setting ``markers`` to ``no``.

@@ -154,6 +154,6 @@ required:
     height: 300
 
     line:
+      markers: yes
       width: 2
       colour: [166, 206, 227]
-
