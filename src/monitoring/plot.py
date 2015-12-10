@@ -62,6 +62,11 @@ def onePerParam(config, dssFilePath):
             curve = thePlot.getCurve(dataset)
             curve.setLineColor("%s, %s, %s" % tuple(colours[dataset.location]))
             curve.setLineWidth(config['line']['width'])
+            if config['line']['markers']:
+                curve.setSymbolsVisible(1)
+                curve.setSymbolType('Circle')
+                curve.setSymbolLineColor("%s, %s, %s" % tuple(colours[dataset.location]))
+                curve.setSymbolFillColor("%s, %s, %s" % tuple(colours[dataset.location]))
 
         units = set(ds.units for ds in datasets)
         for vp_index, unit in enumerate(units):  # 1 viewport per distinct unit
