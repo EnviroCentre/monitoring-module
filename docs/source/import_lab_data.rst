@@ -39,10 +39,9 @@ file with the following content:
 
 .. code-block:: yaml
 
-    folder: C:\Path\To\Folder
+    folder: Import data
     files:
-     - File 1.csv
-     - File 2.csv
+    - 2015-01 Lab results.csv
 
     site: Site name
     version: RAW
@@ -141,7 +140,9 @@ Tag Example        Tag Example               Tag Example
 Parameter values in the import file starting with `<` are interpreted as being 
 below the meter's limit of detection (LOD). Such measurements are imported as 
 50% of the LOD to allow numeric evaluations and plotting in line with current 
-best practice.
+best practice. 
+
+The parameter value `ND` (none detected) is imported as zero.
 
 
 .. warning::

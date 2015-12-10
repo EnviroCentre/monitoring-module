@@ -33,8 +33,8 @@ text file with the following content:
 
     site: Example site
     locations:
-     - LOCATION 1
-     - LOCATION 2
+    - LOCATION 1
+    - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -154,6 +154,6 @@ required:
     height: 300
 
     line:
-      width: 1.25
+      width: 2
       colour: [166, 206, 227]
 

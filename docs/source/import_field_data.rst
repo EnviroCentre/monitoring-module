@@ -13,7 +13,7 @@ Multiple `csv`-files can be imported at once.
    The Monitoring Module's field data importing tool has been tested to work
    with the following meters:
 
-    - Hanna InstrumentsÂ® multi-parameter meter type HI 9828
+    - Hanna Instruments® multi-parameter meter type HI 9828
 
    Other meters and `csv` input file formats may be supported by tweaking the 
    tool's configuration parameters.
@@ -40,9 +40,9 @@ file with the following content:
 
 .. code-block:: yaml
 
-    folder: C:\Project\Import data
+    folder: Import data
     files:
-     - 2015-01 Site measurements.csv
+    - 2015-01 Site measurements.csv
 
     site: Example site
     version: RAW

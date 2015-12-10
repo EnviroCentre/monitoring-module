@@ -33,8 +33,8 @@ file with the following content:
 
     site: Example site
     locations:
-     - LOCATION 1
-     - LOCATION 2
+    - LOCATION 1
+    - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -68,7 +68,7 @@ file with the following content:
 The configuration file lists the locations and parameters to plot as well as 
 the folder to export the images into. 
 
- - The ``output_folder`` is relative to the location of the `dss` file.
+ - The ``output_folder`` is relative to the location of the 'yml' config file.
  - The horizontal axis is limited to the period defined by the ``start`` and
    ``end`` settings. These must be formatted as date/times as in the example.
  - The vertical axis can be set to a logarithmic scale by setting the 
@@ -101,18 +101,18 @@ required:
     height: 800
 
     line:
-      width: 1.25
+      width: 2
       colours:
-       - [166, 206, 227]
-       - [ 31, 120, 180]
-       - [178, 223, 138]
-       - [ 51, 160,  44]
-       - [251, 154, 153]
-       - [227,  26,  28]
-       - [253, 191, 111]
-       - [255, 127,   0]
-       - [202, 178, 214]
-       - [106,  61, 154]
+      - [166, 206, 227]
+      - [ 31, 120, 180]
+      - [178, 223, 138]
+      - [ 51, 160,  44]
+      - [251, 154, 153]
+      - [227,  26,  28]
+      - [253, 191, 111]
+      - [255, 127,   0]
+      - [202, 178, 214]
+      - [106,  61, 154]
 
 Explanation:
 

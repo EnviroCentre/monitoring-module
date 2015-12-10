@@ -13,7 +13,7 @@ can be imported at once.
    The Monitoring Module's logger data importing tool has been tested to work
    with the following loggers:
 
-    - In-SituÂ® Troll 9000 Pro XP
+    - In-Situ® Troll 9000 Pro XP
 
    Other loggers and `csv` input file formats may be supported by tweaking the 
    tool's configuration parameters.
@@ -40,7 +40,7 @@ file with the following content:
 
 .. code-block:: yaml
 
-    folder: C:\Project\Import data
+    folder: Import data
     files:
       2015-01 Logger results.csv: Location A
 
@@ -70,7 +70,7 @@ file with the following content:
       DO:
         unit: mg/l
       EC:
-        unit: ÂµS/cm
+        unit: µS/cm
 
 
 The configuration file describes the files to be imported as well as information
