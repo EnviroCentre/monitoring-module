@@ -9,6 +9,11 @@ from voluptuous import Schema, All, Any, Range, Datetime, Required, Optional, Lo
 
 
 class PlotTool(tb.Tool):
+    rgb = [
+        All(int, Range(min=0, max=255)),
+        All(int, Range(min=0, max=255)),
+        All(int, Range(min=0, max=255))
+    ]
     defaultColours = [
         [166, 206, 227],
         [ 31, 120, 180],
@@ -48,9 +53,7 @@ class PlotTool(tb.Tool):
             Required('width', default=defaultLineWidth): 
                 All(float, Range(min=0.5, max=5.0)),
             Required('colours', default=defaultColours): [
-                [All(int, Range(min=0, max=255)),
-                 All(int, Range(min=0, max=255)),
-                 All(int, Range(min=0, max=255))]
+                rgb
             ],
             Required('markers', default=True): bool
         }

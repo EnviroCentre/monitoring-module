@@ -155,6 +155,11 @@ def paramPerPage(config, dssFilePath):
             curve = plot.getCurve(dataset)
             curve.setLineColor('{}, {}, {}'.format(*config['line']['colour']))
             curve.setLineWidth(config['line']['width'])
+            if config['line']['markers']:
+                curve.setSymbolsVisible(1)
+                curve.setSymbolType('Circle')
+                curve.setSymbolLineColor('{}, {}, {}'.format(*config['line']['colour']))
+                curve.setSymbolFillColor('{}, {}, {}'.format(*config['line']['colour']))
             vp = plot.getViewport(dataset.fullName)
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
