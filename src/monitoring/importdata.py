@@ -13,7 +13,7 @@ def locationsDown(config):
 
     for fileName in config['files']:
         importFile = os.path.join(
-            tbu.relativeFolder(config['folder'], config['config_folder'], 
+            tbu.relativeFolder(config['folder'], config['config_file'], 
                                createFolder='never'),
             fileName)
 
@@ -86,7 +86,7 @@ def locationsAcross(config):
 
     for fileName in config['files']:
         importFile = os.path.join(
-            tbu.relativeFolder(config['folder'], config['config_folder'], 
+            tbu.relativeFolder(config['folder'], config['config_file'], 
                                createFolder='never'),
             fileName)
 
@@ -154,7 +154,7 @@ def timeseries(config):
 
     for fileName, loc in config['files'].iteritems():
         importFile = os.path.join(
-            tbu.relativeFolder(config['folder'], config['config_folder'], 
+            tbu.relativeFolder(config['folder'], config['config_file'], 
                                createFolder='never'),
             fileName)
 

@@ -6,7 +6,6 @@ import os
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
-from hec.hecmath import HecMath
 from hec.script import Plot, AxisMarker
 
 
@@ -24,7 +23,8 @@ def onePerParam(config, dssFilePath):
     plotted = 0  # Number of plots exported
     messages = []
     
-    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
+    outputFolder = tbu.relativeFolder(config['output_folder'], 
+                                      config['config_file'])
     dssFile = HecDss.open(dssFilePath)
     
     minDate = HecTime(config['period']['start'])
@@ -95,7 +95,8 @@ def paramPerPage(config, dssFilePath):
     plotted = 0  # Number of plots exported
     messages = []
     
-    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
+    outputFolder = tbu.relativeFolder(config['output_folder'], 
+                                      config['config_file'])
     
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
