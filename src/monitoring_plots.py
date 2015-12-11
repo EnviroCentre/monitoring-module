@@ -40,6 +40,14 @@ class PlotTool(tb.Tool):
             'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
             'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
         },
+        Required('thresholds', default={}): {
+            unicode: {
+                'all': Any(
+                    {Any(float, int): unicode}, 
+                    None
+                )
+            }
+        },
         'params': {
             unicode: Any({
                 Optional('scale'): All(Lower, Any('lin', 'log'))
