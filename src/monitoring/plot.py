@@ -86,7 +86,7 @@ def onePerParam(config, dssFilePath):
             
         # Export plot
         plot.saveToJpeg(os.path.join(outputFolder, 
-                        config['version'] + "_" + param),
+                        param + "-" + config['version']),
                         95)
         plot.close()
         plotted += 1
