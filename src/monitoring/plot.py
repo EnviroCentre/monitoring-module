@@ -122,7 +122,7 @@ def paramPerPage(config, dssFilePath):
                                        config['version'].upper())
             for loc in config['locations']
         ]
-        datasets = [dssFile.get(dp, 1) for dp in dataPaths]
+        datasets = [dssFile.get(dp) for dp in dataPaths]
         datasets = [d for d in datasets if d.numberValues > 0]
         if not datasets:
             messages.append("No data for parameter '{}'.".format(param))
