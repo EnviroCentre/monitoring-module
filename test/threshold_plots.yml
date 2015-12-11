@@ -6,7 +6,7 @@ locations:
 interval: 15MIN
 version: OBS
 
-# Relative to DSS file or absolute path
+# Relative to config file or absolute path
 output_folder: Output
 
 period:
@@ -60,3 +60,4 @@ height: 300
 line:
   width: 1.25
   colour: [166, 206, 227]
+  markers: yes

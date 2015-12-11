@@ -1,5 +1,5 @@
-Creating timeseries plots with thresholds
-=========================================
+Creating timeseries plots (locations in separate plots)
+=======================================================
 
 A series of timeseries plots with one or more threshold lines can be exported 
 using the `Monitoring Module` for a range of locations and parameters. One graph
@@ -33,8 +33,8 @@ text file with the following content:
 
     site: Example site
     locations:
-     - LOCATION 1
-     - LOCATION 2
+    - LOCATION 1
+    - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -43,19 +43,6 @@ text file with the following content:
     period:
       start: 01JAN2000 00:00
       end:   01JAN2001 00:00
-
-    thresholds:
-      DO:
-        LOCATION 1: 
-          10: threshold
-        LOCATION 2: 
-          12: upper threshold
-          8.5: lower threshold
-      TURB:
-        LOCATION 1: 
-          1000: trigger value
-        LOCATION 2: 
-          1000: trigger value
 
     params:
       DO:
@@ -89,6 +76,35 @@ When the configuration has been set up, the plots can be generated as follows:
 
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `JPG`-files.
+
+
+Adding threshold lines
+----------------------
+
+One or multiple horizontal lines can be added to the graphs by including a
+section like this in the configuration file:
+
+.. code-block:: yaml
+
+    thresholds:
+      DO:
+        all:
+          7: threshold
+        LOCATION 1: 
+          10: threshold
+        LOCATION 2: 
+          12: upper threshold
+          8.5: lower threshold
+      TURB:
+        all:
+          500: trigger value
+        LOCATION 1: 
+          1000: trigger value
+        LOCATION 2: 
+          1000: trigger value
+          
+Thresholds indicated with ``all`` apply to all locations which can be overriden
+by for locations individually as shown.
 
 
 Baseline statistics thresholds
@@ -154,6 +170,6 @@ required:
     height: 300
 
     line:
-      width: 1.25
+      markers: yes
+      width: 2
       colour: [166, 206, 227]
-

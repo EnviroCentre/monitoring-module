@@ -19,6 +19,10 @@ class ToolboxUtilTestCase(unittest.TestCase):
         result = toolbox.util.parseMeasurement(" < 2.0 ")
         self.assertEqual(result, (1.0, 16777347))
         
+    def testParseMeasurementNoneDetected(self):
+        result = toolbox.util.parseMeasurement("ND")
+        self.assertEqual(result, (0.0, 8388739))
+
     def testDateDefaultFormat(self):
         dt = toolbox.util.parseDateTime("2015/12/31", "01:00:00")
         self.assertEqual(dt.year(), 2015)

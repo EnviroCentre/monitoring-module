@@ -2,7 +2,7 @@ Importing lab data
 ==================
 
 The `Monitoring Module` can be used to import laboratory analytical results. The
-results are imported from a `csv`-file with the measurement **locations** 
+results are imported from a `csv`-file with the measurement **locations**
 forming the columns (**across**) and the **parameters** in rows (**down**).
 
 Multiple `csv`-files can be imported at once.
@@ -21,8 +21,8 @@ Multiple `csv`-files can be imported at once.
 Getting everything in place
 ---------------------------
 
-In this example, the file to be imported :file:`2015-01 Lab results.csv` is 
-saved in a project file structure as follows:: 
+In this example, the file to be imported :file:`2015-01 Lab results.csv` is
+saved in a project file structure as follows::
 
     C:\
         Project\
@@ -39,10 +39,9 @@ file with the following content:
 
 .. code-block:: yaml
 
-    folder: C:\Path\To\Folder
+    folder: Import data
     files:
-     - File 1.csv
-     - File 2.csv
+    - 2015-01 Lab results.csv
 
     site: Site name
     version: RAW
@@ -116,14 +115,14 @@ file with the following content:
 
 .. tip::
 
-   The configuration file is structured according to the `YAML format 
-   <http://yaml.org>`_. Indentation is important to define the configuration 
+   The configuration file is structured according to the `YAML format
+   <http://yaml.org>`_. Indentation is important to define the configuration
    correctly. The example is best copied exactly as provided!
 
 
 The configuration file describes the files to be imported as well as information
-about which `csv`-file rows (parameters) to be imported. Analysed parameters can 
-be modified as required by editing the ``mapping`` and ``params`` sections of 
+about which `csv`-file rows (parameters) to be imported. Analysed parameters can
+be modified as required by editing the ``mapping`` and ``params`` sections of
 the configuration file.
 
 The following tags can be used to specify the date format:
@@ -138,15 +137,17 @@ Tag Example        Tag Example               Tag Example
 |                  %m  01, 02, .., 12        |
 === ============== === ===================== === ==============
 
-Parameter values in the import file starting with `<` are interpreted as being 
-below the meter's limit of detection (LOD). Such measurements are imported as 
-50% of the LOD to allow numeric evaluations and plotting in line with current 
+Parameter values in the import file starting with `<` are interpreted as being
+below the meter's limit of detection (LOD). Such measurements are imported as
+50% of the LOD to allow numeric evaluations and plotting in line with current
 best practice.
+
+The parameter value `ND` (none detected) is imported as zero.
 
 
 .. warning::
-   
-   The date column is assumed to be formatted as ``dd-mmm-yy``! 
+
+   The date column is assumed to be formatted as ``dd-mmm-yy``!
 
    Times are set to 12:00:00 hrs.
 
@@ -157,8 +158,8 @@ Running the import
 When the configuration has been set up, the data can be imported as follows:
 
  1. Open the :file:`Monitoring data.dss` file in HEC-DSSVue.
- 2. Select menu item :menuselection:`Scripts --> Import lab data` or 
-    alternatively click on :menuselection:`Import lab data` on the toolbar. 
+ 2. Select menu item :menuselection:`Scripts --> Import lab data` or
+    alternatively click on :menuselection:`Import lab data` on the toolbar.
 
-When successfully completed, a message is displayed how many records have been 
+When successfully completed, a message is displayed how many records have been
 imported and the catalogue is refreshed.

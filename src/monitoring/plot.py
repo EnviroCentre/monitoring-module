@@ -6,7 +6,6 @@ import os
 import toolbox.util as tbu
 from hec.heclib.dss import HecDss
 from hec.heclib.util import HecTime
-from hec.hecmath import HecMath
 from hec.script import Plot, AxisMarker
 
 
@@ -23,17 +22,15 @@ def _coloursByLocation(config):
 def onePerParam(config, dssFilePath):
     plotted = 0  # Number of plots exported
     messages = []
-    
-    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
-    dssFile = HecDss.open(dssFilePath)
-    
+    outputFolder = tbu.relativeFolder(config['output_folder'], 
+                                      config['config_file'])
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
-
+    dssFile = HecDss.open(dssFilePath, str(minDate), str(maxDate))
     colours = _coloursByLocation(config)
 
     for param, paramConfig in config['params'].iteritems():
-        thePlot = Plot.newPlot()
+        plot = Plot.newPlot()
         dataPaths = [
             "/%s/%s/%s//%s/%s/" % (config['site'].upper(), 
                                    location.upper(), 
@@ -42,30 +39,38 @@ def onePerParam(config, dssFilePath):
                                    config['version'].upper())
             for location in config['locations']
         ]
-        datasets = [dssFile.get(p, 1) for p in dataPaths]
+        datasets = [dssFile.get(p) for p in dataPaths]
         datasets = [d for d in datasets if d.numberValues > 0]
         if not datasets:
             messages.append("No data for parameter '%s'." % param)
             continue
-        
-        map(thePlot.addData, datasets)
+        map(plot.addData, datasets)
 
-        thePlot.showPlot()
-        thePlot.setPlotTitleText(param)
-        thePlot.setPlotTitleVisible(1)
-        thePlot.setSize(int(config['width']), int(config['height']))
+        plot.showPlot()
+        plot.setPlotTitleText(param)
+        plot.setPlotTitleVisible(1)
+        plot.setSize(int(config['width']), int(config['height']))
 
         # We can only access labels and curves at this point
-        map(lambda d: thePlot.getLegendLabel(d).setText(d.location), datasets)
+        map(lambda d: plot.getLegendLabel(d).setText(d.location), datasets)
 
+        # Style curves
         for dataset in datasets:
-            curve = thePlot.getCurve(dataset)
-            curve.setLineColor("%s, %s, %s" % tuple(colours[dataset.location]))
+            curve = plot.getCurve(dataset)
+            curve.setLineColor('{}, {}, {}'.format(*colours[dataset.location]))
             curve.setLineWidth(config['line']['width'])
-
+            if config['line']['markers']:
+                curve.setSymbolsVisible(1)
+                curve.setSymbolType('Circle')
+                curve.setSymbolLineColor('{}, {}, {}'
+                                         .format(*colours[dataset.location]))
+                curve.setSymbolFillColor('{}, {}, {}'
+                                         .format(*colours[dataset.location]))
+             
+        # Axes scales
         units = set(ds.units for ds in datasets)
         for vp_index, unit in enumerate(units):  # 1 viewport per distinct unit
-            viewport = thePlot.getViewport(vp_index)
+            viewport = plot.getViewport(vp_index)
             viewport.getAxis("X1").setScaleLimits(minDate.value(), 
                                                   maxDate.value())
             viewport.getAxis("Y1").setLabel(unit)
@@ -74,11 +79,16 @@ def onePerParam(config, dssFilePath):
             if paramConfig:
                 if paramConfig['scale'].lower() == 'log':
                     viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
-
-        thePlot.saveToJpeg(os.path.join(outputFolder, 
-                           config['version'] + "_" + param),
-                           95)
-        thePlot.close()
+            # Horizontal threshold lines
+            thresholds = _get_thresholds(datasets[0], dssFilePath, config)
+            for marker in _thresholdMarkers(thresholds):
+                viewport.addAxisMarker(marker)
+            
+        # Export plot
+        plot.saveToJpeg(os.path.join(outputFolder, 
+                        param + "-" + config['version']),
+                        95)
+        plot.close()
         plotted += 1
 
     dssFile.done()
@@ -95,7 +105,8 @@ def paramPerPage(config, dssFilePath):
     plotted = 0  # Number of plots exported
     messages = []
     
-    outputFolder = tbu.relativeFolder(config['output_folder'], dssFilePath)
+    outputFolder = tbu.relativeFolder(config['output_folder'], 
+                                      config['config_file'])
     
     minDate = HecTime(config['period']['start'])
     maxDate = HecTime(config['period']['end'])           
@@ -112,26 +123,18 @@ def paramPerPage(config, dssFilePath):
                                        config['version'].upper())
             for loc in config['locations']
         ]
-        datasets = [dssFile.get(dp, 1) for dp in dataPaths]
+        datasets = [dssFile.get(dp) for dp in dataPaths]
         datasets = [d for d in datasets if d.numberValues > 0]
         if not datasets:
             messages.append("No data for parameter '{}'.".format(param))
             continue
         
-        thDatasets = []
         for dataset in datasets:
             plot = Plot.newPlot(param)
             layout = Plot.newPlotLayout()
             layout.setHasLegend(0)
             vp = layout.addViewport()
             vp.addCurve('Y1', dataset)
-            # Thresholds
-            thTscs = _thresholdTscs(dataset, dssFilePath, config, 
-                                    minDate, maxDate)
-            thDatasets += thTscs
-            for thTsc in thTscs:
-                vp.addCurve('Y1', thTsc)
-
             plot.configurePlotLayout(layout)
             plots.append(plot)
         
@@ -149,27 +152,25 @@ def paramPerPage(config, dssFilePath):
             curve = plot.getCurve(dataset)
             curve.setLineColor('{}, {}, {}'.format(*config['line']['colour']))
             curve.setLineWidth(config['line']['width'])
+            if config['line']['markers']:
+                curve.setSymbolsVisible(1)
+                curve.setSymbolType('Circle')
+                curve.setSymbolLineColor('{}, {}, {}'.format(*config['line']['colour']))
+                curve.setSymbolFillColor('{}, {}, {}'.format(*config['line']['colour']))
             vp = plot.getViewport(dataset.fullName)
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
             if _paramScale(param, config) == 'log':
                 vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+            # Horizontal lines
+            thresholds = _get_thresholds(dataset, dssFilePath, config)
+            for marker in _thresholdMarkers(thresholds):
+                vp.addAxisMarker(marker)
             # Vertical lines
             if _baselinePeriod(dataset.location, config):
                 vp.addAxisMarker(_baselineMarker(dataset.location, config))
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
-        
-            # Format threshold curves
-            associatedThDatasets = [d for d in thDatasets 
-                if d.location == dataset.location]
-            for thDataset in associatedThDatasets:
-                curve = plot.getCurve(thDataset)
-                curve.setLabel(thDataset.version)
-                curve.setLabelVisible(1)
-                curve.setLineColor('50, 50, 50')
-                curve.setLineWidth(config['line']['width'])
-                curve.setLineStyle('Dash')
         
         for dataset, plot in zip(datasets, plots):
             plot.showPlot()
@@ -187,23 +188,6 @@ def paramPerPage(config, dssFilePath):
 
     dssFile.done()
     return plotted, messages
-
-
-def constantTsc(value, version, startDate, endDate, templateTsc):
-    """
-    Return a :class:`TimeSeriesContainer` with a constant value and specified 
-    ``version`` (F-part) between ``startDate`` and ``endDate``. All other
-    parameters are taken from ``templateTsc``.
-    """
-    rec = copy.copy(templateTsc)
-    rec.values = [value] * 2
-    rec.times = [startDate.value(), endDate.value()]
-    rec.type = 'INST-VAL'
-    rec.interval = -1
-    rec.version = version.upper()
-    rec.numberValues = 2
-    rec.fullName = "/{0.watershed}/{0.location}/{0.parameter}//IR-DECADE/{0.version}/".format(rec)
-    return rec
 
 
 def _tscStats(hmc, scale='lin'):
@@ -246,18 +230,26 @@ def _baselineHmc(parentTsc, dssFilePath, startDate, endDate):
     return dssFile.read(parentTsc.fullName, str(startDate), str(endDate))
 
 
-def _thresholdTscs(parentTsc, dssFilePath, config, startDate, endDate):
+def _get_thresholds(parentTsc, dssFilePath, config):
     """
-    Return all tresholds associated with ``parentTsc`` as a list of 
-    :class:`TimeSeriesContainers` between ``startDate`` and ``endDate``.
+    Return all tresholds associated with ``parentTsc`` as a dict of 
+    threshold value/label pairs.
     """
     try:
+        # parameter- and location-specific thresholds
         thresholds = config['thresholds'][parentTsc.parameter][parentTsc.location]
         if thresholds is None:
             return []
     except KeyError:
-        return []
+        try:
+            # parameter-specific, for all locations, thresholds
+            thresholds = config['thresholds'][parentTsc.parameter]['all']
+            if thresholds is None:
+                return []
+        except KeyError:
+            return []
     
+    calc_thresholds = {}
     # If there is any threshold like `mean` or `+2sd`, calculate baseline stats
     if any(isinstance(value, unicode) for value in thresholds):
         period = _baselinePeriod(parentTsc.location, config)
@@ -265,7 +257,6 @@ def _thresholdTscs(parentTsc, dssFilePath, config, startDate, endDate):
         scale = _paramScale(parentTsc.parameter, config)
         mean, sd = _tscStats(baselineHmc, scale=scale)
 
-    tscs = []
     for value, label in thresholds.iteritems():
         if isinstance(value, numbers.Real):
             # Simple numeric threshold
@@ -283,9 +274,8 @@ def _thresholdTscs(parentTsc, dssFilePath, config, startDate, endDate):
                     thValue = math.exp(thValue)
             else:
                 continue
-        tscs.append(constantTsc(thValue, label, startDate, endDate, 
-                    templateTsc=parentTsc))
-    return tscs
+        calc_thresholds[thValue] = label
+    return calc_thresholds
 
 
 def _baselinePeriod(location, config):
@@ -328,3 +318,21 @@ def _baselineMarker(location, config):
     marker.labelColor = 'gray'
     
     return marker
+
+def _thresholdMarkers(thresholds):
+    """
+    Return list of :class:`AxisMarker` objects for given `thresholds`.
+    
+    :param thresholds: dict of {treshold value: treshold label}
+    :type thresholds: dict
+    """
+    markers = []
+    for value, label in thresholds.iteritems():
+        marker = AxisMarker()
+        marker.axis = 'Y'
+        marker.value = str(value)
+        marker.labelText = label.upper()
+        marker.lineStyle = 'Dash'
+        marker.lineColor = '50, 50, 50'
+        markers.append(marker)
+    return markers

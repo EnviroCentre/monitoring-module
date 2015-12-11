@@ -93,15 +93,28 @@ def parseMeasurement(valueStr):
     # HEC quality flags
     TESTED = 1 << 0
     VALID = 1 << 1
-    MISSING = 1 << 3
+    MISSING = 1 << 2
     CHANGED = 1 << 7
+    FUT_USE_1 = 1 << 23
     USER_DEF = 1 << 24
+    replaceValues = {
+        # string to replace: (replacement value, flag)
+        'ND': (0.0, TESTED | VALID | CHANGED | FUT_USE_1 )
+    }
     try:
-        return float(valueStr), TESTED | VALID
+        try:
+            # Try to replace specific values if needed
+            return replaceValues[valueStr]
+        except KeyError:
+            # Otherwise try to parse the string as a float
+            return float(valueStr), TESTED | VALID
     except ValueError:
+        # If that doesn't work, check if it's below limited of detection
         if valueStr.strip().startswith('<'):
-            return float(valueStr.strip(' <')) * 0.5, TESTED | VALID | CHANGED | USER_DEF
+            return (float(valueStr.strip(' <')) * 0.5,
+                    TESTED | VALID | CHANGED | USER_DEF)
         else:
+            # Nothing works, just return None, i.e. missing value
             return None, TESTED | MISSING
 
 

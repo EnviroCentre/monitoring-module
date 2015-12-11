@@ -9,6 +9,11 @@ from voluptuous import Schema, All, Any, Range, Datetime, Required, Optional, Lo
 
 
 class PlotTool(tb.Tool):
+    rgb = [
+        All(int, Range(min=0, max=255)),
+        All(int, Range(min=0, max=255)),
+        All(int, Range(min=0, max=255))
+    ]
     defaultColours = [
         [166, 206, 227],
         [ 31, 120, 180],
@@ -21,7 +26,7 @@ class PlotTool(tb.Tool):
         [202, 178, 214],
         [106,  61, 154]
     ]
-    defaultLineWidth = 1.25
+    defaultLineWidth = 2
     
     schema = Schema({
         'site': unicode,
@@ -35,6 +40,14 @@ class PlotTool(tb.Tool):
             'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
             'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 01JAN2000 00:00")
         },
+        Required('thresholds', default={}): {
+            unicode: {
+                'all': Any(
+                    {Any(float, int): unicode}, 
+                    None
+                )
+            }
+        },
         'params': {
             unicode: Any({
                 Optional('scale'): All(Lower, Any('lin', 'log'))
@@ -43,14 +56,14 @@ class PlotTool(tb.Tool):
         Required('width', default=1200): All(int, Range(min=100, max=3000)),
         Required('height', default=800): All(int, Range(min=100, max=3000)),
         Required('line', default={'width': defaultLineWidth, 
-                                  'colours': defaultColours}): {
+                                  'colours': defaultColours,
+                                  'markers': True}): {
             Required('width', default=defaultLineWidth): 
-                All(float, Range(min=0.5, max=2.0)),
+                All(float, Range(min=0.5, max=5.0)),
             Required('colours', default=defaultColours): [
-                [All(int, Range(min=0, max=255)),
-                 All(int, Range(min=0, max=255)),
-                 All(int, Range(min=0, max=255))]
-            ]
+                rgb
+            ],
+            Required('markers', default=True): bool
         }
     }, required=True)
     

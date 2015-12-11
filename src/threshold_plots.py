@@ -15,7 +15,7 @@ class PlotTool(tb.Tool):
         All(int, Range(min=0, max=255))
     ]
     defaultColour = [166, 206, 227]
-    defaultLineWidth = 1.25
+    defaultLineWidth = 2
     period = {
         'start': Datetime("%d%b%Y %H:%M", msg="Start date must be formatted like this: 01JAN2000 00:00"),
         'end':   Datetime("%d%b%Y %H:%M", msg="End date must be formatted like this: 31DEC2000 23:59")
@@ -49,10 +49,12 @@ class PlotTool(tb.Tool):
         Required('width', default=1200): All(int, Range(min=100, max=3000)),
         Required('height', default=300): All(int, Range(min=100, max=3000)),
         Required('line', default={'width': defaultLineWidth, 
-                                  'colour': defaultColour}): {
+                                  'colour': defaultColour,
+                                  'markers': True}): {
             Required('width', default=defaultLineWidth): 
-                All(float, Range(min=0.5, max=2.0)),
-            Required('colour', default=defaultColour): rgb
+                All(float, Range(min=0.5, max=5.0)),
+            Required('colour', default=defaultColour): rgb,
+            Required('markers', default=True): bool
         }
     }, required=True)
     

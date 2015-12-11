@@ -24,12 +24,12 @@ autodoc_mock_imports = [
 ]
 autodoc_member_order = 'bysource'
 autoclass_content = 'both'
-
+source_encoding = 'utf-8'
 source_suffix = '.rst'
 master_doc = 'index'
 
 project = 'Monitoring Module for HEC-DSSVue'
-copyright = '2015, EnviroCentre. All rights reserved.'
+copyright = '2015‒2016, EnviroCentre Limited. All rights reserved.'
 version = '.'.join(git_tag.strip('v').split(".")[0:2])
 release = git_tag.strip('v')
 pygments_style = 'sphinx'

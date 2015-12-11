@@ -1,9 +1,9 @@
-Creating timeseries plots
-=========================
+Creating timeseries plots (locations combined)
+==============================================
 
 A series of timeseries plots can be exported using the `Monitoring Module` for 
 a range of locations and parameters. One graph is created for each parameter
-showing all locations.
+showing all locations combined.
 
 
 Getting everything in place
@@ -33,8 +33,8 @@ file with the following content:
 
     site: Example site
     locations:
-     - LOCATION 1
-     - LOCATION 2
+    - LOCATION 1
+    - LOCATION 2
     interval: 15MIN
     version: OBS
 
@@ -68,7 +68,7 @@ file with the following content:
 The configuration file lists the locations and parameters to plot as well as 
 the folder to export the images into. 
 
- - The ``output_folder`` is relative to the location of the `dss` file.
+ - The ``output_folder`` is relative to the location of the 'yml' config file.
  - The horizontal axis is limited to the period defined by the ``start`` and
    ``end`` settings. These must be formatted as date/times as in the example.
  - The vertical axis can be set to a logarithmic scale by setting the 
@@ -89,6 +89,25 @@ When the configuration has been set up, the plots can be generated as follows:
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `JPG`-files.
 
+Adding threshold lines
+----------------------
+
+One or multiple horizontal lines can be added to the graphs by including a
+section like this in the configuration file:
+    
+.. code-block:: yaml
+
+    thresholds:
+      DO:
+        all: 
+          10: upper threshold
+          8.5: lower threshold
+      TURB:
+        all: 
+          1000: trigger value
+
+Where ``all`` refers to all locations.
+
 Optional settings
 -----------------
 
@@ -101,18 +120,19 @@ required:
     height: 800
 
     line:
-      width: 1.25
+      markers: yes
+      width: 2
       colours:
-       - [166, 206, 227]
-       - [ 31, 120, 180]
-       - [178, 223, 138]
-       - [ 51, 160,  44]
-       - [251, 154, 153]
-       - [227,  26,  28]
-       - [253, 191, 111]
-       - [255, 127,   0]
-       - [202, 178, 214]
-       - [106,  61, 154]
+      - [166, 206, 227]
+      - [ 31, 120, 180]
+      - [178, 223, 138]
+      - [ 51, 160,  44]
+      - [251, 154, 153]
+      - [227,  26,  28]
+      - [253, 191, 111]
+      - [255, 127,   0]
+      - [202, 178, 214]
+      - [106,  61, 154]
 
 Explanation:
 
@@ -122,3 +142,4 @@ Explanation:
    is set by the ``line``, ``colours`` settings which is a list of RGB colour
    values. If there are more locations than in the colours list, the colours at
    the beginning of the list are used twice.
+ - Line symbol markers can be switched off by setting ``markers`` to ``no``.
