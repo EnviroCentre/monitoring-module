@@ -190,23 +190,6 @@ def paramPerPage(config, dssFilePath):
     return plotted, messages
 
 
-def constantTsc(value, version, startDate, endDate, templateTsc):
-    """
-    Return a :class:`TimeSeriesContainer` with a constant value and specified 
-    ``version`` (F-part) between ``startDate`` and ``endDate``. All other
-    parameters are taken from ``templateTsc``.
-    """
-    rec = copy.copy(templateTsc)
-    rec.values = [value] * 2
-    rec.times = [startDate.value(), endDate.value()]
-    rec.type = 'INST-VAL'
-    rec.interval = -1
-    rec.version = version.upper()
-    rec.numberValues = 2
-    rec.fullName = "/{0.watershed}/{0.location}/{0.parameter}//IR-DECADE/{0.version}/".format(rec)
-    return rec
-
-
 def _tscStats(hmc, scale='lin'):
     """
     Return mean and standard deviation of a dataset.
