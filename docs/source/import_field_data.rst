@@ -2,7 +2,7 @@ Importing "field" data
 ======================
 
 The `Monitoring Module` can be used to import water quality data collected in
-the field with a handheld meter. The measured parameters are exported from the 
+the field with a handheld meter. The measured parameters are exported from the
 meter to a `csv`-file with the **parameters** forming the columns (**across**)
 and the **locations** in rows (**down**).
 
@@ -13,9 +13,9 @@ Multiple `csv`-files can be imported at once.
    The Monitoring Module's field data importing tool has been tested to work
    with the following meters:
 
-    - Hanna Instruments® multi-parameter meter type HI 9828
+    - Hanna InstrumentsÂ® multi-parameter meter type HI 9828
 
-   Other meters and `csv` input file formats may be supported by tweaking the 
+   Other meters and `csv` input file formats may be supported by tweaking the
    tool's configuration parameters.
 
 
@@ -23,7 +23,7 @@ Getting everything in place
 ---------------------------
 
 In this example, the file to be imported :file:`2015-01 Site measurements.csv`
-is saved in a project file structure as follows:: 
+is saved in a project file structure as follows::
 
     C:\
         Project\
@@ -48,12 +48,12 @@ file with the following content:
     version: RAW
 
     columns:
-      date: 
+      date:
         title: Date
         format: "%Y/%m/%d"
-      time: 
+      time:
         title: Time
-      location: 
+      location:
         title: Location
 
     mapping:
@@ -78,15 +78,15 @@ file with the following content:
 
 .. tip::
 
-   The configuration file is structured according to the `YAML format 
-   <http://yaml.org>`_. Indentation is important to define the configuration 
+   The configuration file is structured according to the `YAML format
+   <http://yaml.org>`_. Indentation is important to define the configuration
    correctly. The example is best copied exactly as provided!
 
 
 The configuration file describes the files to be imported as well as information
-about which `csv`-file columns to be imported. The ``mapping`` section of the 
+about which `csv`-file columns to be imported. The ``mapping`` section of the
 configuration file indicates which column headings map onto the parameters to be
-saved into the database. Special symbols (non-ASCII characters) should be 
+saved into the database. Special symbols (non-ASCII characters) should be
 omitted from the ``mapping`` section.
 
 The following tags can be used to specify the date format:
@@ -101,12 +101,12 @@ Tag Example        Tag Example               Tag Example
 |                  %m  01, 02, .., 12        |
 === ============== === ===================== === ==============
 
-The `time` column is optional. If not specified, all times are set to 
+The `time` column is optional. If not specified, all times are set to
 12:00:00 hrs. The time format is always assumed to be ``%H:%M:%S``.
 
-Parameter values in the import file starting with `<` are interpreted as being 
-below the meter's limit of detection (LOD). Such measurements are imported as 
-50% of the LOD to allow numeric evaluations and plotting in line with current 
+Parameter values in the import file starting with `<` are interpreted as being
+below the meter's limit of detection (LOD). Such measurements are imported as
+50% of the LOD to allow numeric evaluations and plotting in line with current
 best practice.
 
 
@@ -116,11 +116,11 @@ Running the import
 When the configuration has been set up, the data can be imported as follows:
 
  1. Open the :file:`Monitoring data.dss` file in HEC-DSSVue.
- 2. Select menu item :menuselection:`Scripts --> Import field data` or 
+ 2. Select menu item :menuselection:`Scripts --> Import field data` or
     alternatively click on :menuselection:`Import field data` on the toolbar.
- 3. Choose the configuration file :file:`field_import.yml` in the file selection 
-    window. 
+ 3. Choose the configuration file :file:`field_import.yml` in the file selection
+    window.
 
 
-When successfully completed, a message is displayed how many records have been 
+When successfully completed, a message is displayed how many records have been
 imported and the catalogue is refreshed.
