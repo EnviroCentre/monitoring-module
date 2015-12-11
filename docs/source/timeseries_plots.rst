@@ -1,9 +1,9 @@
-Creating timeseries plots
-=========================
+Creating timeseries plots (locations combined)
+==============================================
 
 A series of timeseries plots can be exported using the `Monitoring Module` for 
 a range of locations and parameters. One graph is created for each parameter
-showing all locations.
+showing all locations combined.
 
 
 Getting everything in place
@@ -88,6 +88,25 @@ When the configuration has been set up, the plots can be generated as follows:
 
 The plots are briefly shown on the screen as they are created and then exported
 into the ``output_folder`` as `JPG`-files.
+
+Adding threshold lines
+----------------------
+
+One or multiple horizontal lines can be added to the graphs by including a
+section like this in the configuration file:
+    
+.. code-block:: yaml
+
+    thresholds:
+      DO:
+        all: 
+          10: upper threshold
+          8.5: lower threshold
+      TURB:
+        all: 
+          1000: trigger value
+
+Where ``all`` refers to all locations.
 
 Optional settings
 -----------------
