@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6. Creating timeseries plots with thresholds &mdash; Monitoring Module for HEC-DSSVue 0.4.2
+  <title>6. Creating timeseries plots (locations in separate plots) &mdash; Monitoring Module for HEC-DSSVue 0.5.0
  documentation</title>
   
 
@@ -31,10 +31,10 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.5.0
  documentation" href="index.html"/>
         <link rel="next" title="1. Introduction" href="dev_intro.html"/>
-        <link rel="prev" title="5. Creating timeseries plots" href="timeseries_plots.html"/> 
+        <link rel="prev" title="5. Creating timeseries plots (locations combined)" href="timeseries_plots.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -85,19 +85,21 @@
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots (locations combined)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.4. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#adding-threshold-lines">5.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.5. Optional settings</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">6. Creating timeseries plots with thresholds</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">6. Creating timeseries plots (locations in separate plots)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-the-plots">6.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optional-settings">6.5. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-threshold-lines">6.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#baseline-statistics-thresholds">6.5. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-settings">6.6. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +140,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>6. Creating timeseries plots with thresholds</li>
+    <li>6. Creating timeseries plots (locations in separate plots)</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -147,8 +149,8 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="creating-timeseries-plots-with-thresholds">
-<h1>6. Creating timeseries plots with thresholds<a class="headerlink" href="#creating-timeseries-plots-with-thresholds" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="creating-timeseries-plots-locations-in-separate-plots">
+<h1>6. Creating timeseries plots (locations in separate plots)<a class="headerlink" href="#creating-timeseries-plots-locations-in-separate-plots" title="Permalink to this headline">¶</a></h1>
 <p>A series of timeseries plots with one or more threshold lines can be exported
 using the <cite>Monitoring Module</cite> for a range of locations and parameters. One graph
 is created per parameter, per location.</p>
@@ -173,8 +175,8 @@ is created per parameter, per location.</p>
 text file with the following content:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Example site</span>
 <span class="l-Scalar-Plain">locations</span><span class="p-Indicator">:</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 1</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 2</span>
+<span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 1</span>
+<span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 2</span>
 <span class="l-Scalar-Plain">interval</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">15MIN</span>
 <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OBS</span>
 
@@ -183,19 +185,6 @@ text file with the following content:</p>
 <span class="l-Scalar-Plain">period</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">start</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">01JAN2000 00:00</span>
   <span class="l-Scalar-Plain">end</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">01JAN2001 00:00</span>
-
-<span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">10</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">threshold</span>
-    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">12</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">upper threshold</span>
-      <span class="l-Scalar-Plain">8.5</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lower threshold</span>
-  <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
-    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
 
 <span class="l-Scalar-Plain">params</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
@@ -230,8 +219,33 @@ selection window.</li>
 <p>The plots are briefly shown on the screen as they are created and then exported
 into the <code class="docutils literal"><span class="pre">output_folder</span></code> as <cite>JPG</cite>-files.</p>
 </div>
+<div class="section" id="adding-threshold-lines">
+<h2>6.4. Adding threshold lines<a class="headerlink" href="#adding-threshold-lines" title="Permalink to this headline">¶</a></h2>
+<p>One or multiple horizontal lines can be added to the graphs by including a
+section like this in the configuration file:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">7</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">threshold</span>
+    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">10</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">threshold</span>
+    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">12</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">upper threshold</span>
+      <span class="l-Scalar-Plain">8.5</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lower threshold</span>
+  <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">500</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+    <span class="l-Scalar-Plain">LOCATION 1</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+    <span class="l-Scalar-Plain">LOCATION 2</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+</pre></div>
+</div>
+<p>Thresholds indicated with <code class="docutils literal"><span class="pre">all</span></code> apply to all locations which can be overriden
+by for locations individually as shown.</p>
+</div>
 <div class="section" id="baseline-statistics-thresholds">
-<h2>6.4. Baseline statistics thresholds<a class="headerlink" href="#baseline-statistics-thresholds" title="Permalink to this headline">¶</a></h2>
+<h2>6.5. Baseline statistics thresholds<a class="headerlink" href="#baseline-statistics-thresholds" title="Permalink to this headline">¶</a></h2>
 <p>Instead of specifying the value for a threshold line, the <cite>Monitoring Module</cite>
 can also plot horizontal lines based on summary statistics of the baseline
 period. Supported statistics are:</p>
@@ -275,14 +289,15 @@ between the locations.</p>
 <p>The end of the baseline period is shown on the plot by a vertical line.</p>
 </div>
 <div class="section" id="optional-settings">
-<h2>6.5. Optional settings<a class="headerlink" href="#optional-settings" title="Permalink to this headline">¶</a></h2>
+<h2>6.6. Optional settings<a class="headerlink" href="#optional-settings" title="Permalink to this headline">¶</a></h2>
 <p>The following settings are optional and the defaults can be overriden if
 required:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
 <span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">300</span>
 
 <span class="l-Scalar-Plain">line</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1.25</span>
+  <span class="l-Scalar-Plain">markers</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
+  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">2</span>
   <span class="l-Scalar-Plain">colour</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
 </pre></div>
 </div>
@@ -298,7 +313,7 @@ required:</p>
         <a href="dev_intro.html" class="btn btn-neutral float-right" title="1. Introduction">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="timeseries_plots.html" class="btn btn-neutral" title="5. Creating timeseries plots (locations combined)"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -307,8 +322,8 @@ required:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 13/11/2015.
+        &copy; Copyright 2015‒2016, EnviroCentre Limited. All rights reserved..
+      Last updated on 11/12/2015.
     </p>
   </div>
 
@@ -329,7 +344,7 @@ required:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.2
+            VERSION:'0.5.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.4.2
+  <title>3. Importing lab data &mdash; Monitoring Module for HEC-DSSVue 0.5.0
  documentation</title>
   
 
@@ -31,7 +31,7 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.5.0
  documentation" href="index.html"/>
         <link rel="next" title="4. Importing logger data" href="import_logger_data.html"/>
         <link rel="prev" title="2. Importing “field” data" href="import_field_data.html"/> 
@@ -85,19 +85,21 @@
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="timeseries_plots.html">5. Creating timeseries plots (locations combined)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#creating-the-plots">5.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.4. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#adding-threshold-lines">5.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeseries_plots.html#optional-settings">5.5. Optional settings</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots with thresholds</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots (locations in separate plots)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#creating-the-plots">6.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.5. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#adding-threshold-lines">6.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.5. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.6. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -182,10 +184,9 @@ saved in a project file structure as follows:</p>
 <h2>3.2. The configuration file<a class="headerlink" href="#the-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>The configuration file <code class="file docutils literal"><span class="pre">lab_import.yml</span></code> can be created as a simple text
 file with the following content:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">folder</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">C:\Path\To\Folder</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">folder</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Import data</span>
 <span class="l-Scalar-Plain">files</span><span class="p-Indicator">:</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">File 1.csv</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">File 2.csv</span>
+<span class="p-Indicator">-</span> <span class="l-Scalar-Plain">2015-01 Lab results.csv</span>
 
 <span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Site name</span>
 <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">RAW</span>
@@ -326,6 +327,7 @@ the configuration file.</p>
 below the meter&#8217;s limit of detection (LOD). Such measurements are imported as
 50% of the LOD to allow numeric evaluations and plotting in line with current
 best practice.</p>
+<p>The parameter value <cite>ND</cite> (none detected) is imported as zero.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The date column is assumed to be formatted as <code class="docutils literal"><span class="pre">dd-mmm-yy</span></code>!</p>
@@ -365,8 +367,8 @@ imported and the catalogue is refreshed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 13/11/2015.
+        &copy; Copyright 2015‒2016, EnviroCentre Limited. All rights reserved..
+      Last updated on 11/12/2015.
     </p>
   </div>
 
@@ -387,7 +389,7 @@ imported and the catalogue is refreshed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.2
+            VERSION:'0.5.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

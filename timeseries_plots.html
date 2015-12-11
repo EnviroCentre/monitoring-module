@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. Creating timeseries plots &mdash; Monitoring Module for HEC-DSSVue 0.4.2
+  <title>5. Creating timeseries plots (locations combined) &mdash; Monitoring Module for HEC-DSSVue 0.5.0
  documentation</title>
   
 
@@ -31,9 +31,9 @@
   
 
   
-    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.4.2
+    <link rel="top" title="Monitoring Module for HEC-DSSVue 0.5.0
  documentation" href="index.html"/>
-        <link rel="next" title="6. Creating timeseries plots with thresholds" href="threshold_plots.html"/>
+        <link rel="next" title="6. Creating timeseries plots (locations in separate plots)" href="threshold_plots.html"/>
         <link rel="prev" title="4. Importing logger data" href="import_logger_data.html"/> 
 
   
@@ -85,19 +85,21 @@
 <li class="toctree-l2"><a class="reference internal" href="import_logger_data.html#running-the-import">4.3. Running the import</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">5. Creating timeseries plots</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">5. Creating timeseries plots (locations combined)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#getting-everything-in-place">5.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-configuration-file">5.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-the-plots">5.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optional-settings">5.4. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-threshold-lines">5.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-settings">5.5. Optional settings</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots with thresholds</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="threshold_plots.html">6. Creating timeseries plots (locations in separate plots)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#getting-everything-in-place">6.1. Getting everything in place</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#the-configuration-file">6.2. The configuration file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#creating-the-plots">6.3. Creating the plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.4. Baseline statistics thresholds</a></li>
-<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.5. Optional settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#adding-threshold-lines">6.4. Adding threshold lines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#baseline-statistics-thresholds">6.5. Baseline statistics thresholds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threshold_plots.html#optional-settings">6.6. Optional settings</a></li>
 </ul>
 </li>
 </ul>
@@ -138,7 +140,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>5. Creating timeseries plots</li>
+    <li>5. Creating timeseries plots (locations combined)</li>
       <li class="wy-breadcrumbs-aside">
         
       </li>
@@ -147,11 +149,11 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="creating-timeseries-plots">
-<h1>5. Creating timeseries plots<a class="headerlink" href="#creating-timeseries-plots" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="creating-timeseries-plots-locations-combined">
+<h1>5. Creating timeseries plots (locations combined)<a class="headerlink" href="#creating-timeseries-plots-locations-combined" title="Permalink to this headline">¶</a></h1>
 <p>A series of timeseries plots can be exported using the <cite>Monitoring Module</cite> for
 a range of locations and parameters. One graph is created for each parameter
-showing all locations.</p>
+showing all locations combined.</p>
 <div class="section" id="getting-everything-in-place">
 <h2>5.1. Getting everything in place<a class="headerlink" href="#getting-everything-in-place" title="Permalink to this headline">¶</a></h2>
 <p>In this example, the following project file structure is used:</p>
@@ -173,8 +175,8 @@ showing all locations.</p>
 file with the following content:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">site</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Example site</span>
 <span class="l-Scalar-Plain">locations</span><span class="p-Indicator">:</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 1</span>
- <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 2</span>
+<span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 1</span>
+<span class="p-Indicator">-</span> <span class="l-Scalar-Plain">LOCATION 2</span>
 <span class="l-Scalar-Plain">interval</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">15MIN</span>
 <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">OBS</span>
 
@@ -207,7 +209,7 @@ correctly. The example is best copied exactly as provided!</p>
 the folder to export the images into.</p>
 <blockquote>
 <div><ul class="simple">
-<li>The <code class="docutils literal"><span class="pre">output_folder</span></code> is relative to the location of the <cite>dss</cite> file.</li>
+<li>The <code class="docutils literal"><span class="pre">output_folder</span></code> is relative to the location of the &#8216;yml&#8217; config file.</li>
 <li>The horizontal axis is limited to the period defined by the <code class="docutils literal"><span class="pre">start</span></code> and
 <code class="docutils literal"><span class="pre">end</span></code> settings. These must be formatted as date/times as in the example.</li>
 <li>The vertical axis can be set to a logarithmic scale by setting the
@@ -231,26 +233,43 @@ window.</li>
 <p>The plots are briefly shown on the screen as they are created and then exported
 into the <code class="docutils literal"><span class="pre">output_folder</span></code> as <cite>JPG</cite>-files.</p>
 </div>
+<div class="section" id="adding-threshold-lines">
+<h2>5.4. Adding threshold lines<a class="headerlink" href="#adding-threshold-lines" title="Permalink to this headline">¶</a></h2>
+<p>One or multiple horizontal lines can be added to the graphs by including a
+section like this in the configuration file:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">thresholds</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">DO</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">10</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">upper threshold</span>
+      <span class="l-Scalar-Plain">8.5</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lower threshold</span>
+  <span class="l-Scalar-Plain">TURB</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">all</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">1000</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">trigger value</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal"><span class="pre">all</span></code> refers to all locations.</p>
+</div>
 <div class="section" id="optional-settings">
-<h2>5.4. Optional settings<a class="headerlink" href="#optional-settings" title="Permalink to this headline">¶</a></h2>
+<h2>5.5. Optional settings<a class="headerlink" href="#optional-settings" title="Permalink to this headline">¶</a></h2>
 <p>The following settings are optional and the defaults can be overriden if
 required:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1200</span>
 <span class="l-Scalar-Plain">height</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">800</span>
 
 <span class="l-Scalar-Plain">line</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">1.25</span>
+  <span class="l-Scalar-Plain">markers</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
+  <span class="l-Scalar-Plain">width</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">2</span>
   <span class="l-Scalar-Plain">colours</span><span class="p-Indicator">:</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">31</span><span class="p-Indicator">,</span> <span class="nv">120</span><span class="p-Indicator">,</span> <span class="nv">180</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">223</span><span class="p-Indicator">,</span> <span class="nv">138</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">51</span><span class="p-Indicator">,</span> <span class="nv">160</span><span class="p-Indicator">,</span>  <span class="nv">44</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">251</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">,</span> <span class="nv">153</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">227</span><span class="p-Indicator">,</span>  <span class="nv">26</span><span class="p-Indicator">,</span>  <span class="nv">28</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">253</span><span class="p-Indicator">,</span> <span class="nv">191</span><span class="p-Indicator">,</span> <span class="nv">111</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">255</span><span class="p-Indicator">,</span> <span class="nv">127</span><span class="p-Indicator">,</span>   <span class="nv">0</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">202</span><span class="p-Indicator">,</span> <span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">214</span><span class="p-Indicator">]</span>
-   <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">106</span><span class="p-Indicator">,</span>  <span class="nv">61</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">166</span><span class="p-Indicator">,</span> <span class="nv">206</span><span class="p-Indicator">,</span> <span class="nv">227</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">31</span><span class="p-Indicator">,</span> <span class="nv">120</span><span class="p-Indicator">,</span> <span class="nv">180</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">223</span><span class="p-Indicator">,</span> <span class="nv">138</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span> <span class="nv">51</span><span class="p-Indicator">,</span> <span class="nv">160</span><span class="p-Indicator">,</span>  <span class="nv">44</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">251</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">,</span> <span class="nv">153</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">227</span><span class="p-Indicator">,</span>  <span class="nv">26</span><span class="p-Indicator">,</span>  <span class="nv">28</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">253</span><span class="p-Indicator">,</span> <span class="nv">191</span><span class="p-Indicator">,</span> <span class="nv">111</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">255</span><span class="p-Indicator">,</span> <span class="nv">127</span><span class="p-Indicator">,</span>   <span class="nv">0</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">202</span><span class="p-Indicator">,</span> <span class="nv">178</span><span class="p-Indicator">,</span> <span class="nv">214</span><span class="p-Indicator">]</span>
+  <span class="p-Indicator">-</span> <span class="p-Indicator">[</span><span class="nv">106</span><span class="p-Indicator">,</span>  <span class="nv">61</span><span class="p-Indicator">,</span> <span class="nv">154</span><span class="p-Indicator">]</span>
 </pre></div>
 </div>
 <p>Explanation:</p>
@@ -262,6 +281,7 @@ window in pixels. The actual exported image is slightly smaller than this.</li>
 is set by the <code class="docutils literal"><span class="pre">line</span></code>, <code class="docutils literal"><span class="pre">colours</span></code> settings which is a list of RGB colour
 values. If there are more locations than in the colours list, the colours at
 the beginning of the list are used twice.</li>
+<li>Line symbol markers can be switched off by setting <code class="docutils literal"><span class="pre">markers</span></code> to <code class="docutils literal"><span class="pre">no</span></code>.</li>
 </ul>
 </div></blockquote>
 </div>
@@ -273,7 +293,7 @@ the beginning of the list are used twice.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="threshold_plots.html" class="btn btn-neutral float-right" title="6. Creating timeseries plots with thresholds">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="threshold_plots.html" class="btn btn-neutral float-right" title="6. Creating timeseries plots (locations in separate plots)">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="import_logger_data.html" class="btn btn-neutral" title="4. Importing logger data"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -285,8 +305,8 @@ the beginning of the list are used twice.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, EnviroCentre. All rights reserved..
-      Last updated on 13/11/2015.
+        &copy; Copyright 2015‒2016, EnviroCentre Limited. All rights reserved..
+      Last updated on 11/12/2015.
     </p>
   </div>
 
@@ -307,7 +327,7 @@ the beginning of the list are used twice.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.2
+            VERSION:'0.5.0
 ',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
