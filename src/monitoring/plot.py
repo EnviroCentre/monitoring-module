@@ -11,7 +11,7 @@ from hec.script import Plot, AxisMarker
 
 def _coloursByLocation(config):
     """Assign a fixed colour to each location"""
-    
+
     colours = {}  # {'locationId': [#r, #g, #b]}
     for locationIndex, location in enumerate(config['locations']):
         colourIndex = locationIndex % len(config['line']['colours'])
@@ -22,20 +22,20 @@ def _coloursByLocation(config):
 def onePerParam(config, dssFilePath):
     plotted = 0  # Number of plots exported
     messages = []
-    outputFolder = tbu.relativeFolder(config['output_folder'], 
+    outputFolder = tbu.relativeFolder(config['output_folder'],
                                       config['config_file'])
     minDate = HecTime(config['period']['start'])
-    maxDate = HecTime(config['period']['end'])           
+    maxDate = HecTime(config['period']['end'])
     dssFile = HecDss.open(dssFilePath, str(minDate), str(maxDate))
     colours = _coloursByLocation(config)
 
     for param, paramConfig in config['params'].iteritems():
         plot = Plot.newPlot()
         dataPaths = [
-            "/%s/%s/%s//%s/%s/" % (config['site'].upper(), 
-                                   location.upper(), 
-                                   param.upper(), 
-                                   config['interval'].upper(), 
+            "/%s/%s/%s//%s/%s/" % (config['site'].upper(),
+                                   location.upper(),
+                                   param.upper(),
+                                   config['interval'].upper(),
                                    config['version'].upper())
             for location in config['locations']
         ]
@@ -66,26 +66,26 @@ def onePerParam(config, dssFilePath):
                                          .format(*colours[dataset.location]))
                 curve.setSymbolFillColor('{}, {}, {}'
                                          .format(*colours[dataset.location]))
-             
+
         # Axes scales
         units = set(ds.units for ds in datasets)
         for vp_index, unit in enumerate(units):  # 1 viewport per distinct unit
             viewport = plot.getViewport(vp_index)
-            viewport.getAxis("X1").setScaleLimits(minDate.value(), 
+            viewport.getAxis("X1").setScaleLimits(minDate.value(),
                                                   maxDate.value())
             viewport.getAxis("Y1").setLabel(unit)
             viewport.setMinorGridXVisible(1)
             viewport.setMinorGridYVisible(1)
             if paramConfig:
                 if paramConfig['scale'].lower() == 'log':
-                    viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+                    viewport.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception.
             # Horizontal threshold lines
             thresholds = _get_thresholds(datasets[0], dssFilePath, config)
             for marker in _thresholdMarkers(thresholds):
                 viewport.addAxisMarker(marker)
-            
+
         # Export plot
-        plot.saveToJpeg(os.path.join(outputFolder, 
+        plot.saveToJpeg(os.path.join(outputFolder,
                         param + "-" + config['version']),
                         95)
         plot.close()
@@ -98,28 +98,28 @@ def onePerParam(config, dssFilePath):
 def paramPerPage(config, dssFilePath):
     """
     Plot timeseries, 1 location per plot, 1 parameter per page.
-    
-    Also adds specified thresholds.    
+
+    Also adds specified thresholds.
     """
-    
+
     plotted = 0  # Number of plots exported
     messages = []
-    
-    outputFolder = tbu.relativeFolder(config['output_folder'], 
+
+    outputFolder = tbu.relativeFolder(config['output_folder'],
                                       config['config_file'])
-    
+
     minDate = HecTime(config['period']['start'])
-    maxDate = HecTime(config['period']['end'])           
+    maxDate = HecTime(config['period']['end'])
 
     dssFile = HecDss.open(dssFilePath, str(minDate), str(maxDate))
 
     for param, paramConfig in config['params'].iteritems():
         plots = []
         dataPaths = [
-            '/{}/{}/{}//{}/{}/'.format(config['site'].upper(), 
-                                       loc.upper(), 
-                                       param.upper(), 
-                                       config['interval'].upper(), 
+            '/{}/{}/{}//{}/{}/'.format(config['site'].upper(),
+                                       loc.upper(),
+                                       param.upper(),
+                                       config['interval'].upper(),
                                        config['version'].upper())
             for loc in config['locations']
         ]
@@ -128,7 +128,7 @@ def paramPerPage(config, dssFilePath):
         if not datasets:
             messages.append("No data for parameter '{}'.".format(param))
             continue
-        
+
         for dataset in datasets:
             plot = Plot.newPlot(param)
             layout = Plot.newPlotLayout()
@@ -137,7 +137,7 @@ def paramPerPage(config, dssFilePath):
             vp.addCurve('Y1', dataset)
             plot.configurePlotLayout(layout)
             plots.append(plot)
-        
+
         # Format normal data curves
         ymin, ymax = float('+inf'), float('-inf')
         for dataset, plot in zip(datasets, plots):
@@ -161,7 +161,7 @@ def paramPerPage(config, dssFilePath):
             vp.setMinorGridXVisible(1)
             vp.getAxis('Y1').setLabel(dataset.units)
             if _paramScale(param, config) == 'log':
-                vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception. 
+                vp.setLogarithmic('Y1')  # This throws a warning message if y-values <= 0. We can't catch this as an exception.
             # Horizontal lines
             thresholds = _get_thresholds(dataset, dssFilePath, config)
             for marker in _thresholdMarkers(thresholds):
@@ -171,7 +171,7 @@ def paramPerPage(config, dssFilePath):
                 vp.addAxisMarker(_baselineMarker(dataset.location, config))
             ymin = min(ymin, vp.getAxis('Y1').getScaleMin())
             ymax = max(ymax, vp.getAxis('Y1').getScaleMax())
-        
+
         for dataset, plot in zip(datasets, plots):
             plot.showPlot()
             plot.setSize(config['width'], config['height'])
@@ -179,8 +179,8 @@ def paramPerPage(config, dssFilePath):
             vp = plot.getViewports()[0]
             vp.getAxis('Y1').setScaleLimits(ymin, ymax)
             vp.getAxis('X1').setScaleLimits(minDate.value(), maxDate.value())
-        
-            plot.saveToJpeg(os.path.join(outputFolder, 
+
+            plot.saveToJpeg(os.path.join(outputFolder,
                             "TH plot-{0.parameter}-{0.version}-{0.location}"
                             .format(dataset)), 95)
             plot.close()
@@ -193,10 +193,10 @@ def paramPerPage(config, dssFilePath):
 def _tscStats(hmc, scale='lin'):
     """
     Return mean and standard deviation of a dataset.
-    
+
     :param hmc: Input timeseries
     :type hmc: :class:`HecMath`
-    :param scale: If set to ``log``, the stats will be taken from the 
+    :param scale: If set to ``log``, the stats will be taken from the
                   log-transformed timeseries.
     :type sale: str
     :return: mean and standard deviation
@@ -210,10 +210,10 @@ def _tscStats(hmc, scale='lin'):
 def _baselineHmc(parentTsc, dssFilePath, startDate, endDate):
     """
     Return the baseline timeseries between two dates.
-    
-    Note: ``parentTsc`` does not necessarily need to contain the baseline 
+
+    Note: ``parentTsc`` does not necessarily need to contain the baseline
     period. It's just used for the metadata.
-    
+
     :param parentTsc: The timeseries for which the baseline period should be
                       extracted
     :type parentTsc: :class:`TimeSeriesContainer`
@@ -232,23 +232,23 @@ def _baselineHmc(parentTsc, dssFilePath, startDate, endDate):
 
 def _get_thresholds(parentTsc, dssFilePath, config):
     """
-    Return all tresholds associated with ``parentTsc`` as a dict of 
+    Return all tresholds associated with ``parentTsc`` as a dict of
     threshold value/label pairs.
     """
     try:
         # parameter- and location-specific thresholds
         thresholds = config['thresholds'][parentTsc.parameter][parentTsc.location]
         if thresholds is None:
-            return []
+            return {}
     except KeyError:
         try:
             # parameter-specific, for all locations, thresholds
             thresholds = config['thresholds'][parentTsc.parameter]['all']
             if thresholds is None:
-                return []
+                return {}
         except KeyError:
-            return []
-    
+            return {}
+
     calc_thresholds = {}
     # If there is any threshold like `mean` or `+2sd`, calculate baseline stats
     if any(isinstance(value, unicode) for value in thresholds):
@@ -296,7 +296,7 @@ def _paramScale(param, config):
     paramConfig = config['params'][param]
     if paramConfig:
         try:
-            scale = paramConfig['scale'].lower() 
+            scale = paramConfig['scale'].lower()
         except KeyError:
             pass
 
@@ -316,13 +316,13 @@ def _baselineMarker(location, config):
     marker.fillColor = 'lightgray'
     marker.lineColor = 'lightgray'
     marker.labelColor = 'gray'
-    
+
     return marker
 
 def _thresholdMarkers(thresholds):
     """
     Return list of :class:`AxisMarker` objects for given `thresholds`.
-    
+
     :param thresholds: dict of {treshold value: treshold label}
     :type thresholds: dict
     """

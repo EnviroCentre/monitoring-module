@@ -10,8 +10,8 @@ from os import path
 def relativeFolder(folder, dssFilePath, createFolder='ifrelative'):
     """
     Return an absolute path to ``folder`` relative to ``dssFilePath``.
-    
-    If the path ``folder`` is already absolute, it will simply return the path. 
+
+    If the path ``folder`` is already absolute, it will simply return the path.
     ``createFolder`` is one of 'ifrelative', 'ifabsolute' or 'allways'.
     """
     if path.isabs(folder):
@@ -25,22 +25,14 @@ def relativeFolder(folder, dssFilePath, createFolder='ifrelative'):
     return absPath
 
 
-class ValidationError(Exception):
-    """An error while validating data."""
-    
-
-class CancelledError(Exception):
-    """Operation cancellation/interruption by the user."""
-
-    
 def _tscFromRecord(record):
     """
     Convert simple records object to HEC timeseries container
-    
+
     :param record: Record object
     :type record: :class:`monitoring.Record`
-    """   
-    
+    """
+
     tsc = hec.io.TimeSeriesContainer()
     tsc.watershed = record.site
     tsc.location = record.location
@@ -63,14 +55,14 @@ def _tscFromRecord(record):
 def saveRecords(records, dssFilePath):
     """
     Save simple record objects to DSS file
-    
+
     :param record: Record object
     :type record: :class:`monitoring.Record`
     :param dssFilePath: HEC-DSS database to save record to
     :param dssFilePath: str
     :return: Number of records saved
     :rtype: int
-    """   
+    """
 
     saved = 0
     try:
@@ -86,8 +78,8 @@ def saveRecords(records, dssFilePath):
 def parseMeasurement(valueStr):
     """
     Return numeric value of measurement string and quality flag as tuple.
-    
-    If ``valueStr`` starts with ``<`` (i.e. below limit of detection), the 
+
+    If ``valueStr`` starts with ``<`` (i.e. below limit of detection), the
     returned value is 50% of the value after the ``<``.
     """
     # HEC quality flags
@@ -121,7 +113,7 @@ def parseMeasurement(valueStr):
 def parseDateTime(dateStr, timeStr, dateFmt='%Y/%m/%d'):
     """
     Return HecTime from date and time strings.
-    
+
     Time format is always `%H:%M:%S`.
     """
 
